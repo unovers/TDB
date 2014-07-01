@@ -29,14 +29,14 @@ public class Project {
 		this.fields = new LinkedList<Field>();
 	}
 
-	public void addField(Field field){
+	public void addField(Field field) {
 		this.fields.add(field);
 	}
-	
-	public void removeField(Field field){
+
+	public void removeField(Field field) {
 		this.fields.remove(field);
 	}
-	
+
 	public Server getServer() {
 		return server;
 	}
@@ -69,6 +69,10 @@ public class Project {
 		this.name = name;
 	}
 
+	public LinkedList<Field> getFields() {
+		return fields;
+	}
+
 	public String getPackageName() {
 		return packageName;
 	}
@@ -92,37 +96,45 @@ public class Project {
 	public void setOrganisation(String organisation) {
 		this.organisation = organisation;
 	}
-	
-	public void create(){
+
+	public void create() {
 		throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
 	}
-	
-	public void generateProject(){
+
+	public void generateProject() {
+
 		System.out.println("Project infos : ");
 		System.out.println("Project name         : " + name);
 		System.out.println("Project author       : " + author);
 		System.out.println("Project organisation : " + organisation);
 		System.out.println("Project package      : " + packageName);
 		System.out.println();
-		
+
 		System.out.println("Server infos : ");
-		System.out.println("host: " + server.getHost() + "/" + server.getRootFolder());
-		
+		System.out
+				.println("host: " + server.getHost() + server.getRootFolder());
+		getServer().generateScripts(datasources, fields);
+
 		System.out.println("Fields : ");
-		for(Field field : fields){
-			System.out.println(field.getName());
+		for (Field field : fields) {
+			System.out.print(field.getName() + " ");
 		}
-		
 		System.out.println();
+
 		System.out.println("Datasources info : ");
-		
-		for(Datasource source : datasources){
+
+		for (Datasource source : datasources) {
 			System.out.println("Name :" + source.getName());
-			for(Dataset set : source.getDatasets()){
+
+			for (Dataset set : source.getDatasets()) {
 				System.out.println("dataset " + set.getName());
+				for (Field field : set.getFields()) {
+					System.out.print(field.getName() + " ");
+				}
+				System.out.println();
 			}
 			System.out.println();
 		}
-		
+
 	}
 }

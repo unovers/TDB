@@ -5,9 +5,20 @@ import java.util.LinkedList;
 
 public abstract class Dataset {
 	private String name;
+	private String query;
 	private LinkedList<Field> fields;
 	
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+
+	
 	protected Dataset(String name){
+		this.name = name;
 		this.fields = new LinkedList<Field>();
 	}
 
@@ -21,6 +32,10 @@ public abstract class Dataset {
 	
 	public void addField(Field field){
 		this.fields.add(field);
+	}
+	
+	public LinkedList<Field> getFields(){
+		return fields;
 	}
 	
 	public abstract HashMap<String, String> preview();

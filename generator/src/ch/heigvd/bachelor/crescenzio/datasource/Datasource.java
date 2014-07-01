@@ -8,10 +8,12 @@ import ch.heigvd.bachelor.crescenzio.dataset.Field;
 public abstract class Datasource {
 	private String name;
 	private LinkedList<Dataset> datasets;
+	private boolean isConnectionOpen;
 	
 	protected Datasource(String name){
 		this.name = name;
 		this.datasets = new LinkedList<Dataset>();
+		this.isConnectionOpen = false;
 	}
 
 	public String getName() {
@@ -38,8 +40,19 @@ public abstract class Datasource {
 		this.datasets.clear();
 	}
 	
+	public boolean isConnectionOpen(){
+		return isConnectionOpen;
+	}
+	
+	public void setConnectionOpenStatus(boolean status){
+		isConnectionOpen = status;
+	}
+	
+	
 	public abstract boolean connect();
 	public abstract boolean disconnect();
+	public abstract void describe();
+	public abstract void query(String query);
 	public abstract LinkedList<Field> getFields();
 	public abstract HashMap<String, String> getDatas();
 }

@@ -1,20 +1,22 @@
 package ch.heigvd.bachelor.crescenzio.datasource;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-
-import ch.heigvd.bachelor.crescenzio.dataset.Field;
-
 public abstract class SQLDatasource extends Datasource {
 	
-	protected SQLDatasource(String name) {
-		super(name);
-	}
 
 	private String hostname;
 	private int port;
 	private String login;
 	private String password;
+	private SQLTable tables;
+
+	public SQLDatasource(String name, String hostname, int port, String login,
+			String password) {
+		super(name);
+		this.hostname = hostname;
+		this.port = port;
+		this.login = login;
+		this.password = password;
+	}
 
 	public String getHostname() {
 		return hostname;
