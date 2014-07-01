@@ -1,6 +1,16 @@
 package ch.heigvd.bachelor.crescenzio.datasource;
 
-public class SQLDatasource extends Datasource {
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import ch.heigvd.bachelor.crescenzio.dataset.Field;
+
+public abstract class SQLDatasource extends Datasource {
+	
+	protected SQLDatasource(String name) {
+		super(name);
+	}
+
 	private String hostname;
 	private int port;
 	private String login;
@@ -37,4 +47,5 @@ public class SQLDatasource extends Datasource {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 }
