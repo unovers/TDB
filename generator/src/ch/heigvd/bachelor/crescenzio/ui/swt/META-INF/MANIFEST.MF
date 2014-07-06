@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: My Application
+Bundle-SymbolicName: ch.heigvd.bachelor.crescenzio.generator.ui.swt;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
+Bundle-Activator: ch.heigvd.bachelor.crescenzio.generator.ui.swt.Activator
+Export-Package: ch.heigvd.bachelor.crescenzio.generator.ui.swt;uses:="org.eclipse.scout.rt.ui.swt,org.eclipse.scout.rt.client.session,org.osgi.framework",
+ ch.heigvd.bachelor.crescenzio.generator.ui.swt.application,
+ ch.heigvd.bachelor.crescenzio.generator.ui.swt.application.menu,
+ ch.heigvd.bachelor.crescenzio.generator.ui.swt.editor,
+ ch.heigvd.bachelor.crescenzio.generator.ui.swt.perspective,
+ ch.heigvd.bachelor.crescenzio.generator.ui.swt.views
+Require-Bundle: ch.heigvd.bachelor.crescenzio.generator.client;visibility:=reexport,
+ ch.heigvd.bachelor.crescenzio.generator.shared,
+ org.eclipse.scout.rt.ui.swt,
+ org.eclipse.scout.net,
+ org.eclipse.equinox.app,
+ org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.ui.views
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

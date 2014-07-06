@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ch.heigvd.bachelor.crescenzio.generator.shared
+Bundle-SymbolicName: ch.heigvd.bachelor.crescenzio.generator.shared;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ch.heigvd.bachelor.crescenzio.generator.shared.Activator
+Export-Package: ch.heigvd.bachelor.crescenzio.generator.shared,
+ ch.heigvd.bachelor.crescenzio.generator.shared.services.common.text
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.scout.rt.shared;visibility:=reexport
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

@@ -1,0 +1,44 @@
+package ch.heigvd.bachelor.crescenzio.generator.dataset;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+
+import ch.heigvd.bachelor.crescenzio.generator.Field;
+
+public abstract class Dataset {
+  private String name;
+  private String query;
+  private LinkedList<Field> fields;
+
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
+  }
+
+  protected Dataset(String name) {
+    this.name = name;
+    this.fields = new LinkedList<Field>();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void addField(Field field) {
+    this.fields.add(field);
+  }
+
+  public LinkedList<Field> getFields() {
+    return fields;
+  }
+
+  public abstract HashMap<String, String> preview();
+
+}
