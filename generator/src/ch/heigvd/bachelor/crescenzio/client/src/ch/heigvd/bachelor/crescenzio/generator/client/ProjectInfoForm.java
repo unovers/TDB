@@ -28,12 +28,36 @@ import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 public class ProjectInfoForm extends AbstractForm {
 
   private Long m_startFormNr;
+  private Project project;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public ProjectInfoForm() throws ProcessingException {
     super();
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public ProjectInfoForm(Project project) throws ProcessingException {
+    super();
+    this.project = project;
+  }
+
+  /**
+   * @return the project
+   */
+  public Project getProject() {
+    return project;
+  }
+
+  /**
+   * @param project
+   *          the project to set
+   */
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   @Override

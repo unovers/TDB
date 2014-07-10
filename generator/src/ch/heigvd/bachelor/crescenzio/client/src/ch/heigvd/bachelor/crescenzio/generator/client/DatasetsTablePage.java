@@ -13,14 +13,14 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.DatasourcesTablePage.Table;
-import ch.heigvd.bachelor.crescenzio.generator.shared.DatasourcesTablePageData;
+import ch.heigvd.bachelor.crescenzio.generator.client.DatasetsTablePage.Table;
+import ch.heigvd.bachelor.crescenzio.generator.shared.DatasetsTablePageData;
 
 /**
  * @author Fabio
  */
-@PageData(DatasourcesTablePageData.class)
-public class DatasourcesTablePage extends AbstractExtensiblePageWithTable<Table> {
+@PageData(DatasetsTablePageData.class)
+public class DatasetsTablePage extends AbstractExtensiblePageWithTable<Table> {
 
   private Project project;
   private Integer m_projectNr;
@@ -42,7 +42,7 @@ public class DatasourcesTablePage extends AbstractExtensiblePageWithTable<Table>
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Datasources");
+    return TEXTS.get("Datasets");
   }
 
   @Override

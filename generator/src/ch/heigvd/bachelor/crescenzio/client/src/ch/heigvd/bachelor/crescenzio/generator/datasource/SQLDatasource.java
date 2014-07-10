@@ -1,5 +1,7 @@
 package ch.heigvd.bachelor.crescenzio.generator.datasource;
 
+import java.sql.ResultSet;
+
 public abstract class SQLDatasource extends Datasource {
 
   private String hostname;
@@ -48,5 +50,7 @@ public abstract class SQLDatasource extends Datasource {
   public void setPassword(String password) {
     this.password = password;
   }
+
+  public abstract ResultSet queryDatas(String query);
 
 }

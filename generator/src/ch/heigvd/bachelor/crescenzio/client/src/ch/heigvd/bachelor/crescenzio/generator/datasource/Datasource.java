@@ -1,15 +1,29 @@
 package ch.heigvd.bachelor.crescenzio.generator.datasource;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
 
 public abstract class Datasource {
   private String name;
   private LinkedList<Dataset> datasets;
   private boolean isConnectionOpen;
+  private boolean isDescribed;
+
+  /**
+   * @return the isDescribed
+   */
+  public boolean isDescribed() {
+    return isDescribed;
+  }
+
+  /**
+   * @param isDescribed
+   *          the isDescribed to set
+   */
+  public void setDescribed(boolean isDescribed) {
+    this.isDescribed = isDescribed;
+  }
 
   protected Datasource(String name) {
     this.name = name;
@@ -57,7 +71,4 @@ public abstract class Datasource {
 
   public abstract void query(String query);
 
-  public abstract LinkedList<Field> getFields();
-
-  public abstract HashMap<String, String> getDatas();
 }

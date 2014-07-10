@@ -5,10 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.LinkedList;
 
-import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.dataset.SQLField;
 
 public class MySQLDatasource extends SQLDatasource {
@@ -16,11 +14,11 @@ public class MySQLDatasource extends SQLDatasource {
   private Statement statement;
 
   static {
-    /* Loading of the JDBC mysql driver */
     try {
       Class.forName("com.mysql.jdbc.Driver");
     }
     catch (ClassNotFoundException e) {
+      System.out.println(e);
     }
   }
 
@@ -41,7 +39,7 @@ public class MySQLDatasource extends SQLDatasource {
 
       }
       catch (SQLException e) {
-
+        System.out.println(e);
       }
       setConnectionOpenStatus(true);
     }
@@ -52,11 +50,10 @@ public class MySQLDatasource extends SQLDatasource {
   @Override
   public boolean disconnect() {
     if (connexion != null) try {
-      /* Fermeture de la connexion */
       connexion.close();
     }
     catch (SQLException ignore) {
-      /* Si une erreur survient lors de la fermeture, il suffit de l'ignorer. */
+      System.out.println(ignore);
     }
     setConnectionOpenStatus(false);
     return true;
@@ -67,42 +64,55 @@ public class MySQLDatasource extends SQLDatasource {
     System.out.println(query);
     try {
       statement = connexion.createStatement();
-      /* Exécution d'une requête de lecture */
-      ResultSet resultat = statement.executeQuery(query);
+      statement.executeQuery(query);
     }
     catch (SQLException e) {
-
+      System.out.println(e);
     }
   }
 
   @Override
-  public LinkedList<Field> getFields() {
-    // TODO Auto-generated method stub
+  public ResultSet queryDatas(String query) {
+    System.out.println(query);
+    try {
+      statement = connexion.createStatement();
+      return statement.executeQuery(query);
+    }
+    catch (SQLException e) {
+      System.out.println(e);
+    }
     return null;
   }
 
   @Override
-  public HashMap<String, String> getDatas() {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
   public void describe() {
-    LinkedList<SQLField> fields = null;
     connect();
     tables = new LinkedList<SQLTable>();
-    query("show tables;");
+    ResultSet tablesResult = queryDatas("show tables;");
 
-    for (SQLTable table : tables) {
-      query(String.format("describe %s;", table.getName()));
-      for (SQLField field : fields) {
-        table.addField(field);
+    try {
+      while (tablesResult.next()) {
+        System.out.println("Table : " + tablesResult.getString(1));
+        SQLTable table = new SQLTable(tablesResult.getString(1));
+        ResultSet resultat = queryDatas(String.format("describe %s;", table.getName()));
+        while (resultat.next()) {
+          String name = resultat.getString(1); // get column name
+          String type = resultat.getString(2); // get column type
+          System.out.println("column : " + name + "  " + type);
+
+          table.addField(new SQLField(name, "string"));
+        }
+        tables.add(table);
       }
-      System.out.println();
+    }
+    catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
 
     disconnect();
+    setDescribed(true);
 
-  };
+  }
 
 }

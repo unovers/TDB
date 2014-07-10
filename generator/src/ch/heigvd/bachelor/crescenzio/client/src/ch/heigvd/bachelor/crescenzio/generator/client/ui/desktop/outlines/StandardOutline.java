@@ -10,6 +10,9 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.extension.client.ui.desktop.outline.AbstractExtensibleOutline;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectDetailsNodePage;
+
 /**
  * @author Fabio
  */
@@ -17,10 +20,13 @@ public class StandardOutline extends AbstractExtensibleOutline {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("StandardOutline");
+    return TEXTS.get("ProjectsOutline");
   }
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
+    for (Project project : Project.getAll()) {
+      pageList.add(new ProjectDetailsNodePage(project));
+    }
   }
 }

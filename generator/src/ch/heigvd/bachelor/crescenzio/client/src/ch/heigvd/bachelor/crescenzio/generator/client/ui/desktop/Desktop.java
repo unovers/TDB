@@ -1,8 +1,10 @@
 package ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.scout.commons.CollectionUtility;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.logger.IScoutLogger;
@@ -15,20 +17,23 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
+import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
+import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.ClientSession;
 import ch.heigvd.bachelor.crescenzio.generator.client.LogsForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.MultipleForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ProjectForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.WorkspaceForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
+import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
@@ -38,8 +43,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private ProjectInfoForm projectInfoForm;
   private WorkspaceForm leftform;
   private LogsForm logsForm;
+  private LinkedList<Project> projects;
+  private DefaultOutlineTreeForm treeForm;
+  private DefaultOutlineTableForm tableForm;
 
   public Desktop() {
+    projects = new LinkedList<Project>();
   }
 
   @Override
@@ -56,16 +65,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   @Override
   protected void execOpened() throws ProcessingException {
-    //If it is a mobile or tablet device, the DesktopExtension in the mobile plugin takes care of starting the correct forms.
-    if (!UserAgentUtility.isDesktopDevice()) {
-      return;
-    }
-
     getMenu(EditProjectMenu.class).setEnabled(false);
 
     startForm = new StartForm();
     startForm.startModify();
-
   }
 
   @Order(10.0)
@@ -144,6 +147,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
+        MultipleForm form = new MultipleForm(10);
+        form.startModify();
         displayProjectInfo();
       }
     }
@@ -242,6 +247,17 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     return project;
   }
 
+  public LinkedList<Project> getProjects() {
+    return projects;
+  }
+
+  public void refreshWorkspace() throws ProcessingException {
+    if (!treeForm.isShowing()) {
+      treeForm.startView();
+    }
+    getOutline().resetOutline();
+  }
+
   /**
    * @param string
    */
@@ -263,26 +279,20 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     this.logsForm = logsForm;
   }
 
-  public void displayProjectInfo() {
-    try {
-      if (projectInfoForm != null) {
-        System.out.println("FERMETURE");
-        projectInfoForm.doClose();
-      }
-    }
-    catch (ProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+  public void displayProjectInfo() throws ProcessingException {
+    if (projectInfoForm != null) {
+      projectInfoForm.doClose();
     }
 
-    System.out.println("AFFICHAGE");
-    try {
-      projectInfoForm = new ProjectInfoForm();
-    }
-    catch (ProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    projectInfoForm = new ProjectInfoForm();
+  }
+
+  public void createProject(Project project) {
+    projects.add(project);
+  }
+
+  public void removeProject(Project project) {
+    projects.remove(project);
   }
 
   /**
@@ -296,6 +306,36 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+
+  }
+
+  /**
+   * @throws ProcessingException
+   */
+  public void startViews() throws ProcessingException {
+
+    // outline tree
+    if (treeForm == null) {
+      treeForm = new DefaultOutlineTreeForm();
+      treeForm.setIconId(Icons.EclipseScout);
+      treeForm.startView();
+    }
+
+    //outline table
+    if (tableForm == null) {
+      tableForm = new DefaultOutlineTableForm();
+      tableForm.setIconId(Icons.EclipseScout);
+      tableForm.startView();
+    }
+
+    IOutline firstOutline = CollectionUtility.firstElement(getAvailableOutlines());
+    if (firstOutline != null) {
+      setOutline(firstOutline);
+    }
+
+    LogsForm logsForm = new LogsForm();
+    setBottomForm(logsForm);
+    logsForm.startModify();
 
   }
 }

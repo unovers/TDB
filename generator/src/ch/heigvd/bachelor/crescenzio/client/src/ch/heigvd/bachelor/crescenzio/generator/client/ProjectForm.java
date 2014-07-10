@@ -409,21 +409,14 @@ public class ProjectForm extends AbstractForm {
     @Order(40)
     protected void execStore() throws ProcessingException {
       Desktop desktop = ((Desktop) getDesktop());
-      desktop.setProject(new Project(getProjectNameField().getValue(), getPackageNameField().getValue(), getAuthorField().getValue(), getOrganisationField().getValue(), getIconeField().getValue()));
+      Project project = new Project(getProjectNameField().getValue(), getPackageNameField().getValue(), getAuthorField().getValue(), getOrganisationField().getValue(), getIconeField().getValue());
+      desktop.setProject(project);
       desktop.getMenu(EditProjectMenu.class).setEnabled(true);
-
       desktop.closeStartForm();
-      new ProjectInfoForm().startView();
-      WorkspaceForm workspace = new WorkspaceForm();
-      desktop.setLeftForm(workspace);
-      workspace.startModify();
 
-      LogsForm logsForm = new LogsForm();
-      desktop.setBottomForm(logsForm);
-      logsForm.startModify();
-
-      desktop.displayProjectInfo();
-
+      new ProjectInfoForm(project).startView();
+      desktop.startViews();
+      desktop.refreshWorkspace();
     }
 
     /**

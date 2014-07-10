@@ -18,8 +18,11 @@ public class Project {
   private LinkedList<Datasource> datasources;
   private LinkedList<Field> fields;
 
+  private static LinkedList<Project> projects;
+
   public Project(String name, String packageName, String author,
       String organisation, String icon) {
+    if (this.projects == null) this.projects = new LinkedList<Project>();
     this.name = name;
     this.packageName = packageName;
     this.author = author;
@@ -28,6 +31,10 @@ public class Project {
     this.outputs = new LinkedList<OutputApplication>();
     this.datasources = new LinkedList<Datasource>();
     this.fields = new LinkedList<Field>();
+    projects.add(this);
+    for (Project project : projects) {
+      System.out.println(project.name);
+    }
   }
 
   public void addField(Field field) {
@@ -106,8 +113,13 @@ public class Project {
     return icon;
   }
 
-  public void create() {
+  public boolean create() {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
+  }
+
+  public static boolean destroy(Project project) {
+    projects.remove(project);
+    return true;
   }
 
   public void generateProject() {
@@ -145,6 +157,21 @@ public class Project {
       System.out.println();
     }
 
+  }
+
+  /**
+   * @return
+   */
+  public static LinkedList<Project> getAll()
+  {
+    if (projects == null) {
+      projects = new LinkedList<Project>();
+      new Project("P1", "pck1", "author1", "organ1", "icon1");
+      new Project("P2", "pck2", "author2", "organ2", "icon2");
+      new Project("P3", "pck3", "author3", "organ3", "icon3");
+      new Project("P4", "pck4", "author4", "organ4", "icon4");
+    }
+    return projects;
   }
 
 }
