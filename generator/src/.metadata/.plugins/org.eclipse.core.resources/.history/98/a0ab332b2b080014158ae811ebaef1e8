@@ -1,0 +1,99 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+
+/**
+ * @author Fabio
+ */
+public class ServerInfoForm extends AbstractForm {
+
+  private Long m_serverInformationsNr;
+  private Project project;
+
+  /**
+   * @param project
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public ServerInfoForm(Project project) throws ProcessingException {
+    super();
+    this.project = project;
+  }
+
+  public void startView() throws ProcessingException {
+    startInternal(new ServerInfoForm.ViewHandler());
+  }
+
+  /**
+   * @return the ServerInformationsNr
+   */
+  @FormData
+  public Long getServerInformationsNr() {
+    return m_serverInformationsNr;
+  }
+  
+  @Override
+  protected int getConfiguredDisplayHint() {
+    if(project.getServer() == null)
+      return DISPLAY_HINT_DIALOG;
+    else
+      return DISPLAY_HINT_VIEW;
+  }
+
+  @Override
+  protected String getConfiguredDisplayViewId() {
+    return VIEW_ID_CENTER;
+  }
+
+  /**
+   * @param serverInformationsNr
+   *          the ServerInformationsNr to set
+   */
+  @FormData
+  public void setServerInformationsNr(Long serverInformationsNr) {
+    m_serverInformationsNr = serverInformationsNr;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("ServerInformations");
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+  }
+
+  public class ViewHandler extends AbstractFormHandler {
+
+    @Override
+    protected void execLoad() throws ProcessingException {
+      Project project = ((Desktop) getDesktop()).getProject();
+      if (project != null) {
+        System.out.println("Chargement des données");
+      }
+
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+    }
+  }
+}

@@ -1,6 +1,7 @@
 package ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,12 +26,11 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.ClientSession;
-import ch.heigvd.bachelor.crescenzio.generator.client.LogsForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.MultipleForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.ProjectForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.StartForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.WorkspaceForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
@@ -40,15 +40,16 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static Project project;
   private LogsForm logs;
   private StartForm startForm;
-  private ProjectInfoForm projectInfoForm;
-  private WorkspaceForm leftform;
+  private ProjectViewForm projectInfoForm;
   private LogsForm logsForm;
   private LinkedList<Project> projects;
   private DefaultOutlineTreeForm treeForm;
   private DefaultOutlineTableForm tableForm;
+  private HashMap<Project, ProjectViewForm> projectsInfoForms;
 
   public Desktop() {
     projects = new LinkedList<Project>();
+    projectsInfoForms = new HashMap<Project, ProjectViewForm>();
   }
 
   @Override
@@ -149,7 +150,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected void execAction() throws ProcessingException {
         MultipleForm form = new MultipleForm(10);
         form.startModify();
-        displayProjectInfo();
       }
     }
   }
@@ -252,10 +252,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   public void refreshWorkspace() throws ProcessingException {
-    if (!treeForm.isShowing()) {
+    if (treeForm != null && !treeForm.isShowing()) {
       treeForm.startView();
     }
-    getOutline().resetOutline();
+    if (getOutline() != null) getOutline().resetOutline();
   }
 
   /**
@@ -266,25 +266,19 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   /**
-   * @param workspace
-   */
-  public void setLeftForm(WorkspaceForm workspace) {
-    this.leftform = workspace;
-  }
-
-  /**
    * @param logsForm
    */
   public void setBottomForm(LogsForm logsForm) {
     this.logsForm = logsForm;
   }
 
-  public void displayProjectInfo() throws ProcessingException {
-    if (projectInfoForm != null) {
-      projectInfoForm.doClose();
+  public void displayProjectInfo(Project project) throws ProcessingException {
+    if (projectsInfoForms.get(project) != null) {
+      projectsInfoForms.get(project).doClose();
+      projectsInfoForms.remove(project);
     }
 
-    projectInfoForm = new ProjectInfoForm();
+    projectsInfoForms.put(project, new ProjectViewForm(project));
   }
 
   public void createProject(Project project) {
@@ -296,17 +290,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   /**
-   *
+   * @throws ProcessingException
    */
-  public void closeStartForm() {
-    try {
-      startForm.doClose();
-    }
-    catch (ProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
+  public void closeStartForm() throws ProcessingException {
+    startForm.doClose();
   }
 
   /**

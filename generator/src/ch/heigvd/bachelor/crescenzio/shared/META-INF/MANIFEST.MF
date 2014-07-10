@@ -5,7 +5,8 @@ Bundle-SymbolicName: ch.heigvd.bachelor.crescenzio.generator.shared;singleton:=t
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.heigvd.bachelor.crescenzio.generator.shared.Activator
 Export-Package: ch.heigvd.bachelor.crescenzio.generator.shared,
- ch.heigvd.bachelor.crescenzio.generator.shared.services.common.text
+ ch.heigvd.bachelor.crescenzio.generator.shared.services.common.text,
+ ch.heigvd.bachelor.crescenzio.generator.shared.test
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

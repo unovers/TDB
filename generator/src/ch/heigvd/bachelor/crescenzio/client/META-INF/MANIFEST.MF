@@ -6,6 +6,9 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ch.heigvd.bachelor.crescenzio.generator.client.Activator
 Export-Package: ch.heigvd.bachelor.crescenzio.generator.client,
  ch.heigvd.bachelor.crescenzio.generator.client.services,
+ ch.heigvd.bachelor.crescenzio.generator.client.pages,
+ ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs,
+ ch.heigvd.bachelor.crescenzio.generator.client.forms.views,
  ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop,
  ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines
 Require-Bundle: org.eclipse.core.runtime,

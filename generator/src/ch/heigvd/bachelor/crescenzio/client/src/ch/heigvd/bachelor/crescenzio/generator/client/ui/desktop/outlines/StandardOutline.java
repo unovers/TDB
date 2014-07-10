@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.extension.client.ui.desktop.outline.AbstractExtensib
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.ProjectDetailsNodePage;
+import ch.heigvd.bachelor.crescenzio.generator.client.pages.ProjectDetailsNodePage;
 
 /**
  * @author Fabio
@@ -26,7 +26,9 @@ public class StandardOutline extends AbstractExtensibleOutline {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (Project project : Project.getAll()) {
-      pageList.add(new ProjectDetailsNodePage(project));
+      ProjectDetailsNodePage page = new ProjectDetailsNodePage();
+      page.setProject(project);
+      pageList.add(page);
     }
   }
 }

@@ -1,0 +1,56 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.pages;
+
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+
+/**
+ * @author Fabio
+ */
+public class DatasourcePage extends AbstractPage {
+
+  private Datasource datasource;
+  
+  public DatasourcePage(Datasource datasource){
+    this.datasource = datasource;
+  }
+
+  /**
+   * @return the datasource
+   */
+  public Datasource getDatasource() {
+    return datasource;
+  }
+
+  /**
+   * @param datasource
+   *          the datasource to set
+   */
+  public void setdatasource(datasource datasource) {
+    this.datasource = datasource;
+  }
+
+  @Override
+  protected void execPageActivated() throws ProcessingException {
+    //TODO Load correct form for datasource
+    new DatasourceViewForm(datasource).startView();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Datasource") + " - " + datasource.getName();
+  }
+
+  /**
+   * @param string
+   */
+  public void setTitle(String title) {
+    this.title = title;
+
+  }
+}

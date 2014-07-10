@@ -1,0 +1,44 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+
+/**
+ * @author Fabio
+ */
+public class DatasetViewForm extends AbstractForm {
+
+  private Datasource datasource;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public DatasetViewForm(Datasource datasource) throws ProcessingException {
+    super();
+    this.datasource = datasource;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("DatasourceInfo");
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+  }
+}

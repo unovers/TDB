@@ -1,0 +1,59 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+/**
+ * @author Fabio
+ */
+public class DatasourceInfoForm extends AbstractForm {
+
+  private Long m_datasourceInfoNr;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public DatasourceInfoForm() throws ProcessingException {
+    super();
+  }
+
+  /**
+   * @return the DatasourceInfoNr
+   */
+  @FormData
+  public Long getDatasourceInfoNr() {
+    return m_datasourceInfoNr;
+  }
+
+  /**
+   * @param datasourceInfoNr
+   *          the DatasourceInfoNr to set
+   */
+  @FormData
+  public void setDatasourceInfoNr(Long datasourceInfoNr) {
+    m_datasourceInfoNr = datasourceInfoNr;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("DatasourceInfo");
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+  }
+}

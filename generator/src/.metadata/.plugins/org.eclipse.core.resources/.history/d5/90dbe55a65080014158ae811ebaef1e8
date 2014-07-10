@@ -1,0 +1,9 @@
+package ch.heigvd.bachelor.crescenzio.generator.shared.test;
+
+import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
+
+public class TestFormData extends AbstractFormData{
+
+public TestFormData(){
+}
+}

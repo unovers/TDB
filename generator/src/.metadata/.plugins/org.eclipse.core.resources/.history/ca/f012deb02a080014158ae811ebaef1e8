@@ -1,0 +1,205 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm.MainBox.AuthorField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm.MainBox.OrganisationField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm.MainBox.PackageNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
+import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
+
+/**
+ * @author Fabio
+ */
+@FormData(value = StartFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
+public class ProjectInfoForm extends AbstractForm {
+
+  private Long m_startFormNr;
+  private Project project;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public ProjectInfoForm(Project project) throws ProcessingException {
+    super();
+    this.project = project;
+  }
+
+  /**
+   * @return the project
+   */
+  public Project getProject() {
+    return project;
+  }
+
+  /**
+   * @param project
+   *          the project to set
+   */
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+  @Override
+  protected boolean getConfiguredModal() {
+    return false;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("ProjectInformations");
+  }
+
+  /**
+   * @return the StartFormNr
+   */
+  @FormData
+  public Long getStartFormNr() {
+    return m_startFormNr;
+  }
+
+  /**
+   * @param startFormNr
+   *          the StartFormNr to set
+   */
+  @FormData
+  public void setStartFormNr(Long startFormNr) {
+    m_startFormNr = startFormNr;
+  }
+
+  /**
+   * @return the AuthorField
+   */
+  public AuthorField getAuthorField() {
+    return getFieldByClass(AuthorField.class);
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  /**
+   * @return the OrganisationField
+   */
+  public OrganisationField getOrganisationField() {
+    return getFieldByClass(OrganisationField.class);
+  }
+
+  /**
+   * @return the PackageNameField
+   */
+  public PackageNameField getPackageNameField() {
+    return getFieldByClass(PackageNameField.class);
+  }
+
+  /**
+   * @return the ProjectNameField
+   */
+  public ProjectNameField getProjectNameField() {
+    return getFieldByClass(ProjectNameField.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
+    }
+
+    @Order(10.0)
+    public class ProjectNameField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("ProjectName");
+      }
+    }
+
+    @Order(20.0)
+    public class OrganisationField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Organisation");
+      }
+    }
+
+    @Order(30.0)
+    public class AuthorField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Author");
+      }
+    }
+
+    @Order(40.0)
+    public class PackageNameField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("PackageName");
+      }
+    }
+  }
+
+  public class ViewHandler extends AbstractFormHandler {
+
+    @Override
+    protected void execLoad() throws ProcessingException {
+      if (project != null) {
+        System.out.println("Chargement des données");
+        getProjectNameField().setValue(project.getName());
+        getAuthorField().setValue(project.getAuthor());
+        getOrganisationField().setValue(project.getOrganisation());
+        getPackageNameField().setValue(project.getPackageName());
+      }
+
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+    }
+  }
+
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
+  }
+
+  @Override
+  protected int getConfiguredDisplayHint() {
+    return DISPLAY_HINT_VIEW;
+  }
+
+  @Override
+  protected String getConfiguredDisplayViewId() {
+    return VIEW_ID_CENTER;
+  }
+
+  @Override
+  protected String getConfiguredIconId() {
+    return Icons.EclipseScout;
+  }
+
+  public void startView() throws ProcessingException {
+    startInternal(new ProjectInfoForm.ViewHandler());
+  }
+}

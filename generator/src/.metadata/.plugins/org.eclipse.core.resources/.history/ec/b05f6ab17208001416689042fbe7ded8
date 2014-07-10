@@ -1,0 +1,72 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.pages;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.annotations.PageData;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
+import org.eclipse.scout.rt.extension.client.ui.desktop.outline.pages.AbstractExtensiblePageWithTable;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+
+/**
+ * @author Fabio
+ */
+@PageData(FieldsTablePageData.class)
+public class FieldsTablePage extends AbstractExtensiblePageWithTable<Table> {
+
+  private Project project;
+  private Integer m_projectNr;
+
+  /**
+   * @return the project
+   */
+  public Project getProject() {
+    return project;
+  }
+
+  /**
+   * @param project
+   *          the project to set
+   */
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Fields");
+  }
+
+  @Override
+  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
+    //TODO [Fabio] Auto-generated method stub.
+    return super.execLoadTableData(filter);
+  }
+
+  @Order(10.0)
+  public class Table extends AbstractExtensibleTable {
+  }
+
+  /**
+   * @return the ProjectNr
+   */
+  @FormData
+  public Integer getProjectNr() {
+    return m_projectNr;
+  }
+
+  /**
+   * @param projectNr
+   *          the ProjectNr to set
+   */
+  @FormData
+  public void setProjectNr(Integer projectNr) {
+    m_projectNr = projectNr;
+  }
+}
