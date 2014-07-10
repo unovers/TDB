@@ -1,0 +1,23 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.services;
+
+import java.util.LinkedList;
+
+import org.eclipse.scout.service.IService;
+import org.eclipse.scout.commons.exception.ProcessingException;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+
+/**
+ * @author Fabio
+ */
+public interface IStandardOulineService extends IService {
+
+  /**
+   * @return
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  LinkedList<Project> getProjectsTableData() throws ProcessingException;
+}

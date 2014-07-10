@@ -1,0 +1,21 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.services;
+
+import java.util.LinkedList;
+
+import org.eclipse.scout.service.AbstractService;
+import org.eclipse.scout.commons.exception.ProcessingException;
+
+/**
+ * @author Fabio
+ */
+public class StandardOulineService extends AbstractService implements IStandardOulineService {
+
+  @Override
+  public LinkedList<Project> getProjectsTableData() throws ProcessingException {
+    //TODO [Fabio] business logic here.
+    return null;
+  }
+}

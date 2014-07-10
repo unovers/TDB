@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithNodes;
+import org.eclipse.scout.rt.shared.TEXTS;
+import java.util.Collection;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
+
+/**
+ * @author Fabio
+ */
+public class ProjectDetailsNodePage extends AbstractPageWithNodes {
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("ProjectDetails");
+  }
+
+  @Override
+  protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
+  DatasourcesTablePage personTablePage = new DatasourcesTablePage();
+    personTablePage.setCompanyNr(getProjectNr());
+    pageList.add(personTablePage);
+   
+  }
+}

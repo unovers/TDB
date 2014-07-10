@@ -1,0 +1,25 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.ui.wizards;
+
+import org.eclipse.scout.rt.client.ui.wizard.AbstractWizard;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+/**
+ * @author Fabio
+ *
+ */
+public class CreateProjectWizard extends AbstractWizard{
+
+/**
+ * 
+ */
+public CreateProjectWizard(){
+super();
+}
+@Override
+protected String getConfiguredTitle(){
+  return TEXTS.get("CreateProject");
+}
+}

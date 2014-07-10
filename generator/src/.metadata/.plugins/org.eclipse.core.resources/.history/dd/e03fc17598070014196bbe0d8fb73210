@@ -1,0 +1,29 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.annotations.PageData;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
+import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectsTablePage.Table;
+import ch.heigvd.bachelor.crescenzio.generator.shared.ProjectsTablePageData;
+
+/**
+ * @author Fabio
+ */
+@PageData(ProjectsTablePageData.class)
+public class ProjectsTablePage extends AbstractPageWithTable<Table> {
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Projects");
+  }
+
+  @Order(10.0)
+  public class Table extends AbstractExtensibleTable {
+  }
+}

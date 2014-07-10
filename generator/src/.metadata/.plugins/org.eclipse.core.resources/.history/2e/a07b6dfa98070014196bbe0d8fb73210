@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.services;
+
+import org.eclipse.scout.service.AbstractService;
+
+/**
+ * @author Fabio
+ */
+public class StandardOulineService extends AbstractService implements IStandardOulineServiceService {
+}

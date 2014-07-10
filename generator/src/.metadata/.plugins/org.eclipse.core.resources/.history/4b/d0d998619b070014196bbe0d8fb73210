@@ -1,0 +1,103 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.annotations.PageData;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
+import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
+import org.eclipse.scout.service.SERVICES;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.ProjectsTablePage.Table;
+import ch.heigvd.bachelor.crescenzio.generator.client.services.IStandardOulineService;
+import ch.heigvd.bachelor.crescenzio.generator.shared.ProjectsTablePageData;
+
+/**
+ * @author Fabio
+ */
+@PageData(ProjectsTablePageData.class)
+public class ProjectsTablePage extends AbstractPageWithTable<Table> {
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Projects");
+  }
+
+  @Override
+  protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
+    //TODO [Fabio] Auto-generated method stub.
+    return SERVICES.getService(IStandardOulineService.class).getProjectsTableData();
+  }
+
+  @Order(10.0)
+  public class Table extends AbstractExtensibleTable {
+
+    /**
+     * @return the OrganisationColumn
+     */
+    public OrganisationColumn getOrganisationColumn() {
+      return getColumnSet().getColumnByClass(OrganisationColumn.class);
+    }
+
+    /**
+     * @return the AuthorColumn
+     */
+    public AuthorColumn getAuthorColumn() {
+      return getColumnSet().getColumnByClass(AuthorColumn.class);
+    }
+
+    /**
+     * @return the NameColumn
+     */
+    public NameColumn getNameColumn() {
+      return getColumnSet().getColumnByClass(NameColumn.class);
+    }
+
+    @Order(10.0)
+    public class NameColumn extends AbstractStringColumn {
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Name");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 200;
+      }
+    }
+
+    @Order(20.0)
+    public class AuthorColumn extends AbstractStringColumn {
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Author");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 200;
+      }
+    }
+
+    @Order(30.0)
+    public class OrganisationColumn extends AbstractStringColumn {
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Organisation");
+      }
+
+      @Override
+      protected int getConfiguredWidth() {
+        return 200;
+      }
+    }
+  }
+}

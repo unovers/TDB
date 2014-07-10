@@ -1,0 +1,35 @@
+package ch.heigvd.bachelor.crescenzio.generator.ui.swt;
+
+import org.eclipse.scout.rt.client.AbstractClientSession;
+import org.eclipse.scout.rt.client.ui.form.IForm;
+import org.eclipse.scout.rt.ui.swt.AbstractSwtEnvironment;
+import org.eclipse.scout.rt.ui.swt.ISwtEnvironmentListener;
+import org.eclipse.scout.rt.ui.swt.SwtEnvironmentEvent;
+import org.eclipse.ui.PlatformUI;
+import org.osgi.framework.Bundle;
+
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.editor.ScoutEditorPart;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.CenterView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.EastView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.NorthEastView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.NorthView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.NorthWestView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.SouthEastView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.SouthView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.SouthWestView;
+import ch.heigvd.bachelor.crescenzio.generator.ui.swt.views.WestView;
+
+public class SwtEnvironment extends AbstractSwtEnvironment {
+
+  public SwtEnvironment(Bundle bundle, String perspectiveId, Class<? extends AbstractClientSession> clientSessionClazz) {
+    super(bundle, perspectiveId, clientSessionClazz);
+    registerPart(IForm.VIEW_ID_CENTER, Activator.CENTER_VIEW_ID);
+    registerPart(IForm.VIEW_ID_OUTLINE, Activator.OUTLINE_VIEW_ID);
+    registerPart(IForm.VIEW_ID_PAGE_TABLE, Activator.TABLE_PAGE_VIEW_ID);
+    registerPart(IForm.VIEW_ID_PAGE_SEARCH, Activator.SEAECH_VIEW_ID);
+
+    registerPart(IForm.VIEW_ID_E, "org.eclipse.scout.demo.view.ui.swt.views.RightView");
+    registerPart(IForm.VIEW_ID_S, "org.eclipse.scout.demo.view.ui.swt.views.BottomView");
+  }
+
+}

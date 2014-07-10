@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.scout.sdk.ui.wizard.page.PageNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="476" key="DIALOG_HEIGHT"/>
+		<item value="916" key="DIALOG_X_ORIGIN"/>
+		<item value="270" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.groupbox.GroupBoxNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.stringfield.StringFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.labelfield.LabelFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.fields.proposal.nls.NlsTextLabelProvider">
+		<item value="300" key="dialogSettingsHeight"/>
+		<item value="400" key="dialogSettingsWidth"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.buttonfield.OkButtonNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.tablefield.TableFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="377" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.menu.MenuNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.buttonfield.CancelButtonNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.tabbox.TabBoxNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.formfield.DefaultFormFieldNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.buttonfield.ButtonFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.tablecolumn.TableColumnNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="584" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="139" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.outline.OutlineNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.menu.DesktopMenuNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.proposalfield.ProposalFieldNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.tablecolumn.SmartTableColumnNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.page.PageLinkWizard">
+		<item value="581" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="678" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.FormNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="416" key="DIALOG_HEIGHT"/>
+		<item value="218" key="DIALOG_X_ORIGIN"/>
+		<item value="323" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.htmlfield.HtmlFieldNewWizard">
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.services.ClientServiceNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="ch.heigvd.bachelor.crescenzio.generator.client.ClientSession" key="settingDefaultSessions_ch_heigvd_bachelor_crescenzio_generator_client"/>
+		<item value="416" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="251" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.beanproperty.BeanPropertyNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.composerfield.ComposerFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="426" key="DIALOG_HEIGHT"/>
+		<item value="421" key="DIALOG_X_ORIGIN"/>
+		<item value="207" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.services.ServiceOperationNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.form.fields.FormFieldNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="381" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="274" key="DIALOG_Y_ORIGIN"/>
+	</section>
+	<section name="org.eclipse.scout.sdk.ui.wizard.tablecolumn.DefaultTableColumnNewWizard">
+		<item value="525" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="584" key="DIALOG_HEIGHT"/>
+		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="139" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

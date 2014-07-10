@@ -1,0 +1,115 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.ui.wizards;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.wizard.AbstractWizard;
+import org.eclipse.scout.rt.client.ui.wizard.AbstractWizardStep;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.ConfigureServerForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.CreateProjectForm;
+
+/**
+ * @author Fabio
+ */
+public class CreateProjectWizard extends AbstractWizard {
+
+  /**
+ * 
+ */
+  public CreateProjectWizard() {
+    super();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("CreateProject");
+  }
+
+  /**
+   * @return the ConfigureServerStep
+   */
+  public ConfigureServerStep getConfigureServerStep() {
+    return getStep(CreateProjectWizard.ConfigureServerStep.class);
+  }
+
+  /**
+   * @return the CreateProjectStep
+   */
+  public CreateProjectStep getCreateProjectStep() {
+    return getStep(CreateProjectWizard.CreateProjectStep.class);
+  }
+
+  @Order(10.0)
+  public class CreateProjectStep extends AbstractWizardStep<CreateProjectForm> {
+
+    @Override
+    protected String getConfiguredTitle() {
+      return TEXTS.get("CreateProject");
+    }
+
+    @Override
+    protected void execActivate(int stepKind) throws ProcessingException {
+      CreateProjectForm form = getForm();
+      if (form == null) {
+        form = new CreateProjectForm();
+        // start the form by executing the form handler
+        form.startWizardStep(this, CreateProjectForm.ModifyHandler.class);
+        // Register the form on the step
+        setForm(form);
+      }
+      // Set the form on the wizard
+      // This will automatically display it as inner form of the wizard container form
+      getWizard().setWizardForm(form);
+    }
+
+    @Override
+    protected void execDeactivate(int stepKind) throws ProcessingException {
+      // Save the form if the user clicks next
+      if (stepKind == STEP_NEXT) {
+        CreateProjectForm form = getForm();
+        if (form != null) {
+          form.doSave();
+        }
+      }
+    }
+  }
+
+  @Order(20.0)
+  public class ConfigureServerStep extends AbstractWizardStep<ConfigureServerForm> {
+
+    @Override
+    protected String getConfiguredTitle() {
+      return TEXTS.get("ConfigureServer");
+    }
+
+    @Override
+    protected void execActivate(int stepKind) throws ProcessingException {
+      ConfigureServerForm form = getForm();
+      if (form == null) {
+        form = new ConfigureServerForm();
+        // start the form by executing the form handler
+        form.startWizardStep(this, ConfigureServerForm.ModifyHandler.class);
+        // Register the form on the step
+        setForm(form);
+      }
+      // Set the form on the wizard
+      // This will automatically display it as inner form of the wizard container form
+      getWizard().setWizardForm(form);
+    }
+
+    @Override
+    protected void execDeactivate(int stepKind) throws ProcessingException {
+      // Save the form if the user clicks next
+      if (stepKind == STEP_NEXT) {
+        ConfigureServerForm form = getForm();
+        if (form != null) {
+          form.doSave();
+        }
+      }
+    }
+  }
+}

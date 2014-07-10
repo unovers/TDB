@@ -1,0 +1,84 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.CreateProjectForm.ModifyHandler;
+
+/**
+ * @author Fabio
+ */
+public class StartForm extends AbstractForm {
+
+  private Long m_startNr;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public StartForm() throws ProcessingException {
+    super();
+  }
+
+  /**
+   * @return the StartNr
+   */
+  @FormData
+  public Long getStartNr() {
+    return m_startNr;
+  }
+
+  /**
+   * @param startNr
+   *          the StartNr to set
+   */
+  @FormData
+  public void setStartNr(Long startNr) {
+    m_startNr = startNr;
+  }
+
+  @Override
+  protected int getConfiguredDisplayHint() {
+    return DISPLAY_HINT_VIEW;
+  }
+
+  @Override
+  protected String getConfiguredDisplayViewId() {
+    return VIEW_ID_CENTER;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Start");
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+  }
+
+  /**
+   *
+   */
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public void startModify() throws ProcessingException {
+    startInternal(new ModifyHandler());
+  }
+  public class ModifyHandler extends AbstractFormHandler {
+  }
+}

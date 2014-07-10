@@ -1,0 +1,46 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.annotations.PageData;
+import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
+import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.FieldsTablePage.Table;
+import ch.heigvd.bachelor.crescenzio.generator.shared.FieldsTablePageData;
+
+/**
+ * @author Fabio
+ */
+@PageData(FieldsTablePageData.class)
+public class FieldsTablePage extends AbstractPageWithTable<Table> {
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Fields");
+  }
+
+  @Order(10.0)
+  public class Table extends AbstractExtensibleTable {
+
+    /**
+     * @return the NameColumn
+     */
+    public NameColumn getNameColumn() {
+      return getColumnSet().getColumnByClass(NameColumn.class);
+    }
+
+    @Order(10.0)
+    public class NameColumn extends AbstractStringColumn {
+
+      @Override
+      protected String getConfiguredHeaderText() {
+        return TEXTS.get("Name");
+      }
+    }
+  }
+}
