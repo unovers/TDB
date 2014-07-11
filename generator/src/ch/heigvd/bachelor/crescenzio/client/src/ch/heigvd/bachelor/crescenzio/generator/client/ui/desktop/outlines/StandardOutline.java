@@ -26,8 +26,7 @@ public class StandardOutline extends AbstractExtensibleOutline {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (Project project : Project.getAll()) {
-      ProjectDetailsNodePage page = new ProjectDetailsNodePage();
-      page.setProject(project);
+      ProjectDetailsNodePage page = new ProjectDetailsNodePage(project);
       pageList.add(page);
     }
   }

@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MySql jdbc connector
+Bundle-SymbolicName: ch.heigvd.bachelor.crescenzio.generator.jdbc.mysql.fragment
+Bundle-Version: 5.1.31
+Fragment-Host: ch.heigvd.bachelor.crescenzio.generator.client;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8

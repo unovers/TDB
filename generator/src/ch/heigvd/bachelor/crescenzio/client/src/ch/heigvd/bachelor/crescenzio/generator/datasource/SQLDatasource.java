@@ -1,22 +1,48 @@
 package ch.heigvd.bachelor.crescenzio.generator.datasource;
 
 import java.sql.ResultSet;
+import java.util.LinkedList;
 
 public abstract class SQLDatasource extends Datasource {
 
   private String hostname;
+  private String database;
   private int port;
   private String login;
   private String password;
-  private SQLTable tables;
+  private LinkedList<SQLTable> tables;
 
-  public SQLDatasource(String name, String hostname, int port, String login,
+  public SQLDatasource(String name, String hostname, int port, String database, String login,
       String password) {
     super(name);
     this.hostname = hostname;
     this.port = port;
+    this.database = database;
     this.login = login;
     this.password = password;
+    this.tables = new LinkedList<SQLTable>();
+  }
+
+  /**
+   * @return the database
+   */
+  public String getDatabase() {
+    return database;
+  }
+
+  /**
+   * @param database
+   *          the database to set
+   */
+  public void setDatabase(String database) {
+    this.database = database;
+  }
+
+  /**
+   * @return the tables
+   */
+  public LinkedList<SQLTable> getTables() {
+    return tables;
   }
 
   public String getHostname() {

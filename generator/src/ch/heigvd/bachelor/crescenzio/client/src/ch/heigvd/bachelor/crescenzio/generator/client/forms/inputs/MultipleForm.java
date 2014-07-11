@@ -17,6 +17,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
@@ -29,6 +30,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.MultiField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.MultiField.Table;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestField;
 
 /**
  * @author Fabio
@@ -137,6 +139,13 @@ public class MultipleForm extends AbstractForm {
     return getFieldByClass(OkButton.class);
   }
 
+  /**
+   * @return the TestField
+   */
+  public TestField getTestField(){
+    return getFieldByClass(TestField.class);
+  }
+
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
@@ -236,14 +245,28 @@ public class MultipleForm extends AbstractForm {
     }
 
     @Order(30.0)
-    public class OkButton extends AbstractOkButton {
+    public class TestField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("test");
+      }
+
+      @Override
+      protected boolean getConfiguredLabelVisible() {
+        return false;
+      }
     }
 
     @Order(40.0)
-    public class CancelButton extends AbstractCancelButton {
+    public class OkButton extends AbstractOkButton {
     }
 
     @Order(50.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+
+    @Order(60.0)
     public class AddFieldButton extends AbstractButton {
 
       @Override

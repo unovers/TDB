@@ -1,5 +1,7 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
+import org.eclipse.scout.commons.exception.ProcessingException;
+
 import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
 import ch.heigvd.bachelor.crescenzio.generator.dataset.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
@@ -11,8 +13,14 @@ public class Test {
   public static void test() {
 
     Project project = new Project("Project", "ch.heigvd.app", "Crescenzio Fabio", "HEIG-VD", "icon.png");
-    Datasource source1 = new MySQLDatasource("MySQL1", "hostname", 3333, "admin", "password");
-    source1.describe();
+    Datasource source1 = new MySQLDatasource("MySQL1", "hostname", 3333, "database", "admin", "password");
+    try {
+      source1.describe();
+    }
+    catch (ProcessingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
     Dataset set1 = new MySQLDataset("Set1");
     set1.addField(new Field("Field1"));

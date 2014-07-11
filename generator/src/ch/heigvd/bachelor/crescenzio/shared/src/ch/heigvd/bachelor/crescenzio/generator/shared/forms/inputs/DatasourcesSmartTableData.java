@@ -1,0 +1,44 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs;
+
+import org.eclipse.scout.rt.shared.data.basic.table.AbstractTableRowData;
+
+/**
+ * @author Fabio
+ */
+public class DatasourcesSmartTableData extends AbstractTableRowData {
+
+  private static final long serialVersionUID = 1L;
+
+  public static final String additionalInfo = "additionalInfo";
+  public static final String companyType = "companyType";
+  private String m_additionalInfo;
+  private Long m_companyType;
+
+  public DatasourcesSmartTableData() {
+  }
+
+  public DatasourcesSmartTableData(String additionalInfo, Long companyType) {
+    m_additionalInfo = additionalInfo;
+    m_companyType = companyType;
+  }
+
+  public String getAdditionalInfo() {
+    return m_additionalInfo;
+  }
+
+  public void setAdditionalInfo(String additionalInfo) {
+    m_additionalInfo = additionalInfo;
+  }
+
+  public Long getCompanyType() {
+    return m_companyType;
+  }
+
+  public void setCompanyType(Long companyType) {
+    m_companyType = companyType;
+  }
+
+}

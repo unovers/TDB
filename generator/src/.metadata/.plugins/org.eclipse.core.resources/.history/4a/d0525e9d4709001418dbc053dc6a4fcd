@@ -1,0 +1,24 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import org.eclipse.scout.commons.annotations.ConfigOperation;
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.IForm;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.shared.ScoutTexts;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OuputApplicationTypeForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OuputApplicationTypeForm.MainBox.DatasourceTypeField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OuputApplicationTypeForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.ProjectField;
+import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.DatasourcesTypeLookupCall;

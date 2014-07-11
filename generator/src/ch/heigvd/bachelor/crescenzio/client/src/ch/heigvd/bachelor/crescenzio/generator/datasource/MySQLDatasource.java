@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
+
+import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.dataset.SQLField;
 
@@ -22,24 +23,22 @@ public class MySQLDatasource extends SQLDatasource {
     }
   }
 
-  private LinkedList<SQLTable> tables;
-
-  public MySQLDatasource(String name, String hostname, int port,
+  public MySQLDatasource(String name, String hostname, int port, String database,
       String login, String password) {
-    super(name, hostname, port, login, password);
+    super(name, hostname, port, database, login, password);
   }
 
   @Override
-  public boolean connect() {
+  public boolean connect() throws ProcessingException {
     if (isConnectionOpen()) return true;
     else {
+      String url = "jdbc:mysql://" + getHostname() + ":" + getPort() + "/" + getDatabase();
       /* Connexion à la base de données */
       try {
-        connexion = DriverManager.getConnection(getHostname(), getLogin(), getPassword());
-
+        connexion = DriverManager.getConnection(url, getLogin(), getPassword());
       }
       catch (SQLException e) {
-        System.out.println(e);
+        throw new ProcessingException();
       }
       setConnectionOpenStatus(true);
     }
@@ -85,9 +84,8 @@ public class MySQLDatasource extends SQLDatasource {
   }
 
   @Override
-  public void describe() {
+  public void describe() throws ProcessingException {
     connect();
-    tables = new LinkedList<SQLTable>();
     ResultSet tablesResult = queryDatas("show tables;");
 
     try {
@@ -102,7 +100,7 @@ public class MySQLDatasource extends SQLDatasource {
 
           table.addField(new SQLField(name, "string"));
         }
-        tables.add(table);
+        getTables().add(table);
       }
     }
     catch (SQLException e) {

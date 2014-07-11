@@ -1,0 +1,12 @@
+/**
+ * 
+ */
+package ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs;
+
+/**
+ * @author Fabio
+ *
+ */
+public class DatasourcesSmartTableData {
+
+}

@@ -32,9 +32,6 @@ public class Project {
     this.datasources = new LinkedList<Datasource>();
     this.fields = new LinkedList<Field>();
     projects.add(this);
-    for (Project project : projects) {
-      System.out.println(project.name);
-    }
   }
 
   public void addField(Field field) {
@@ -133,7 +130,7 @@ public class Project {
 
     System.out.println("Server infos : ");
     System.out
-        .println("host: " + server.getHost() + server.getRootFolder());
+    .println("host: " + server.getHost() + server.getRootFolder());
     getServer().generateScripts(datasources, fields);
 
     System.out.println("Fields : ");

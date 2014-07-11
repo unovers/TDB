@@ -1,0 +1,76 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.pages;
+
+import java.util.Collection;
+
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithNodes;
+import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
+
+/**
+ * @author Fabio
+ */
+public class ProjectDetailsNodePage extends AbstractPageWithNodes {
+
+  private Project project;
+
+  /**
+   * @param project
+   */
+  public ProjectDetailsNodePage(Project project) {
+    this.project = project;
+    setInitialExpanded(true);
+  }
+
+  @Override
+  protected boolean getConfiguredExpanded() {
+    return true;
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return project.getName();
+  }
+
+  @Override
+  protected void execPageActivated() throws ProcessingException {
+    new ProjectViewForm(project).startView();
+  }
+
+  @Override
+  protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
+    if (project.getServer() != null) {
+      ServerPage serverPage = new ServerPage(project);
+      pageList.add(serverPage);
+    }
+    else {
+      ServerPage serverPage = new ServerPage();
+      serverPage.setTitle(TEXTS.get("ConfigureServer"));
+      serverPage.setProject(getProject());
+      pageList.add(serverPage);
+    }
+
+    DatasourcesDetailsNodePage datasourcesNodePage = new DatasourcesDetailsNodePage(project);
+    pageList.add(datasourcesNodePage);
+
+    DatasetsDetailsNodePage datasetsDetailsNodePage = new DatasetsDetailsNodePage(project);
+    pageList.add(datasetsDetailsNodePage);
+
+    OutputsDetailsNodePage outputsDetailsNodePage = new OutputsDetailsNodePage(project);
+    pageList.add(outputsDetailsNodePage);
+
+    FieldsPage fieldsPage = new FieldsPage(project);
+    pageList.add(fieldsPage);
+
+    CriteriasPage criteriasDetailsNodePage = new CriteriasPage(project);
+    pageList.add(criteriasDetailsNodePage);
+
+  }
+
+}

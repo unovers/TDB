@@ -5,7 +5,6 @@ package ch.heigvd.bachelor.crescenzio.generator.client.pages;
 
 import java.util.Collection;
 
-import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithNodes;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
@@ -19,13 +18,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewFor
  */
 public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
-  private Integer m_projectNr;
   private Project project;
 
   /**
    * @param project
    */
-  public ProjectDetailsNodePage() {
+  public ProjectDetailsNodePage(Project project) {
     this.project = project;
     setInitialExpanded(true);
   }
@@ -47,15 +45,13 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
-    if (getProject().getServer() != null) {
-      ServerPage serverPage = new ServerPage();
-      serverPage.setProject(getProject());
+    if (project.getServer() != null) {
+      ServerPage serverPage = new ServerPage(project);
       pageList.add(serverPage);
     }
     else {
-      ServerPage serverPage = new ServerPage();
+      ServerPage serverPage = new ServerPage(project);
       serverPage.setTitle(TEXTS.get("ConfigureServer"));
-      serverPage.setProject(getProject());
       pageList.add(serverPage);
     }
 
@@ -76,35 +72,4 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
   }
 
-  /**
-   * @return the project
-   */
-  public Project getProject() {
-    return project;
-  }
-
-  /**
-   * @param project
-   *          the project to set
-   */
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
-  /**
-   * @return the ProjectNr
-   */
-  @FormData
-  public Integer getProjectNr() {
-    return m_projectNr;
-  }
-
-  /**
-   * @param projectNr
-   *          the ProjectNr to set
-   */
-  @FormData
-  public void setProjectNr(Integer projectNr) {
-    m_projectNr = projectNr;
-  }
 }

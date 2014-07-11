@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.scout.commons.CollectionUtility;
 import org.eclipse.scout.commons.annotations.Order;
@@ -13,6 +14,7 @@ import org.eclipse.scout.commons.logger.ScoutLogManager;
 import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
+import org.eclipse.scout.rt.client.ui.action.menu.IMenuType;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
@@ -26,22 +28,27 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.ClientSession;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetTypeForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.SQLDatabaseTableViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
+import ch.heigvd.bachelor.crescenzio.generator.datasource.MySQLDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasource.SQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
   private static Project project;
-  private LogsForm logs;
+  private LogsViewForm logs;
   private StartForm startForm;
   private ProjectViewForm projectInfoForm;
-  private LogsForm logsForm;
+  private LogsViewForm logsForm;
   private LinkedList<Project> projects;
   private DefaultOutlineTreeForm treeForm;
   private DefaultOutlineTableForm tableForm;
@@ -109,7 +116,67 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         @Override
         protected void execAction() throws ProcessingException {
 
-          ProjectForm form = new ProjectForm();
+          ProjectInputForm form = new ProjectInputForm();
+          form.startNew();
+        }
+      }
+
+      @Order(20.0)
+      public class DatasourceMenu extends AbstractExtensibleMenu {
+
+        @Override
+        protected Set<? extends IMenuType> getConfiguredMenuTypes() {
+          return CollectionUtility.<IMenuType> hashSet();
+        }
+
+        @Override
+        protected String getConfiguredText() {
+          return TEXTS.get("Datasource");
+        }
+
+        @Override
+        protected void execAction() throws ProcessingException {
+          DatasourceTypeForm form = new DatasourceTypeForm();
+          form.startNew();
+        }
+      }
+
+      @Order(30.0)
+      public class DatasetMenu extends AbstractExtensibleMenu {
+
+        @Override
+        protected Set<? extends IMenuType> getConfiguredMenuTypes() {
+          return CollectionUtility.<IMenuType> hashSet();
+        }
+
+        @Override
+        protected String getConfiguredText() {
+          return TEXTS.get("dataset");
+        }
+
+        @Override
+        protected void execAction() throws ProcessingException {
+          DatasetTypeForm form = new DatasetTypeForm();
+          form.startNew();
+        }
+      }
+
+      @Order(40.0)
+      public class OutputMenu extends AbstractExtensibleMenu {
+
+        @Override
+        protected Set<? extends IMenuType> getConfiguredMenuTypes() {
+          return CollectionUtility.<IMenuType> hashSet();
+        }
+
+        @Override
+        protected String getConfiguredText() {
+          return TEXTS.get("Output");
+        }
+
+        @Override
+        protected void execAction() throws ProcessingException {
+          OutputApplicationTypeForm form = new OutputApplicationTypeForm();
           form.startNew();
         }
       }
@@ -148,8 +215,11 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-        MultipleForm form = new MultipleForm(10);
-        form.startModify();
+//        MultipleForm form = new MultipleForm(10);
+//        form.startModify();
+        SQLDatasource datasource = new MySQLDatasource("MySQL", "localhost", 3306, "example", "root", "");
+        datasource.describe();
+        new SQLDatabaseTableViewForm(datasource).startView();
       }
     }
   }
@@ -219,7 +289,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-        ProjectForm form = new ProjectForm();
+        ProjectInputForm form = new ProjectInputForm();
         form.startModify();
       }
     }
@@ -268,7 +338,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   /**
    * @param logsForm
    */
-  public void setBottomForm(LogsForm logsForm) {
+  public void setBottomForm(LogsViewForm logsForm) {
     this.logsForm = logsForm;
   }
 
@@ -320,7 +390,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       setOutline(firstOutline);
     }
 
-    LogsForm logsForm = new LogsForm();
+    LogsViewForm logsForm = new LogsViewForm();
     setBottomForm(logsForm);
     logsForm.startModify();
 

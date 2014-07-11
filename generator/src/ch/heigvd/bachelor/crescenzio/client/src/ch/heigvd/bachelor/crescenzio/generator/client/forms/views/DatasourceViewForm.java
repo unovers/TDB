@@ -28,6 +28,21 @@ public class DatasourceViewForm extends AbstractForm {
   }
 
   @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
+  }
+
+  @Override
+  protected boolean getConfiguredMaximized() {
+    return true;
+  }
+
+  @Override
+  protected boolean getConfiguredModal() {
+    return false;
+  }
+
+  @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("DatasourceInfo");
   }
@@ -56,5 +71,25 @@ public class DatasourceViewForm extends AbstractForm {
 
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
+
+    @Override
+    protected boolean getConfiguredEnabled() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredExpanded() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredFocusable() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredScrollable() {
+      return true;
+    }
   }
 }

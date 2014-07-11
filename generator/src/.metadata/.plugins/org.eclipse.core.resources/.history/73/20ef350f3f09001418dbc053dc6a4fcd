@@ -1,0 +1,16 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.shared.data.basic.FontSpec;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupRow;
+import org.eclipse.scout.rt.shared.services.lookup.LocalLookupCall;
+import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
+
+import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
+import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.DatasourcesSmartTableData;

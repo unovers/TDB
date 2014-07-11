@@ -1,0 +1,217 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.shared.ScoutTexts;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.data.basic.FontSpec;
+import org.eclipse.scout.rt.shared.data.basic.table.AbstractTableRowData;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupRow;
+import org.eclipse.scout.rt.shared.services.lookup.LocalLookupCall;
+import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.ProjectField;
+
+/**
+ * @author Fabio
+ */
+public class DatasourceTypeForm extends AbstractForm {
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public DatasourceTypeForm() throws ProcessingException {
+    super();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("DatasourceType");
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public void startNew() throws ProcessingException {
+    startInternal(new NewHandler());
+  }
+
+  /**
+   * @return the CancelButton
+   */
+  public CancelButton getCancelButton() {
+    return getFieldByClass(CancelButton.class);
+  }
+
+  /**
+   * @return the DatasourceTypeField
+   */
+  public DatasourceTypeField getDatasourceTypeField() {
+    return getFieldByClass(DatasourceTypeField.class);
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  /**
+   * @return the OkButton
+   */
+  public OkButton getOkButton() {
+    return getFieldByClass(OkButton.class);
+  }
+
+  /**
+   * @return the ProjectField
+   */
+  public ProjectField getProjectField() {
+    return getFieldByClass(ProjectField.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredGridW() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredLabelPosition() {
+      return LABEL_POSITION_LEFT;
+    }
+
+    @Order(10.0)
+    public class DatasourceTypeField extends AbstractSmartField<String> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatasourceType");
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 150;
+      }
+    }
+
+    @Order(20.0)
+    public class ProjectField extends AbstractSmartField<String> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Project");
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 150;
+      }
+
+      @Override
+      protected Class<? extends ILookupCall<Long>> getConfiguredLookupCall() {
+        return DatasourceTableData.class;
+      }
+    }
+
+    @Order(30.0)
+    public class OkButton extends AbstractOkButton {
+      @Override
+      protected String getConfiguredLabel() {
+        return ScoutTexts.get("NextButton");
+      }
+
+      @Override
+      protected String getConfiguredTooltipText() {
+        return ScoutTexts.get("NextDatasourceButtonTip");
+      }
+    }
+
+    @Order(40.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+  }
+
+  public class NewHandler extends AbstractFormHandler {
+  }
+
+  public class DatasourceTypeLookupCall extends LocalLookupCall<Long> {
+
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    protected List<ILookupRow<Long>> execCreateLookupRows() throws ProcessingException {
+      ArrayList<ILookupRow<Long>> rows = new ArrayList<ILookupRow<Long>>();
+      rows.add(createLookupRow(1L, "Business Systems Integration AG", "World best company.", 3L, true));
+      rows.add(createLookupRow(2L, "Eclipse", "Open source stuff.", 1L, false));
+
+      return rows;
+    }
+
+    private LookupRow<Long> createLookupRow(long id, String name, String detail, long companyType, boolean bold) {
+      DatasourceTableData addTableData = new DatasourceTableData(detail, companyType);
+      LookupRow<Long> result = new LookupRow<Long>(id, name, "", null, null, null, bold ? FontSpec.parse("bold") : null);
+      result.setAdditionalTableRowData(addTableData);
+      return result;
+    }
+  }
+
+  public class DatasourceTableData extends AbstractTableRowData {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String additionalInfo = "additionalInfo";
+    public static final String companyType = "companyType";
+    private String m_additionalInfo;
+    private Long m_companyType;
+
+    public DatasourceTableData() {
+    }
+
+    public DatasourceTableData(String additionalInfo, Long companyType) {
+      m_additionalInfo = additionalInfo;
+      m_companyType = companyType;
+    }
+
+    public String getAdditionalInfo() {
+      return m_additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+      m_additionalInfo = additionalInfo;
+    }
+
+    public Long getCompanyType() {
+      return m_companyType;
+    }
+
+    public void setCompanyType(Long companyType) {
+      m_companyType = companyType;
+    }
+
+  }
+}

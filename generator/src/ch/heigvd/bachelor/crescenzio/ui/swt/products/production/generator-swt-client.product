@@ -33,6 +33,7 @@
 
    <plugins>
       <plugin id="ch.heigvd.bachelor.crescenzio.generator.client"/>
+      <plugin id="ch.heigvd.bachelor.crescenzio.generator.jdbc.mysql.fragment" fragment="true"/>
       <plugin id="ch.heigvd.bachelor.crescenzio.generator.shared"/>
       <plugin id="ch.heigvd.bachelor.crescenzio.generator.ui.swt"/>
       <plugin id="com.ibm.icu"/>

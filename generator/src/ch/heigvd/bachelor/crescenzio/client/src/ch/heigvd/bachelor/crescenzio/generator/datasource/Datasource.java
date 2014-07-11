@@ -2,6 +2,8 @@ package ch.heigvd.bachelor.crescenzio.generator.datasource;
 
 import java.util.LinkedList;
 
+import org.eclipse.scout.commons.exception.ProcessingException;
+
 import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
 
 public abstract class Datasource {
@@ -63,11 +65,11 @@ public abstract class Datasource {
     isConnectionOpen = status;
   }
 
-  public abstract boolean connect();
+  public abstract boolean connect() throws ProcessingException;
 
   public abstract boolean disconnect();
 
-  public abstract void describe();
+  public abstract void describe() throws ProcessingException;
 
   public abstract void query(String query);
 
