@@ -8,7 +8,7 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.DatasetViewForm;
-import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
 
 /**
  * @author Fabio

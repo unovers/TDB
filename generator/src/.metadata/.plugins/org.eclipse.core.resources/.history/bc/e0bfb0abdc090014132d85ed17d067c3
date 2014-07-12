@@ -1,0 +1,24 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import org.eclipse.scout.commons.annotations.FormData;
+import org.eclipse.scout.commons.exception.ProcessingException;
+
+import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.NewDatasourceFormData;
+
+/**
+ * @author Fabio
+ */
+@FormData(value = NewDatasourceFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
+public class MySQLDatasourceInputForm extends SQLDatasourceInputForm {
+
+  /**
+   * @param type
+   * @throws ProcessingException
+   */
+  public MySQLDatasourceInputForm(String type) throws ProcessingException {
+    super(type);
+  }
+}

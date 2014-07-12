@@ -18,7 +18,6 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.OkButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.ProjectField;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.DatasourcesTypeLookupCall;
 
 /**
@@ -30,7 +29,13 @@ public class DatasourceTypeForm extends AbstractForm {
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public DatasourceTypeForm() throws ProcessingException {
-    super();
+    super(false);
+    callInitializer();
+  }
+
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
   }
 
   @Override
@@ -73,13 +78,6 @@ public class DatasourceTypeForm extends AbstractForm {
     return getFieldByClass(OkButton.class);
   }
 
-  /**
-   * @return the ProjectField
-   */
-  public ProjectField getProjectField() {
-    return getFieldByClass(ProjectField.class);
-  }
-
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
@@ -107,21 +105,7 @@ public class DatasourceTypeForm extends AbstractForm {
       }
 
       @Override
-      protected int getConfiguredLabelWidthInPixel() {
-        return 150;
-      }
-    }
-
-    @Order(20.0)
-    public class DatasourcesSmartField extends AbstractSmartField<Long> {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("DatasourceType");
-      }
-
-      @Override
-      protected Class<? extends ILookupCall<Long>> getConfiguredLookupCall() {
+      protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
         return DatasourcesTypeLookupCall.class;
       }
 
@@ -130,6 +114,10 @@ public class DatasourceTypeForm extends AbstractForm {
         return 150;
       }
 
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
     }
 
     @Order(30.0)
@@ -151,5 +139,9 @@ public class DatasourceTypeForm extends AbstractForm {
   }
 
   public class NewHandler extends AbstractFormHandler {
+    @Override
+    protected void execStore() throws ProcessingException {
+      System.out.println("ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs." + getDatasourceTypeField().getValue());
+    }
   }
 }

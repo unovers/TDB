@@ -10,7 +10,7 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
  * @author Fabio
@@ -23,8 +23,9 @@ public class DatasourceViewForm extends AbstractForm {
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public DatasourceViewForm(Datasource datasource) throws ProcessingException {
-    super();
+    super(false);
     this.datasource = datasource;
+    callInitializer();
   }
 
   @Override

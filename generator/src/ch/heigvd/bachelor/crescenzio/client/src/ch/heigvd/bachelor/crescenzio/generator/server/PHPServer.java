@@ -3,12 +3,12 @@ package ch.heigvd.bachelor.crescenzio.generator.server;
 import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 public class PHPServer extends Server {
 
-  public PHPServer(String name, String host, String rootFolder) {
-    super(name, host, rootFolder);
+  public PHPServer(String host, String rootFolder) {
+    super(host, rootFolder);
   }
 
   @Override

@@ -3,25 +3,15 @@ package ch.heigvd.bachelor.crescenzio.generator.server;
 import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 public abstract class Server {
-  private String name;
   private String host;
   private String rootFolder;
 
-  protected Server(String name, String host, String rootFolder) {
-    this.name = name;
+  protected Server(String host, String rootFolder) {
     this.host = host;
     this.rootFolder = rootFolder;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getHost() {

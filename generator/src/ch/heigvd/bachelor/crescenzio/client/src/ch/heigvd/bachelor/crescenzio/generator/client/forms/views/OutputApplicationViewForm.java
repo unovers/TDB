@@ -10,7 +10,7 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.output.OutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 /**
  * @author Fabio
@@ -23,8 +23,9 @@ public class OutputApplicationViewForm extends AbstractForm {
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public OutputApplicationViewForm(OutputApplication output) throws ProcessingException {
-    super();
+    super(false);
     this.output = output;
+    callInitializer();
   }
 
   @Override

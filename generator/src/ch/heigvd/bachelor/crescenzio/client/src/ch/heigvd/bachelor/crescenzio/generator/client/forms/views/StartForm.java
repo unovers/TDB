@@ -3,7 +3,6 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
-import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
@@ -19,8 +18,6 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm.Main
  */
 public class StartForm extends AbstractForm {
 
-  private Long m_startNr;
-
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
@@ -28,21 +25,9 @@ public class StartForm extends AbstractForm {
     super();
   }
 
-  /**
-   * @return the StartNr
-   */
-  @FormData
-  public Long getStartNr() {
-    return m_startNr;
-  }
-
-  /**
-   * @param startNr
-   *          the StartNr to set
-   */
-  @FormData
-  public void setStartNr(Long startNr) {
-    m_startNr = startNr;
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
   }
 
   @Override
@@ -53,6 +38,11 @@ public class StartForm extends AbstractForm {
   @Override
   protected String getConfiguredDisplayViewId() {
     return VIEW_ID_CENTER;
+  }
+
+  @Override
+  protected boolean getConfiguredModal() {
+    return false;
   }
 
   @Override
@@ -78,7 +68,12 @@ public class StartForm extends AbstractForm {
   public class MainBox extends AbstractGroupBox {
 
     @Override
-    protected boolean getConfiguredExpanded() {
+    protected boolean getConfiguredEnabled() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredFocusable() {
       return false;
     }
 

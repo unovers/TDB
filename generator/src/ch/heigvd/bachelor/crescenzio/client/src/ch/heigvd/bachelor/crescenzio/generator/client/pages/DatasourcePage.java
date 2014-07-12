@@ -8,7 +8,7 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.DatasourceViewForm;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
  * @author Fabio

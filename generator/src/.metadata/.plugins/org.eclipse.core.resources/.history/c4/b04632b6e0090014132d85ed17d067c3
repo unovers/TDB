@@ -1,0 +1,48 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import java.util.List;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.InputForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.InputForm.MainBox.OkButton;
+
+/**
+ * @author Fabio
+ */
+public abstract class InputForm extends AbstractForm {
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public InputForm() throws ProcessingException {
+    super(false);
+    callInitializer();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("Input");
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public  abstract void startModify() throws ProcessingException;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public abstract void startNew()  throws ProcessingException;
+}

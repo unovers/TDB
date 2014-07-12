@@ -101,7 +101,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
     }
 
     @Order(10.0)
-    public class ServerTypeSmartField extends AbstractSmartField<Long> {
+    public class ServerTypeSmartField extends AbstractSmartField<String> {
 
       @Override
       protected String getConfiguredLabel() {
@@ -109,7 +109,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
       }
 
       @Override
-      protected Class<? extends ILookupCall<Long>> getConfiguredLookupCall() {
+      protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
         return DatasourcesTypeLookupCall.class;
       }
 

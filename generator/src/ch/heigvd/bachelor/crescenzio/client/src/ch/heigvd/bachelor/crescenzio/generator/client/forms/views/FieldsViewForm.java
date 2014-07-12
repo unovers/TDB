@@ -23,8 +23,9 @@ public class FieldsViewForm extends AbstractForm {
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public FieldsViewForm(Project project) throws ProcessingException {
-    super();
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   @Override

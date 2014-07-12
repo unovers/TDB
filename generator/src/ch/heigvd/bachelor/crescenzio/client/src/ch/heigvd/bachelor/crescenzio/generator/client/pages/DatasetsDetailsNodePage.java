@@ -13,8 +13,8 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
-import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
  * @author Fabio

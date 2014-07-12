@@ -1,0 +1,144 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.shared.ScoutTexts;
+import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
+
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.ProjectField;
+import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ServerTypeLookupCall;
+
+/**
+ * @author Fabio
+ */
+public class ServerTypeForm extends AbstractForm {
+
+  private Project project;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public ServerTypeForm(Project project) throws ProcessingException {
+    super(false);
+    this.project = project;
+    callInitializer();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("DatasourceType");
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public void startNew() throws ProcessingException {
+    startInternal(new NewHandler());
+  }
+
+  /**
+   * @return the CancelButton
+   */
+  public CancelButton getCancelButton() {
+    return getFieldByClass(CancelButton.class);
+  }
+
+  /**
+   * @return the ServerTypeField
+   */
+  public ServerTypeField getServerTypeField() {
+    return getFieldByClass(ServerTypeField.class);
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  /**
+   * @return the OkButton
+   */
+  public OkButton getOkButton() {
+    return getFieldByClass(OkButton.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredGridW() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredLabelPosition() {
+      return LABEL_POSITION_LEFT;
+    }
+
+    @Order(10.0)
+    public class ServerTypeSmartField extends AbstractSmartField<String> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("ServerType");
+      }
+
+      @Override
+      protected Class<? extends ILookupCall<String>> getConfiguredLookupCall() {
+        return ServerTypeLookupCall.class;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 150;
+      }
+
+    }
+
+    @Order(30.0)
+    public class OkButton extends AbstractOkButton {
+      @Override
+      protected String getConfiguredLabel() {
+        return ScoutTexts.get("NextButton");
+      }
+
+      @Override
+      protected String getConfiguredTooltipText() {
+        return ScoutTexts.get("NextDatasourceButtonTip");
+      }
+    }
+
+    @Order(40.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+  }
+
+  public class NewHandler extends AbstractFormHandler {
+    @Override
+    protected void execStore() throws ProcessingException {
+      Server server = Class.forName(getServer)
+          project.setServer();
+    }
+  }
+}

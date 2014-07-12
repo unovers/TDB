@@ -16,9 +16,9 @@ import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.SQLDatabaseTableViewForm.MainBox.TablesBox;
-import ch.heigvd.bachelor.crescenzio.generator.dataset.SQLField;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.SQLDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.SQLTable;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLField;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLTable;
 
 /**
  * @author Fabio
@@ -78,10 +78,6 @@ public class SQLDatabaseTableViewForm extends AbstractForm {
     @Override
     protected void execLoad() throws ProcessingException {
     }
-
-    @Override
-    protected void execPostLoad() throws ProcessingException {
-    };
 
     @Override
     protected void execStore() throws ProcessingException {
@@ -152,6 +148,7 @@ public class SQLDatabaseTableViewForm extends AbstractForm {
               return table.getName();
             }
 
+            @SuppressWarnings("hiding")
             @Override
             protected void injectFieldsInternal(List<IFormField> fieldList) {
               for (SQLField field : table.getFields()) {

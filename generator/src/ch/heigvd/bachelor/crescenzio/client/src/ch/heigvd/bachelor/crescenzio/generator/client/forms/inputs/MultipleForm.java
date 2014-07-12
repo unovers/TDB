@@ -142,28 +142,20 @@ public class MultipleForm extends AbstractForm {
   /**
    * @return the TestField
    */
-  public TestField getTestField(){
+  public TestField getTestField() {
     return getFieldByClass(TestField.class);
   }
 
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
-    private List<IFormField> fields;
-
     @Override
     protected int getConfiguredGridColumnCount() {
       return 1;
     }
 
-    public List<IFormField> getFields() {
-      return fields;
-    }
-
     @Override
     protected void injectFieldsInternal(List<IFormField> fieldList) {
-      this.fields = fieldList;
-      //int params = this.reportId.intValue();
 
       for (int i = 1; i <= number; i++) {
         final int param = i;

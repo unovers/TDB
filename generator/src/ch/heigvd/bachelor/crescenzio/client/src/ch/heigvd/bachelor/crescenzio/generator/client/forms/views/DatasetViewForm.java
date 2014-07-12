@@ -10,7 +10,7 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
 
 /**
  * @author Fabio
@@ -22,9 +22,10 @@ public class DatasetViewForm extends AbstractForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public DatasetViewForm(Dataset Dataset) throws ProcessingException {
-    super();
-    this.Dataset = Dataset;
+  public DatasetViewForm(Dataset dataset) throws ProcessingException {
+    super(false);
+    this.Dataset = dataset;
+    callInitializer();
   }
 
   @Override

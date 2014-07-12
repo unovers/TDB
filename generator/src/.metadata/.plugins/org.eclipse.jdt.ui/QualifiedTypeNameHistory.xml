@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm"/>
-<fullyQualifiedTypeName name="org.eclipse.scout.commons.CollectionUtility"/>
-<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.ProjectsTablePage"/>
-<fullyQualifiedTypeName name="org.eclipse.scout.service.SERVICES"/>
-<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.services.IStandardOulineService"/>
-<fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.basic.tree.ITree"/>
-<fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.basic.tree.ITreeNode"/>
-<fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.form.fields.snapbox.AbstractSnapBox"/>
-<fullyQualifiedTypeName name="javax.swing.AbstractButton"/>
 <fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithNodes"/>
 <fullyQualifiedTypeName name="java.lang.Override"/>
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.shared.DatasetsTablePageData"/>
@@ -21,10 +12,8 @@
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.ServerPage"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Field"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm"/>
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.ProjectInfoForm"/>
-<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.Project"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.ConfigureServerForm"/>
 <fullyQualifiedTypeName name="org.eclipse.scout.rt.client.ui.form.fields.GridData"/>
@@ -60,4 +49,15 @@
 <fullyQualifiedTypeName name="org.eclipse.scout.rt.shared.TEXTS"/>
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.PackageNameField"/>
 <fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.ProjectNameField"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceInputForm"/>
+<fullyQualifiedTypeName name="java.util.LinkedList"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.Project"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.datasource.MySQLDatasource"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.ProjectField"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerTypeForm.MainBox.ServerTypeSmartField"/>
+<fullyQualifiedTypeName name="java.lang.Class"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm.MainBox.ServerTypeSmartField"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.server.Server"/>
+<fullyQualifiedTypeName name="ch.heigvd.bachelor.crescenzio.generator.server.PHPServer"/>
 </qualifiedTypeNameHistroy>

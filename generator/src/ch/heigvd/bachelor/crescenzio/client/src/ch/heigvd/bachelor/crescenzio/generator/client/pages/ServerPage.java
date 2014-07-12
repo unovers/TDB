@@ -45,7 +45,9 @@ public class ServerPage extends AbstractPage {
 
   @Override
   protected String getConfiguredTitle() {
-    if (title != null) return title;
+    if (project.getServer() == null) {
+      return TEXTS.get("ConfigureServer");
+    }
     return TEXTS.get("Server");
   }
 

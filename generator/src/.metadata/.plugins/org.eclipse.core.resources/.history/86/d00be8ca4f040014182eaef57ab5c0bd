@@ -1,9 +1,0 @@
-package ch.heigvd.bachelor.crescenzio.generator.shared;
-
-import org.eclipse.scout.rt.shared.data.page.AbstractTablePageData;
-
-public class InfoTablePageData extends AbstractTablePageData{
-
-public InfoTablePageData(){
-}
-}

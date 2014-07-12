@@ -24,8 +24,9 @@ public class ServerViewForm extends AbstractForm {
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public ServerViewForm(Project project) throws ProcessingException {
-    super();
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   public void startView() throws ProcessingException {

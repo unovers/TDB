@@ -12,7 +12,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
-import ch.heigvd.bachelor.crescenzio.generator.output.OutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 /**
  * @author Fabio

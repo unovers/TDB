@@ -2,10 +2,10 @@ package ch.heigvd.bachelor.crescenzio.generator;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
-import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.dataset.MySQLDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.MySQLDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.PHPServer;
 
 public class Test {
@@ -37,7 +37,7 @@ public class Test {
     source1.addDataset(set1);
     source1.addDataset(set2);
 
-    project.setServer(new PHPServer("PHPServer", "localhost", "/"));
+    project.setServer(new PHPServer("localhost", "/"));
     project.addDatasource(source1);
     project.generateProject();
   }

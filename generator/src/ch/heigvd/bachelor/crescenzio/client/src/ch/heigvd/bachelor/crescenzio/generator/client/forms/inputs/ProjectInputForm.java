@@ -35,30 +35,11 @@ import ch.heigvd.bachelor.crescenzio.generator.shared.CreateProjectFormData;
 @FormData(value = CreateProjectFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class ProjectInputForm extends AbstractForm {
 
-  private Long m_createProjectNr;
-
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public ProjectInputForm() throws ProcessingException {
     super();
-  }
-
-  /**
-   * @return the CreateProjectNr
-   */
-  @FormData
-  public Long getCreateProjectNr() {
-    return m_createProjectNr;
-  }
-
-  /**
-   * @param createProjectNr
-   *          the CreateProjectNr to set
-   */
-  @FormData
-  public void setCreateProjectNr(Long createProjectNr) {
-    m_createProjectNr = createProjectNr;
   }
 
   @Override
@@ -334,75 +315,6 @@ public class ProjectInputForm extends AbstractForm {
 
   public class NewHandler extends AbstractFormHandler {
 
-    /**
-     * Before the form is activated, this method loads its data.<br>
-     * After this method call, the form is in the state "Saved / Unchanged" All
-     * field value changes done here appear as unchanged in the form.
-     */
-    @Override
-    @ConfigOperation
-    @Order(10)
-    protected void execLoad() throws ProcessingException {
-    }
-
-    /**
-     * Load additional form state<br>
-     * this method call is after the form was loaded into the state
-     * "Saved / Unchanged"<br>
-     * any changes to fields might result in the form ot fields being changed and
-     * therefore in the state "Save needed / Changed"
-     */
-    @Override
-    @ConfigOperation
-    @Order(20)
-    protected void execPostLoad() throws ProcessingException {
-    }
-
-    /**
-     * This method is called in order to check field validity.<br>
-     * This method is called just after the {@link IForm#execCheckFields()} but
-     * before the form is validated and stored.<br>
-     * After this method, the form is checking fields itself and displaying a
-     * dialog with missing and invalid fields.
-     *
-     * @return true when this check is done and further checks can continue, false
-     *         to silently cancel the current process
-     * @throws ProcessingException
-     *           to cancel the current process with error handling and user
-     *           notification such as a dialog
-     */
-    @Override
-    @ConfigOperation
-    @Order(40)
-    protected boolean execCheckFields() throws ProcessingException {
-      return true;
-    }
-
-    /**
-     * This method is called in order to update derived states like button
-     * enablings.<br>
-     * This method is called after the {@link IForm#execValidate()} but before the
-     * form is stored.<br>
-     *
-     * @return true when validate is successful, false to silently cancel the
-     *         current process
-     * @throws ProcessingException
-     *           to cancel the current process with error handling and user
-     *           notification such as a dialog
-     */
-    @Override
-    @ConfigOperation
-    @Order(50)
-    protected boolean execValidate() throws ProcessingException {
-      return true;
-    }
-
-    /**
-     * Store form state<br>
-     * after this method call, the form is in the state "Saved / Unchanged" When
-     * the form is closed using Ok, Save, Search, Next, etc.. this method is
-     * called to apply the changes to the persistency layer
-     */
     @Override
     @ConfigOperation
     @Order(40)
@@ -413,30 +325,9 @@ public class ProjectInputForm extends AbstractForm {
       desktop.getMenu(EditProjectMenu.class).setEnabled(true);
       desktop.closeStartForm();
       desktop.displayProjectInfo(project);
-      desktop.startViews();
+      desktop.initWorkspace();
       desktop.refreshWorkspace();
     }
 
-    /**
-     * When the form is closed using cancel or close this method is called to
-     * manage the case that no changes should be performed (revert case)
-     */
-    @Override
-    @ConfigOperation
-    @Order(30)
-    protected void execDiscard() throws ProcessingException {
-    }
-
-    /**
-     * Finalize form state<br>
-     * called whenever the handler is finished and the form is closed When the
-     * form is closed in any way this method is called to dispose of resources or
-     * deallocate services
-     */
-    @Override
-    @ConfigOperation
-    @Order(60)
-    protected void execFinally() throws ProcessingException {
-    }
   }
 }

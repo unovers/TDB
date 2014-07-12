@@ -2,9 +2,9 @@ package ch.heigvd.bachelor.crescenzio.generator;
 
 import java.util.LinkedList;
 
-import ch.heigvd.bachelor.crescenzio.generator.dataset.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasource.Datasource;
-import ch.heigvd.bachelor.crescenzio.generator.output.OutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 
 public class Project {
@@ -22,7 +22,7 @@ public class Project {
 
   public Project(String name, String packageName, String author,
       String organisation, String icon) {
-    if (this.projects == null) this.projects = new LinkedList<Project>();
+    if (Project.projects == null) Project.projects = new LinkedList<Project>();
     this.name = name;
     this.packageName = packageName;
     this.author = author;
@@ -130,7 +130,7 @@ public class Project {
 
     System.out.println("Server infos : ");
     System.out
-    .println("host: " + server.getHost() + server.getRootFolder());
+        .println("host: " + server.getHost() + server.getRootFolder());
     getServer().generateScripts(datasources, fields);
 
     System.out.println("Fields : ");

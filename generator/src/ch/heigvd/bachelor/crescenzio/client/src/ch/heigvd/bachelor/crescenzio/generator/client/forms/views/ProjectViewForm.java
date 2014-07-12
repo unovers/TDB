@@ -26,15 +26,15 @@ import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 @FormData(value = StartFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class ProjectViewForm extends AbstractForm {
 
-  private Long m_startFormNr;
   private Project project;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public ProjectViewForm(Project project) throws ProcessingException {
-    super();
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   /**
@@ -60,23 +60,6 @@ public class ProjectViewForm extends AbstractForm {
   @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("ProjectInformations");
-  }
-
-  /**
-   * @return the StartFormNr
-   */
-  @FormData
-  public Long getStartFormNr() {
-    return m_startFormNr;
-  }
-
-  /**
-   * @param startFormNr
-   *          the StartFormNr to set
-   */
-  @FormData
-  public void setStartFormNr(Long startFormNr) {
-    m_startFormNr = startFormNr;
   }
 
   /**

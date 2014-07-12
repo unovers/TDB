@@ -14,15 +14,13 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 /**
  * @author Fabio
  */
-public class DatasourcesTypeLookupCall extends LocalLookupCall<Long> {
-
+public class DatasourcesTypeLookupCall extends LocalLookupCall<String> {
   private static final long serialVersionUID = 1L;
 
   @Override
-  protected List<ILookupRow<Long>> execCreateLookupRows() throws ProcessingException {
-    List<ILookupRow<Long>> rows = new ArrayList<ILookupRow<Long>>();
-    rows.add(new LookupRow<Long>(1L, "SQL Server"));
-    rows.add(new LookupRow<Long>(2L, "MySQL"));
+  protected List<ILookupRow<String>> execCreateLookupRows() throws ProcessingException {
+    List<ILookupRow<String>> rows = new ArrayList<ILookupRow<String>>();
+    rows.add(new LookupRow<String>("MySQLDatasource", "MySQL"));
     return rows;
   }
 }
