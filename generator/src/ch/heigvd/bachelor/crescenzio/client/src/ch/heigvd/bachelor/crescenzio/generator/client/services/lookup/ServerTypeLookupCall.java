@@ -21,7 +21,7 @@ public class ServerTypeLookupCall extends LocalLookupCall<String> {
   @Override
   protected List<ILookupRow<String>> execCreateLookupRows() throws ProcessingException {
     List<ILookupRow<String>> rows = new ArrayList<ILookupRow<String>>();
-    rows.add(new LookupRow<String>("PHP", "PHP"));
+    rows.add(new LookupRow<String>("PHPServer", "PHP"));
     return rows;
   }
 }

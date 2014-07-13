@@ -3,7 +3,7 @@ package ch.heigvd.bachelor.crescenzio.generator;
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.PHPServer;
@@ -22,13 +22,13 @@ public class Test {
       e.printStackTrace();
     }
 
-    Dataset set1 = new MySQLDataset("Set1");
+    Dataset set1 = new SQLDataset("Set1", "");
     set1.addField(new Field("Field1"));
     set1.addField(new Field("Field2"));
     set1.addField(new Field("Field3"));
     set1.addField(new Field("Field4"));
 
-    Dataset set2 = new MySQLDataset("Set1");
+    Dataset set2 = new SQLDataset("Set1", "");
     set2.addField(new Field("Field1"));
     set2.addField(new Field("Field2"));
     set2.addField(new Field("Field3"));

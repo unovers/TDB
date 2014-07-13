@@ -10,6 +10,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
+import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.shared.ScoutTexts;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
@@ -19,11 +20,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelect
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
  * @author Fabio
  */
-public class DatasetSelectProjectForm extends InputForm {
+public class DatasetSelectProjectForm extends AbstractInputForm {
 
   private String type;
 
@@ -44,6 +46,7 @@ public class DatasetSelectProjectForm extends InputForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
+  @Override
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
   }
@@ -103,6 +106,11 @@ public class DatasetSelectProjectForm extends InputForm {
       }
 
       @Override
+      public String getFieldId() {
+        return "project";
+      }
+
+      @Override
       protected Class<? extends ILookupCall<Project>> getConfiguredLookupCall() {
         return ProjectLookupCall.class;
       }
@@ -135,12 +143,28 @@ public class DatasetSelectProjectForm extends InputForm {
     @Override
     protected void execStore() throws ProcessingException {
       try {
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
-        String clss = pckage + "." + type + "InputForm";
-        Class datasourceClass = Class.forName(clss);
-        java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{});
-        InputForm form = (InputForm) constructor.newInstance();
-        form.startNew();
+        Project project = (Project) ((AbstractSmartField<Project>) getFieldById("project")).getValue();
+        String pckageClssDatasource = "ch.heigvd.bachelor.crescenzio.generator.datasources";
+        String clssDatasource = pckageClssDatasource + "." + type.replace("Dataset", "") + "Datasource";
+        boolean datasourceTypeFound = false;
+        for (Datasource datasource : project.getDatasources()) {
+          if (Class.forName(clssDatasource).isInstance(datasource)) {
+            datasourceTypeFound = true;
+          }
+        }
+        if (datasourceTypeFound) {
+          String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
+          String clss = pckage + "." + type + "InputForm";
+          Class datasourceClass = Class.forName(clss);
+          java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{Project.class});
+          AbstractInputForm form = (AbstractInputForm) constructor.newInstance(new Object[]{project});
+          form.startNew();
+        }
+        else {
+          MessageBox message = new MessageBox(TEXTS.get("NoDatasourceFoundForType"), TEXTS.get("AddDatasourceFirst"), "Ok");
+          message.startMessageBox();
+        }
+
       }
       catch (Exception e) {
         throw new ProcessingException(e.toString());
@@ -148,12 +172,8 @@ public class DatasetSelectProjectForm extends InputForm {
     }
   }
 
-  /* (non-Javadoc)
-   * @see ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.InputForm#startModify()
-   */
   @Override
   public void startModify() throws ProcessingException {
-    // TODO Auto-generated method stub
 
   }
 }

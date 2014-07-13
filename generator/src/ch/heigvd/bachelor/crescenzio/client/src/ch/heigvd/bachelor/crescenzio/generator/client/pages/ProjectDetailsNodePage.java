@@ -11,7 +11,6 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
 
 /**
  * @author Fabio
@@ -34,17 +33,24 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
   }
 
   @Override
+  protected boolean getConfiguredLeaf() {
+    return true;
+  }
+
+  @Override
   protected String getConfiguredTitle() {
     return project.getName();
   }
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new ProjectViewForm(project).startView();
   }
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
+    ProjectPage projectInfoPage = new ProjectPage(project);
+    pageList.add(projectInfoPage);
+
     if (project.getServer() != null) {
       ServerPage serverPage = new ServerPage(project);
       pageList.add(serverPage);

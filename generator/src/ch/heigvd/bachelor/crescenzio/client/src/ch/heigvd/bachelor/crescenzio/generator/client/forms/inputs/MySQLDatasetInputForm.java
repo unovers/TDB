@@ -3,30 +3,33 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
-import java.util.List;
-
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
+import org.eclipse.scout.rt.client.ui.form.fields.textfield.AbstractTextField;
 import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.NameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.PreviewButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.QueryField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.NewDatasourceFormData;
 
 /**
  * @author Fabio
  */
 @FormData(value = NewDatasourceFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
-public class MySQLDatasetInputForm extends InputForm {
+public class MySQLDatasetInputForm extends AbstractInputForm {
 
   private Project project;
 
@@ -70,6 +73,27 @@ public class MySQLDatasetInputForm extends InputForm {
     startInternal(new NewHandler());
   }
 
+  /**
+   * @return the NameField
+   */
+  public NameField getNameField() {
+    return getFieldByClass(NameField.class);
+  }
+
+  /**
+   * @return the PreviewButton
+   */
+  public PreviewButton getPreviewButton() {
+    return getFieldByClass(PreviewButton.class);
+  }
+
+  /**
+   * @return the QueryField
+   */
+  public QueryField getQueryField() {
+    return getFieldByClass(QueryField.class);
+  }
+
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
@@ -83,136 +107,39 @@ public class MySQLDatasetInputForm extends InputForm {
       return true;
     }
 
-    @Override
-    protected void injectFieldsInternal(List<IFormField> fieldList) {
-      fieldList.add(new AbstractSmartField<Project>() {
+    @Order(10.0)
+    public class NameField extends AbstractStringField {
 
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Project");
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected Class<? extends ILookupCall<Project>> getConfiguredLookupCall() {
-          return ProjectLookupCall.class;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Name");
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-      });
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatasourceName");
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatasourceHost");
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatasourcePort");
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatasourceLogin");
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatasourcePassword");
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Name");
+      }
     }
 
     @Order(20.0)
-    public class OkButton extends AbstractOkButton {
+    public class QueryField extends AbstractTextField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Query");
+      }
     }
 
     @Order(30.0)
+    public class OkButton extends AbstractOkButton {
+    }
+
+    @Order(40.0)
     public class CancelButton extends AbstractCancelButton {
+    }
+
+    @Order(50.0)
+    public class PreviewButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Preview");
+      }
     }
   }
 
@@ -222,10 +149,17 @@ public class MySQLDatasetInputForm extends InputForm {
   public class NewHandler extends AbstractFormHandler {
     @Override
     protected void execStore() throws ProcessingException {
-      List<IFormField> fields = getAllFields();
-      for (IFormField f : fields) {
-        System.out.println(f.getLabel());
-      }
+      Desktop desktop = (Desktop) getDesktop();
+      String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
+      String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
+      Datasource datasource = (Datasource) ((AbstractSmartField<Datasource>) getFieldById("datasource")).getValue();
+      datasource.addDataset(new SQLDataset(name, query));
+
+//      List<IFormField> fields = getAllFields();
+//      for (IFormField f : fields) {
+//        System.out.println(f.getLabel());
+//      }
+      desktop.refreshWorkspace();
     }
   }
 }

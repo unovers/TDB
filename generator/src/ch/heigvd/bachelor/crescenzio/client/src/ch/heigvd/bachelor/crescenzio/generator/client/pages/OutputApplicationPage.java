@@ -17,6 +17,7 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 public class OutputApplicationPage extends AbstractPage {
 
   private OutputApplication output;
+  private Project project;
 
   /**
    * @param output
@@ -32,20 +33,10 @@ public class OutputApplicationPage extends AbstractPage {
     return output;
   }
 
-  /**
-   * @param project
-   *          the project to set
-   */
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
   @Override
   protected void execPageActivated() throws ProcessingException {
     new OutputApplicationViewForm(output).startView();
   }
-
-  private Project project;
 
   @Override
   protected String getConfiguredTitle() {

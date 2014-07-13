@@ -69,3 +69,10 @@
 1405182467837	Rename local variable 'datasource'
 1405182571982	Rename type 'DatasetTypeForm'
 1405182839329	Rename type 'DatasetInputForm'
+1405254296270	Rename type 'ViewForm'
+1405254320439	Rename type 'InputForm'
+1405254833861	Copy compilation unit
+1405258169357	Copy compilation unit
+1405278564419	Rename type 'MySQLDataset'
+1405278585166	Copy compilation unit
+1405278844677	Copy compilation unit

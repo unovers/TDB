@@ -26,13 +26,6 @@ public class ServerPage extends AbstractPage {
     this.project = project;
   }
 
-  /**
-   * @return the project
-   */
-  public Project getProject() {
-    return project;
-  }
-
   @Override
   protected void execPageActivated() throws ProcessingException {
     if (project.getServer() == null) {
@@ -46,7 +39,7 @@ public class ServerPage extends AbstractPage {
   @Override
   protected String getConfiguredTitle() {
     if (project.getServer() == null) {
-      return TEXTS.get("ConfigureServer");
+      return TEXTS.get("DoConfigureServer");
     }
     return TEXTS.get("Server");
   }

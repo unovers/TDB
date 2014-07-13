@@ -29,21 +29,6 @@ public class DatasourceViewForm extends AbstractForm {
   }
 
   @Override
-  protected boolean getConfiguredAskIfNeedSave() {
-    return false;
-  }
-
-  @Override
-  protected boolean getConfiguredMaximized() {
-    return true;
-  }
-
-  @Override
-  protected boolean getConfiguredModal() {
-    return false;
-  }
-
-  @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("DatasourceInfo");
   }

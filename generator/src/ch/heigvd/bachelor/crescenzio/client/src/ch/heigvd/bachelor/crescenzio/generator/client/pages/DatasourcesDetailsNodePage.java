@@ -11,7 +11,6 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
@@ -40,31 +39,10 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
   }
 
   @Override
-  protected void execPageActivated() throws ProcessingException {
-    new ProjectViewForm(project).startView();
-  }
-
-  @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
-    for (Datasource datasource : getProject().getDatasources()) {
+    for (Datasource datasource : project.getDatasources()) {
       pageList.add(new DatasourcePage(datasource));
     }
 
   }
-
-  /**
-   * @return the project
-   */
-  public Project getProject() {
-    return project;
-  }
-
-  /**
-   * @param project
-   *          the project to set
-   */
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
 }

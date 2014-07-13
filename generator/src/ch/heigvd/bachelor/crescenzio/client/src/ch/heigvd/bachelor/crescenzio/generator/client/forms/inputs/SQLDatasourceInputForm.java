@@ -3,12 +3,9 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
-import java.util.List;
-
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
@@ -26,7 +23,7 @@ import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.NewDatasource
  * @author Fabio
  */
 @FormData(value = NewDatasourceFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
-public abstract class SQLDatasourceInputForm extends InputForm {
+public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
@@ -63,170 +60,174 @@ public abstract class SQLDatasourceInputForm extends InputForm {
       return true;
     }
 
-    @Override
-    protected void injectFieldsInternal(List<IFormField> fieldList) {
-      fieldList.add(new AbstractSmartField<Project>() {
+    @Order(10.0)
+    public class ProjectField extends AbstractSmartField<Project> {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Project");
+      }
 
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Project");
-        }
+      @Override
+      public String getFieldId() {
+        return "project";
+      }
 
-        @Override
-        public String getFieldId() {
-          return "project";
-        }
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
 
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
+      @Override
+      protected Class<? extends ILookupCall<Project>> getConfiguredLookupCall() {
+        return ProjectLookupCall.class;
+      }
 
-        @Override
-        protected Class<? extends ILookupCall<Project>> getConfiguredLookupCall() {
-          return ProjectLookupCall.class;
-        }
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
 
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("Name");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "name";
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-      });
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("DatabaseName");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "databaseName";
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("databaseHost");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "databaseHost";
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-      });
-
-      fieldList.add(new AbstractIntegerField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("databasePort");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "databasePort";
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("databaseLogin");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "databaseLogin";
-        }
-
-        @Override
-        protected boolean getConfiguredMandatory() {
-          return true;
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-
-      });
-
-      fieldList.add(new AbstractStringField() {
-        @Override
-        protected String getConfiguredLabel() {
-          return TEXTS.get("databasePassword");
-        }
-
-        @Override
-        public String getFieldId() {
-          return "databasePassword";
-        }
-
-        @Override
-        protected int getConfiguredLabelWidthInPixel() {
-          return 200;
-        }
-      });
     }
 
     @Order(20.0)
-    public class OkButton extends AbstractOkButton {
+    public class NameField extends AbstractStringField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Name");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "name";
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
     }
 
     @Order(30.0)
+    public class DatabaseNameField extends AbstractStringField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseName");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "databaseName";
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+    }
+
+    @Order(40.0)
+    public class DatabaseHostField extends AbstractStringField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseHost");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "databaseHost";
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+    }
+
+    @Order(50.0)
+    public class DatabasePortField extends AbstractIntegerField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabasePort");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "databasePort";
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+    }
+
+    @Order(60.0)
+    public class DatabaseLogin extends AbstractStringField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseLogin");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "databaseLogin";
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+
+    }
+
+    @Order(70.0)
+    public class DatabasePassword extends AbstractStringField {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabasePassword");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "databasePassword";
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+    }
+
+    @Order(100.0)
+    public class OkButton extends AbstractOkButton {
+    }
+
+    @Order(110.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }

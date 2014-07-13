@@ -1,6 +1,5 @@
 package ch.heigvd.bachelor.crescenzio.generator.datasets;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
@@ -38,7 +37,5 @@ public abstract class Dataset {
   public LinkedList<Field> getFields() {
     return fields;
   }
-
-  public abstract HashMap<String, String> preview();
 
 }

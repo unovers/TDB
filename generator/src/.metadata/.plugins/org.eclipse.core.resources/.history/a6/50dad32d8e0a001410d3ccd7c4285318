@@ -1,0 +1,49 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
+
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+
+/**
+ * @author Fabio
+ */
+public abstract class AbstractInputForm extends AbstractForm {
+
+  /**
+   * @throws ProcessingException
+   */
+  public AbstractInputForm(boolean init) throws ProcessingException {
+    super(init);
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public abstract void startModify() throws ProcessingException;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public abstract void startNew() throws ProcessingException;
+
+  public abstract class AbstractInputGroupBox extends AbstractGroupBox {
+    @Override
+    protected int getConfiguredGridColumnCount() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredGridW() {
+      return 1;
+    }
+
+    @Override
+    protected int getConfiguredLabelPosition() {
+      return LABEL_POSITION_LEFT;
+    }
+
+  }
+}

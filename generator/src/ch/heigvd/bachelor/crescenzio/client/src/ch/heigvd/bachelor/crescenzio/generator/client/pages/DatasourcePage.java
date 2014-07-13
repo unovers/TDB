@@ -5,9 +5,8 @@ package ch.heigvd.bachelor.crescenzio.generator.client.pages;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
-import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.DatasourceViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AbstractViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 
 /**
@@ -38,13 +37,22 @@ public class DatasourcePage extends AbstractPage {
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    //TODO Load correct form for datasource
-    new DatasourceViewForm(datasource).startView();
+    try {
+      String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.views";
+      String clss = pckage + "." + datasource.getClass().getSimpleName() + "ViewForm";
+      Class datasourceClass = Class.forName(clss);
+      System.out.println(datasourceClass + "-+++++");
+      java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{datasource.getClass()});
+      AbstractViewForm form = (AbstractViewForm) constructor.newInstance(new Object[]{datasource});
+      form.startView();
+    }
+    catch (Exception e) {
+      throw new ProcessingException(e.toString());
+    }
   }
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Datasource") + " - " + datasource.getName();
+    return datasource.getName();
   }
-
 }

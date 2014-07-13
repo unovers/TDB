@@ -5,8 +5,6 @@ package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.form.AbstractForm;
-import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -16,32 +14,17 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm.Main
 /**
  * @author Fabio
  */
-public class StartForm extends AbstractForm {
+public class StartForm extends AbstractViewForm {
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public StartForm() throws ProcessingException {
-    super();
+    super(true);
   }
 
   @Override
   protected boolean getConfiguredAskIfNeedSave() {
-    return false;
-  }
-
-  @Override
-  protected int getConfiguredDisplayHint() {
-    return DISPLAY_HINT_VIEW;
-  }
-
-  @Override
-  protected String getConfiguredDisplayViewId() {
-    return VIEW_ID_CENTER;
-  }
-
-  @Override
-  protected boolean getConfiguredModal() {
     return false;
   }
 
@@ -112,16 +95,11 @@ public class StartForm extends AbstractForm {
     }
   }
 
-  /**
-   *
+  /* (non-Javadoc)
+   * @see ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AbstractViewForm#startView()
    */
-  /**
-   * @throws org.eclipse.scout.commons.exception.ProcessingException
-   */
-  public void startModify() throws ProcessingException {
-    startInternal(new ModifyHandler());
-  }
-
-  public class ModifyHandler extends AbstractFormHandler {
+  @Override
+  public void startView() throws ProcessingException {
+    startInternal(new ViewHandler());
   }
 }

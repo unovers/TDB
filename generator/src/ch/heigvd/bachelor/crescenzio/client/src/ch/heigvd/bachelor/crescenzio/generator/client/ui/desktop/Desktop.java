@@ -29,23 +29,20 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.ClientSession;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.InputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.AbstractInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.SQLDatabaseTableViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
-  private static Project project;
-  private LogsViewForm logs;
+  //private LogsViewForm logs;
   private StartForm startForm;
   private ProjectViewForm projectInfoForm;
   private LogsViewForm logsForm;
@@ -77,7 +74,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
     if (Project.getAll() == null || Project.getAll().size() == 0) {
       startForm = new StartForm();
-      startForm.startModify();
+      startForm.startView();
     }
     else {
       initWorkspace();
@@ -157,7 +154,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
                   String clss = pckage + "." + datasource + "InputForm";
                   Class datasourceClass = Class.forName(clss);
                   java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{});
-                  InputForm form = (InputForm) constructor.newInstance();
+                  AbstractInputForm form = (AbstractInputForm) constructor.newInstance();
                   form.startNew();
                 }
                 catch (Exception e) {
@@ -205,17 +202,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
               @Override
               protected void execAction() throws ProcessingException {
-                try {
-                  String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
-                  String clss = pckage + "." + dataset + "InputForm";
-                  Class datasourceClass = Class.forName(clss);
-                  java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class});
-                  InputForm form = (InputForm) constructor.newInstance(new Object[]{dataset});
-                  form.startNew();
-                }
-                catch (Exception e) {
-                  throw new ProcessingException(e.toString());
-                }
+                new DatasetSelectProjectForm(dataset).startNew();
               }
             });
           }
@@ -276,11 +263,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-//        MultipleForm form = new MultipleForm(10);
-//        form.startModify();
-        SQLDatasource datasource = new MySQLDatasource("MySQL", "localhost", 3306, "example", "root", "");
-        datasource.describe();
-        new SQLDatabaseTableViewForm(datasource).startView();
       }
     }
   }
@@ -367,18 +349,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  /**
-   * @param project2
-   */
-  @SuppressWarnings("static-access")
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
-  public Project getProject() {
-    return project;
-  }
-
   public LinkedList<Project> getProjects() {
     return projects;
   }
@@ -390,12 +360,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (getOutline() != null) getOutline().resetOutline();
   }
 
-  /**
-   * @param string
-   */
-  public void Log(String string) {
-    logsForm.getLogsField().setValue(string);
-  }
+//
+//  /**
+//   * @param string
+//   */
+//  public void Log(String string) {
+//    logsForm.getLogsField().setValue(string);
+//  }
 
   @SuppressWarnings("hiding")
   public void displayProjectInfo(Project project) throws ProcessingException {
@@ -448,8 +419,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       setOutline(firstOutline);
     }
 
-    logsForm = new LogsViewForm();
-    logsForm.startModify();
+//    logsForm = new LogsViewForm();
+//    logsForm.startModify();
 
   }
 }

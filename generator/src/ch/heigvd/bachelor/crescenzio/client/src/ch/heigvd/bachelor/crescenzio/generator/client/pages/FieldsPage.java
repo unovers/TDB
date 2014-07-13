@@ -23,21 +23,6 @@ public class FieldsPage extends AbstractPage {
     this.project = project;
   }
 
-  /**
-   * @return the project
-   */
-  public Project getProject() {
-    return project;
-  }
-
-  /**
-   * @param project
-   *          the project to set
-   */
-  public void setProject(Project project) {
-    this.project = project;
-  }
-
   @Override
   protected void execPageActivated() throws ProcessingException {
     new FieldsViewForm(project).startView();

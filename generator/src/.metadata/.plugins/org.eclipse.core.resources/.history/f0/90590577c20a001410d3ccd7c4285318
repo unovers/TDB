@@ -1,0 +1,168 @@
+/**
+ *
+ */
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
+
+import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
+import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
+import org.eclipse.scout.rt.shared.TEXTS;
+
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseHostField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseLoginField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.NameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.TypeField;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+
+/**
+ * @author Fabio
+ */
+public class MySQLDatasourceViewForm extends AbstractForm {
+
+  private Datasource datasource;
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public MySQLDatasourceViewForm(Datasource datasource) throws ProcessingException {
+    super(false);
+    this.datasource = datasource;
+    callInitializer();
+  }
+
+  @Override
+  protected String getConfiguredTitle() {
+    return TEXTS.get("DatasourceInfo");
+  }
+
+  public void startView() throws ProcessingException {
+    startInternal(new MySQLDatasourceViewForm.ViewHandler());
+  }
+
+  public class ViewHandler extends AbstractFormHandler {
+
+    @Override
+    protected void execLoad() throws ProcessingException {
+      
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+    }
+  }
+
+  /**
+   * @return the DatabaseHostField
+   */
+  public DatabaseHostField getDatabaseHostField(){
+    return getFieldByClass(DatabaseHostField.class);
+  }
+
+  /**
+   * @return the DatabaseLoginField
+   */
+  public DatabaseLoginField getDatabaseLoginField(){
+    return getFieldByClass(DatabaseLoginField.class);
+  }
+
+  /**
+   * @return the DatabaseNameField
+   */
+  public DatabaseNameField getDatabaseNameField(){
+    return getFieldByClass(DatabaseNameField.class);
+  }
+
+  /**
+   * @return the MainBox
+   */
+  public MainBox getMainBox() {
+    return getFieldByClass(MainBox.class);
+  }
+
+  /**
+   * @return the NameField
+   */
+  public NameField getNameField(){
+    return getFieldByClass(NameField.class);
+  }
+
+  /**
+   * @return the TypeField
+   */
+  public TypeField getTypeField(){
+    return getFieldByClass(TypeField.class);
+  }
+
+  @Order(10.0)
+  public class MainBox extends AbstractGroupBox {
+
+    @Override
+    protected boolean getConfiguredEnabled() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredExpanded() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredFocusable() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredScrollable() {
+      return true;
+    }
+
+    @Order(10.0)
+    public class NameField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Name");
+      }
+    }
+
+    @Order(20.0)
+    public class TypeField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Type");
+      }
+    }
+
+    @Order(30.0)
+    public class DatabaseHostField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseHost");
+      }
+    }
+
+    @Order(40.0)
+    public class DatabaseNameField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseName");
+      }
+    }
+
+    @Order(50.0)
+    public class DatabaseLoginField extends AbstractLabelField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DatabaseLogin");
+      }
+    }
+  }
+}

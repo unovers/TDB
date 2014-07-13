@@ -1,0 +1,20 @@
+package ch.heigvd.bachelor.crescenzio.generator.datasets;
+
+import java.util.HashMap;
+
+public class MySQLDataset extends Dataset {
+
+  public MySQLDataset(String name, String query) {
+    super(name);
+  }
+
+  /* (non-Javadoc)
+   * @see ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset#preview()
+   */
+  @Override
+  public HashMap<String, String> preview() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+}
