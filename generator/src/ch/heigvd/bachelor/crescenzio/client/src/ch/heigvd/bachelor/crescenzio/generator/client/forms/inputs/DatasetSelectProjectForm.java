@@ -40,7 +40,7 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("DatasourceType");
+    return TEXTS.get("SelectProjectForDataset");
   }
 
   /**

@@ -98,7 +98,7 @@ public class MySQLDatasource extends SQLDatasource {
           String type = resultat.getString(2); // get column type
           System.out.println("column : " + name + "  " + type);
 
-          table.addField(new SQLField(name, "string"));
+          table.addField(new SQLField(name, type));
         }
         getTables().add(table);
       }

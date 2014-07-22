@@ -392,7 +392,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
    * @throws ProcessingException
    */
   public void closeStartForm() throws ProcessingException {
-    startForm.doClose();
+    if (startForm != null) startForm.doClose();
   }
 
   /**

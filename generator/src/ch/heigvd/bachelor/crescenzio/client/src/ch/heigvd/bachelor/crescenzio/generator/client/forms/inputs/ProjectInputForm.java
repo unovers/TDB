@@ -143,6 +143,11 @@ public class ProjectInputForm extends AbstractForm {
       }
 
       @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 250;
+      }
+
+      @Override
       protected boolean getConfiguredMandatory() {
         return true;
       }

@@ -68,6 +68,11 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
       }
 
       @Override
+      protected int getConfiguredWidthInPixel() {
+        return 250;
+      }
+
+      @Override
       public String getFieldId() {
         return "project";
       }
@@ -84,7 +89,7 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
       @Override
       protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+        return 250;
       }
 
     }
@@ -102,8 +107,8 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
       }
 
       @Override
-      protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+      protected int getConfiguredWidthInPixel() {
+        return 250;
       }
 
       @Override
@@ -130,9 +135,10 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
       }
 
       @Override
-      protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+      protected int getConfiguredWidthInPixel() {
+        return 250;
       }
+
     }
 
     @Order(40.0)
@@ -149,7 +155,7 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
       @Override
       protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+        return 250;
       }
 
       @Override
@@ -177,7 +183,7 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
       @Override
       protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+        return 250;
       }
     }
 
@@ -200,7 +206,7 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
       @Override
       protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+        return 250;
       }
 
     }
@@ -219,7 +225,7 @@ public abstract class SQLDatasourceInputForm extends AbstractInputForm {
 
       @Override
       protected int getConfiguredLabelWidthInPixel() {
-        return 200;
+        return 250;
       }
     }
 

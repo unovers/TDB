@@ -6,16 +6,7 @@ import ch.heigvd.bachelor.crescenzio.generator.Field;
 
 public abstract class Dataset {
   private String name;
-  private String query;
   private LinkedList<Field> fields;
-
-  public String getQuery() {
-    return query;
-  }
-
-  public void setQuery(String query) {
-    this.query = query;
-  }
 
   protected Dataset(String name) {
     this.name = name;

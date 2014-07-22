@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
 
 /**
  * @author Fabio
@@ -45,10 +45,18 @@ public class OutputsDetailsNodePage extends AbstractPageWithNodes {
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
-    for (OutputApplication output : project.getOutputs()) {
-      pageList.add(new OutputApplicationPage(output));
+    for (AbstractOutputApplication output : project.getOutputs()) {
+      try {
+        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String clss = pckage + "." + output.getClass().getSimpleName() + "Page";
+        Class outputClass = Class.forName(clss);
+        java.lang.reflect.Constructor constructor = outputClass.getConstructor(new Class[]{Project.class, output.getClass()});
+        AbstractOutputApplicationPage page = (AbstractOutputApplicationPage) constructor.newInstance(new Object[]{project, output});
+        pageList.add(page);
+      }
+      catch (Exception e) {
+        throw new ProcessingException(e.toString());
+      }
     }
-
   }
-
 }

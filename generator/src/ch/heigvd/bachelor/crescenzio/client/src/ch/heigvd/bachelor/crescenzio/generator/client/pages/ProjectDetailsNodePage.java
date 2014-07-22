@@ -51,6 +51,12 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
     ProjectPage projectInfoPage = new ProjectPage(project);
     pageList.add(projectInfoPage);
 
+    FieldsPage fieldsPage = new FieldsPage(project);
+    pageList.add(fieldsPage);
+
+    CriteriasPage criteriasDetailsNodePage = new CriteriasPage(project);
+    pageList.add(criteriasDetailsNodePage);
+
     if (project.getServer() != null) {
       ServerPage serverPage = new ServerPage(project);
       pageList.add(serverPage);
@@ -69,12 +75,6 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
     OutputsDetailsNodePage outputsDetailsNodePage = new OutputsDetailsNodePage(project);
     pageList.add(outputsDetailsNodePage);
-
-    FieldsPage fieldsPage = new FieldsPage(project);
-    pageList.add(fieldsPage);
-
-    CriteriasPage criteriasDetailsNodePage = new CriteriasPage(project);
-    pageList.add(criteriasDetailsNodePage);
 
   }
 

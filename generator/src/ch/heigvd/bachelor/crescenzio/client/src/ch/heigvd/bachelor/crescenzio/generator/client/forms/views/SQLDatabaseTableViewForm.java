@@ -32,6 +32,7 @@ public class SQLDatabaseTableViewForm extends AbstractViewForm {
   public SQLDatabaseTableViewForm(SQLDatasource datasource) throws ProcessingException {
     super(false);
     this.datasource = datasource;
+    datasource.describe();
     callInitializer();
   }
 

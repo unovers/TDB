@@ -15,13 +15,16 @@ import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.textfield.AbstractTextField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.DatasourceField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.PreviewButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.QueryField;
+import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.DatasourcesLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
 import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.NewDatasourceFormData;
 
@@ -74,6 +77,13 @@ public class MySQLDatasetInputForm extends AbstractInputForm {
   }
 
   /**
+   * @return the DatasourceField
+   */
+  public DatasourceField getDatasourceField() {
+    return getFieldByClass(DatasourceField.class);
+  }
+
+  /**
    * @return the NameField
    */
   public NameField getNameField() {
@@ -114,6 +124,12 @@ public class MySQLDatasetInputForm extends AbstractInputForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("Name");
       }
+
+      @Override
+      public String getFieldId() {
+        // TODO Auto-generated method stub
+        return "name";
+      }
     }
 
     @Order(20.0)
@@ -123,17 +139,53 @@ public class MySQLDatasetInputForm extends AbstractInputForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("Query");
       }
+
+      @Override
+      public String getFieldId() {
+        // TODO Auto-generated method stub
+        return "query";
+      }
     }
 
-    @Order(30.0)
-    public class OkButton extends AbstractOkButton {
+    @Order(10.0)
+    public class DatasourceField extends AbstractSmartField<Datasource> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Datasource");
+      }
+
+      @Override
+      public String getFieldId() {
+        return "datasource";
+      }
+
+      @Override
+      protected Class<? extends ILookupCall<Datasource>> getConfiguredLookupCall() {
+        return DatasourcesLookupCall.class;
+      }
+
+      @Override
+      protected void execPrepareLookup(ILookupCall<Datasource> call) throws ProcessingException {
+        DatasourcesLookupCall c = (DatasourcesLookupCall) call;
+        c.setProject(project);
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 150;
+      }
     }
 
     @Order(40.0)
-    public class CancelButton extends AbstractCancelButton {
+    public class OkButton extends AbstractOkButton {
     }
 
     @Order(50.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+
+    @Order(60.0)
     public class PreviewButton extends AbstractButton {
 
       @Override
@@ -153,12 +205,7 @@ public class MySQLDatasetInputForm extends AbstractInputForm {
       String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
       String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
       Datasource datasource = (Datasource) ((AbstractSmartField<Datasource>) getFieldById("datasource")).getValue();
-      datasource.addDataset(new SQLDataset(name, query));
-
-//      List<IFormField> fields = getAllFields();
-//      for (IFormField f : fields) {
-//        System.out.println(f.getLabel());
-//      }
+      datasource.addDataset(new MySQLDataset(name, query));
       desktop.refreshWorkspace();
     }
   }

@@ -42,6 +42,7 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
 
   public void startView() throws ProcessingException {
     startInternal(new MySQLDatasourceViewForm.ViewHandler());
+    new SQLDatabaseTableViewForm(datasource).startView();
   }
 
   public class ViewHandler extends AbstractFormHandler {
@@ -53,6 +54,7 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       getDatabasePasswordField().setValue(datasource.getPassword());
       getDatabasePortField().setValue(Integer.toString(datasource.getPort()));
       getDatabaseNameField().setValue(datasource.getDatabase());
+      getNameField().setValue(datasource.getName());
       getTypeField().setValue(TEXTS.get("MySQLDatasource"));
 
     }
@@ -151,6 +153,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       }
 
       @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
+
+      @Override
       protected boolean getConfiguredMandatory() {
         return true;
       }
@@ -168,6 +175,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       protected boolean getConfiguredMandatory() {
         return true;
       }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
     }
 
     @Order(30.0)
@@ -181,6 +193,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       @Override
       protected boolean getConfiguredMandatory() {
         return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
       }
     }
 
@@ -196,6 +213,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       protected boolean getConfiguredMandatory() {
         return true;
       }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
     }
 
     @Order(50.0)
@@ -204,6 +226,16 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("DatabaseName");
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
       }
     }
 
@@ -219,6 +251,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       protected boolean getConfiguredMandatory() {
         return true;
       }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
+      }
     }
 
     @Order(70.0)
@@ -232,6 +269,11 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
       @Override
       protected boolean getConfiguredMandatory() {
         return true;
+      }
+
+      @Override
+      protected int getConfiguredLabelWidthInPixel() {
+        return 200;
       }
     }
   }

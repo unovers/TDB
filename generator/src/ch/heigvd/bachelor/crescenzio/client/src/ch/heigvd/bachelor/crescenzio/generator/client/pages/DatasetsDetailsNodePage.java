@@ -43,7 +43,19 @@ public class DatasetsDetailsNodePage extends AbstractPageWithNodes {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (Datasource datasource : project.getDatasources()) {
       for (Dataset dataset : datasource.getDatasets()) {
-        pageList.add(new DatasetPage(dataset));
+        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String clss = pckage + "." + datasource.getClass().getSimpleName() + "DatasetPage";
+        clss = clss.replace("Datasource", "");
+        Class datasetPageClass;
+        try {
+          datasetPageClass = Class.forName(clss);
+          java.lang.reflect.Constructor constructor = datasetPageClass.getConstructor(new Class[]{dataset.getClass()});
+          AbstractDatasetPage page = (AbstractDatasetPage) constructor.newInstance(new Object[]{dataset});
+          pageList.add(page);
+        }
+        catch (Exception e) {
+          throw new ProcessingException(e.toString());
+        }
       }
     }
   }

@@ -8,7 +8,6 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
-import org.eclipse.scout.rt.client.ui.form.fields.textfield.AbstractTextField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasetViewForm.MainBox.NameField;
@@ -18,24 +17,17 @@ import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
 /**
  * @author Fabio
  */
-public class MySQLDatasetViewForm extends AbstractViewForm {
-
-  private MySQLDataset dataset;
+public class MySQLDatasetViewForm extends AbstractDatasetViewForm {
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public MySQLDatasetViewForm(MySQLDataset dataset) throws ProcessingException {
-    super(false);
-    this.dataset = dataset;
+    super(dataset);
     callInitializer();
   }
 
   @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("DatasourceInfo");
-  }
-
   public void startView() throws ProcessingException {
     startInternal(new MySQLDatasetViewForm.ViewHandler());
   }
@@ -44,8 +36,8 @@ public class MySQLDatasetViewForm extends AbstractViewForm {
 
     @Override
     protected void execLoad() throws ProcessingException {
-      getNameField().setValue(dataset.getName());
-      getQueryField().setValue(dataset.getQuery());
+      getNameField().setValue(getDataset().getName());
+      getQueryField().setValue(((MySQLDataset) getDataset()).getQuery());
     }
   }
 
@@ -107,13 +99,18 @@ public class MySQLDatasetViewForm extends AbstractViewForm {
       }
 
       @Override
+      protected int getConfiguredWidthInPixel() {
+        return 250;
+      }
+
+      @Override
       protected boolean getConfiguredMandatory() {
         return true;
       }
     }
 
     @Order(20.0)
-    public class QueryField extends AbstractTextField {
+    public class QueryField extends AbstractLabelField {
 
       @Override
       protected String getConfiguredLabel() {
@@ -121,12 +118,12 @@ public class MySQLDatasetViewForm extends AbstractViewForm {
       }
 
       @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
+      protected int getConfiguredWidthInPixel() {
+        return 250;
       }
 
       @Override
-      protected boolean getConfiguredMultilineText() {
+      protected boolean getConfiguredMandatory() {
         return true;
       }
 

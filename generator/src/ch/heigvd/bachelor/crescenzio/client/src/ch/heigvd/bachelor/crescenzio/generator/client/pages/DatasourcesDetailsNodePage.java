@@ -41,8 +41,17 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (Datasource datasource : project.getDatasources()) {
-      pageList.add(new DatasourcePage(datasource));
+      try {
+        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String clss = pckage + "." + datasource.getClass().getSimpleName() + "Page";
+        Class datasourceClass = Class.forName(clss);
+        java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{datasource.getClass()});
+        AbstractDatasourcePage page = (AbstractDatasourcePage) constructor.newInstance(new Object[]{datasource});
+        pageList.add(page);
+      }
+      catch (Exception e) {
+        throw new ProcessingException(e.toString());
+      }
     }
-
   }
 }

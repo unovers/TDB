@@ -1,11 +1,25 @@
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
-public class AndroidOutputApplication extends OutputApplication {
+import ch.heigvd.bachelor.crescenzio.generator.Project;
+
+public class AndroidOutputApplication extends AbstractOutputApplication {
+
+  /**
+   * @param project
+   * @param name
+   */
+  public AndroidOutputApplication(Project project, String name) {
+    super(project, name);
+  }
 
   @Override
   public void generate() {
-    // TODO Auto-generated method stub
-
   }
 
+  @Override
+  public AndroidOutputApplication clone() {
+    //AndroidOutputApplication output = new AndroidOutputApplication(project, name);
+
+    return null;
+  }
 }
