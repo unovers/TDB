@@ -168,9 +168,11 @@ public class ServerViewForm extends AbstractViewForm {
   public class ViewHandler extends AbstractFormHandler {
     @Override
     protected void execLoad() throws ProcessingException {
-      getServerTypeField().setValue(project.getServer().getClass().getSimpleName().replace("Server", ""));
-      getRootFolderField().setValue(project.getServer().getRootFolder());
-      getHostnameField().setValue(project.getServer().getHost());
+      if (project.getServer() != null) {
+        getServerTypeField().setValue(project.getServer().getClass().getSimpleName().replace("Server", ""));
+        getRootFolderField().setValue(project.getServer().getRootFolder());
+        getHostnameField().setValue(project.getServer().getHost());
+      }
     }
   }
 }

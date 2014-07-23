@@ -52,6 +52,7 @@ public class ServerInputForm extends AbstractInputForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
+  @Override
   public void startModify() throws ProcessingException {
     startInternal(new ModifyHandler());
   }
@@ -59,6 +60,7 @@ public class ServerInputForm extends AbstractInputForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
+  @Override
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
   }
@@ -191,8 +193,8 @@ public class ServerInputForm extends AbstractInputForm {
       Server server = project.getServer();
       getRootFolderField().setValue(server.getRootFolder());
       getHostnameField().setValue(server.getHost());
-      String projectType = project.getServer().getClass().getSimpleName().replace("Server", "");
-      getServerTypeSmartField().setInitValue(projectType);
+      String serverType = project.getServer().getClass().getSimpleName();
+      getServerTypeSmartField().setValue(serverType);
     }
 
     @Override

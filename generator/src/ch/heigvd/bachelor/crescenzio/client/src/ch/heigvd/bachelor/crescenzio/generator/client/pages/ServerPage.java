@@ -28,11 +28,9 @@ public class ServerPage extends AbstractPage {
 
   @Override
   protected void execPageActivated() throws ProcessingException {
+    new ServerViewForm(project).startView();
     if (project.getServer() == null) {
       new ServerInputForm(project).startNew();
-    }
-    else {
-      new ServerViewForm(project).startView();
     }
   }
 
