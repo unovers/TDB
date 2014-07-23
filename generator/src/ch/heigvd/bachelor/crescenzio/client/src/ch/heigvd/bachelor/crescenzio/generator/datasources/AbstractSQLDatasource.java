@@ -3,7 +3,7 @@ package ch.heigvd.bachelor.crescenzio.generator.datasources;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
-public abstract class SQLDatasource extends Datasource {
+public abstract class AbstractSQLDatasource extends AbstractDatasource {
 
   private String hostname;
   private String database;
@@ -12,7 +12,7 @@ public abstract class SQLDatasource extends Datasource {
   private String password;
   private LinkedList<SQLTable> tables;
 
-  public SQLDatasource(String name, String hostname, int port, String database, String login,
+  public AbstractSQLDatasource(String name, String hostname, int port, String database, String login,
       String password) {
     super(name);
     this.hostname = hostname;

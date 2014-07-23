@@ -11,7 +11,6 @@ import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
-import org.eclipse.scout.rt.client.ui.form.fields.filechooserfield.AbstractFileChooserField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -19,7 +18,6 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.AuthorField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.CancelButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.IconeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.OrganisationField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.PackageNameField;
@@ -82,13 +80,6 @@ public class ProjectInputForm extends AbstractForm {
    */
   public CancelButton getCancelButton() {
     return getFieldByClass(CancelButton.class);
-  }
-
-  /**
-   * @return the IconeField
-   */
-  public IconeField getIconeField() {
-    return getFieldByClass(IconeField.class);
   }
 
   /**
@@ -190,20 +181,6 @@ public class ProjectInputForm extends AbstractForm {
       }
     }
 
-    @Order(50.0)
-    public class IconeField extends AbstractFileChooserField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Icone");
-      }
-
-      @Override
-      protected boolean getConfiguredTypeLoad() {
-        return true;
-      }
-    }
-
     @Order(60.0)
     public class OkButton extends AbstractOkButton {
     }
@@ -221,7 +198,6 @@ public class ProjectInputForm extends AbstractForm {
       getAuthorField().setValue(project.getAuthor());
       getOrganisationField().setValue(project.getOrganisation());
       getPackageNameField().setValue(project.getPackageName());
-      getIconeField().setValue(project.getIcon());
     }
 
     @Override
@@ -231,7 +207,6 @@ public class ProjectInputForm extends AbstractForm {
       project.setAuthor(getAuthorField().getValue());
       project.setOrganisation(getOrganisationField().getValue());
       project.setPackageName(getPackageNameField().getValue());
-      project.setIcon(getIconeField().getValue());
       desktop.refreshWorkspace();
       desktop.displayProjectInfo(project);
     }
@@ -245,7 +220,7 @@ public class ProjectInputForm extends AbstractForm {
     @Order(40)
     protected void execStore() throws ProcessingException {
       Desktop desktop = ((Desktop) getDesktop());
-      project = new Project(getProjectNameField().getValue(), getPackageNameField().getValue(), getAuthorField().getValue(), getOrganisationField().getValue(), getIconeField().getValue());
+      project = new Project(getProjectNameField().getValue(), getPackageNameField().getValue(), getAuthorField().getValue(), getOrganisationField().getValue());
       desktop.getMenu(EditProjectMenu.class).setEnabled(true);
       desktop.closeStartForm();
       desktop.displayProjectInfo(project);

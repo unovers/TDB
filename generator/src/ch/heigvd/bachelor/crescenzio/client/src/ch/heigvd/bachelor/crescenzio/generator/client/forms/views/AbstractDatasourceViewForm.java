@@ -3,26 +3,22 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
-import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.form.AbstractForm;
-import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
  */
-public class AbstractDatasourceViewForm extends AbstractForm {
+public abstract class AbstractDatasourceViewForm extends AbstractViewForm {
 
-  private Datasource datasource;
+  private AbstractDatasource datasource;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public AbstractDatasourceViewForm(Datasource datasource) throws ProcessingException {
+  public AbstractDatasourceViewForm(AbstractDatasource datasource) throws ProcessingException {
     super(false);
     this.datasource = datasource;
   }
@@ -32,49 +28,19 @@ public class AbstractDatasourceViewForm extends AbstractForm {
     return TEXTS.get("DatasourceInfo");
   }
 
-  public void startView() throws ProcessingException {
-    startInternal(new AbstractDatasourceViewForm.ViewHandler());
-  }
-
-  public class ViewHandler extends AbstractFormHandler {
-
-    @Override
-    protected void execLoad() throws ProcessingException {
-    }
-
-    @Override
-    protected void execStore() throws ProcessingException {
-    }
+  /**
+   * @return the datasource
+   */
+  public AbstractDatasource getDatasource() {
+    return datasource;
   }
 
   /**
-   * @return the MainBox
+   * @param datasource
+   *          the datasource to set
    */
-  public MainBox getMainBox() {
-    return getFieldByClass(MainBox.class);
+  public void setDatasource(AbstractDatasource datasource) {
+    this.datasource = datasource;
   }
 
-  @Order(10.0)
-  public class MainBox extends AbstractGroupBox {
-
-    @Override
-    protected boolean getConfiguredEnabled() {
-      return false;
-    }
-
-    @Override
-    protected boolean getConfiguredExpanded() {
-      return false;
-    }
-
-    @Override
-    protected boolean getConfiguredFocusable() {
-      return false;
-    }
-
-    @Override
-    protected boolean getConfiguredScrollable() {
-      return true;
-    }
-  }
 }

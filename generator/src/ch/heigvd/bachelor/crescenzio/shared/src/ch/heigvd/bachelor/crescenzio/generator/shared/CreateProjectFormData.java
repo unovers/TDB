@@ -29,10 +29,6 @@ public class CreateProjectFormData extends AbstractFormData {
     return getFieldByClass(Author.class);
   }
 
-  public Icone getIcone() {
-    return getFieldByClass(Icone.class);
-  }
-
   public Organisation getOrganisation() {
     return getFieldByClass(Organisation.class);
   }
@@ -59,23 +55,6 @@ public class CreateProjectFormData extends AbstractFormData {
     protected void initValidationRules(Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);
       ruleMap.put(ValidationRule.MANDATORY, true);
-      ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
-    }
-  }
-
-  public static class Icone extends AbstractValueFieldData<String> {
-
-    private static final long serialVersionUID = 1L;
-
-    public Icone() {
-    }
-
-    /**
-     * list of derived validation rules.
-     */
-    @Override
-    protected void initValidationRules(Map<String, Object> ruleMap) {
-      super.initValidationRules(ruleMap);
       ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
     }
   }

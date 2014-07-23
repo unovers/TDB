@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
@@ -40,7 +40,7 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
-    for (Datasource datasource : project.getDatasources()) {
+    for (AbstractDatasource datasource : project.getDatasources()) {
       try {
         String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
         String clss = pckage + "." + datasource.getClass().getSimpleName() + "Page";

@@ -17,14 +17,11 @@ public abstract class AbstractOutputApplication {
    * @param project
    * @param name
    */
-  public AbstractOutputApplication(Project project, String name) {
-    this.project = project;
+  public AbstractOutputApplication(String name) {
     this.name = name;
     this.mappedFields = new HashMap<Field, Field>();
     this.applicationFields = new HashMap<Field, OutputField>();
     this.itemsTypes = new LinkedList<ItemType>();
-    itemsTypes.add(new ItemType("default"));
-
   }
 
   public void addApplicationField(Field field, OutputField outputField) {
@@ -32,11 +29,14 @@ public abstract class AbstractOutputApplication {
     applicationFields.put(field, outputField);
   }
 
+  public void addMappedField(Field field, Field outputField) {
+    if (mappedFields.get(field) != null) mappedFields.remove(field);
+    mappedFields.put(field, field);
+  }
+
   public void addItemType(ItemType itemType) {
     itemsTypes.add(itemType);
   }
-
-  public abstract AbstractOutputApplication clone();
 
   public abstract void generate();
 
@@ -74,6 +74,8 @@ public abstract class AbstractOutputApplication {
   public Project getProject() {
     return project;
   }
+
+  public abstract AndroidOutputApplication duplicate();
 
   public void removeItemType(ItemType itemType) {
     if (itemsTypes.contains(itemType)) itemsTypes.remove(itemType);

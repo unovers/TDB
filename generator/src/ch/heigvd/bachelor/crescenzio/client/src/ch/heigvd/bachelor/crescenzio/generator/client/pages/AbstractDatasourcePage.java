@@ -5,23 +5,23 @@ package ch.heigvd.bachelor.crescenzio.generator.client.pages;
 
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
  */
 public abstract class AbstractDatasourcePage extends AbstractPage {
 
-  private Datasource datasource;
+  private AbstractDatasource datasource;
 
-  public AbstractDatasourcePage(Datasource datasource) {
+  public AbstractDatasourcePage(AbstractDatasource datasource) {
     this.datasource = datasource;
   }
 
   /**
    * @return the datasource
    */
-  public Datasource getDatasource() {
+  public AbstractDatasource getDatasource() {
     return datasource;
   }
 
@@ -29,7 +29,7 @@ public abstract class AbstractDatasourcePage extends AbstractPage {
    * @param datasource
    *          the datasource to set
    */
-  public void setdatasource(Datasource datasource) {
+  public void setdatasource(AbstractDatasource datasource) {
     this.datasource = datasource;
   }
 

@@ -24,6 +24,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputFor
 public class FieldInputForm extends AbstractInputForm {
 
   private Project project;
+  private Field field;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
@@ -110,6 +111,15 @@ public class FieldInputForm extends AbstractInputForm {
   }
 
   public class ModifyHandler extends AbstractFormHandler {
+    @Override
+    protected void execLoad() throws ProcessingException {
+      getNameField().setValue(field.getName());
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+      field.setName(getNameField().getValue());
+    }
   }
 
   public class NewHandler extends AbstractFormHandler {
@@ -117,5 +127,12 @@ public class FieldInputForm extends AbstractInputForm {
     protected void execStore() throws ProcessingException {
       project.addField(new Field(getNameField().getValue()));
     }
+  }
+
+  /**
+   * @param field
+   */
+  public void setField(Field field) {
+    this.field = field;
   }
 }

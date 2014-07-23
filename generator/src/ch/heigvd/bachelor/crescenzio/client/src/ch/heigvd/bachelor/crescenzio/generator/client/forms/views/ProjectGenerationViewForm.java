@@ -14,29 +14,34 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.AuthorField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.DeleteProjectButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.EditProjectButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.OrganisationField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.PackageNameField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.AuthorField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.DeleteProjectButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.EditProjectButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.OrganisationField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.PackageNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.ProjectNameField;
 import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 
 /**
  * @author Fabio
  */
 @FormData(value = StartFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
-public class ProjectViewForm extends AbstractViewForm {
+public class ProjectGenerationViewForm extends AbstractViewForm {
 
   private Project project;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public ProjectViewForm(Project project) throws ProcessingException {
+  public ProjectGenerationViewForm(Project project) throws ProcessingException {
     super(false);
     this.project = project;
     callInitializer();
+  }
+
+  @Override
+  protected String getConfiguredDisplayViewId() {
+    return VIEW_ID_S;
   }
 
   @Override
@@ -221,6 +226,6 @@ public class ProjectViewForm extends AbstractViewForm {
 
   @Override
   public void startView() throws ProcessingException {
-    startInternal(new ProjectViewForm.ViewHandler());
+    startInternal(new ProjectGenerationViewForm.ViewHandler());
   }
 }

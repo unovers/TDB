@@ -20,7 +20,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelect
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
@@ -147,7 +147,7 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
         String pckageClssDatasource = "ch.heigvd.bachelor.crescenzio.generator.datasources";
         String clssDatasource = pckageClssDatasource + "." + type.replace("Dataset", "") + "Datasource";
         boolean datasourceTypeFound = false;
-        for (Datasource datasource : project.getDatasources()) {
+        for (AbstractDatasource datasource : project.getDatasources()) {
           if (Class.forName(clssDatasource).isInstance(datasource)) {
             datasourceTypeFound = true;
           }

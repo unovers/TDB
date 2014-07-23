@@ -3,7 +3,7 @@ package ch.heigvd.bachelor.crescenzio.generator.server;
 import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 public abstract class Server {
   private String host;
@@ -30,6 +30,6 @@ public abstract class Server {
     this.rootFolder = rootFolder;
   }
 
-  public abstract void generateScripts(LinkedList<Datasource> datasources, LinkedList<Field> fields);
+  public abstract void generateScripts(LinkedList<AbstractDatasource> datasources, LinkedList<Field> fields);
 
 }

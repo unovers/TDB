@@ -14,9 +14,8 @@ import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.SQLDatabaseTableViewForm.MainBox.TablesBox;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLField;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractSQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLTable;
 
 /**
@@ -24,15 +23,20 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.SQLTable;
  */
 public class SQLDatabaseTableViewForm extends AbstractViewForm {
 
-  protected final SQLDatasource datasource;
+  protected final AbstractSQLDatasource datasource;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public SQLDatabaseTableViewForm(SQLDatasource datasource) throws ProcessingException {
+  public SQLDatabaseTableViewForm(AbstractSQLDatasource datasource) throws ProcessingException {
     super(false);
     this.datasource = datasource;
-    datasource.describe();
+    try {
+      datasource.describe();
+    }
+    catch (ProcessingException e) {
+      datasource.setDescribed(false);
+    }
     callInitializer();
   }
 
@@ -73,6 +77,9 @@ public class SQLDatabaseTableViewForm extends AbstractViewForm {
 
     @Override
     protected void execLoad() throws ProcessingException {
+      if (!datasource.isDescribed()) {
+        ((AbstractLabelField) getFieldById("message_error")).setValue("ERROR_DATABASE_INFO");
+      }
     }
 
     @Override
@@ -86,13 +93,6 @@ public class SQLDatabaseTableViewForm extends AbstractViewForm {
    */
   public MainBox getMainBox() {
     return getFieldByClass(MainBox.class);
-  }
-
-  /**
-   * @return the TablesBox
-   */
-  public TablesBox getTablesBox() {
-    return getFieldByClass(TablesBox.class);
   }
 
   @Order(10.0)
@@ -127,39 +127,59 @@ public class SQLDatabaseTableViewForm extends AbstractViewForm {
       return true;
     }
 
-    @Order(10.0)
-    public class TablesBox extends AbstractTabBox {
+    @Override
+    protected void injectFieldsInternal(List<IFormField> fieldList) {
+      if (datasource.isDescribed()) {
+        fieldList.add(new AbstractTabBox() {
 
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Tables");
-      }
+          @Override
+          protected String getConfiguredLabel() {
+            return TEXTS.get("Tables");
+          }
 
-      @Override
-      protected void injectFieldsInternal(List<IFormField> fieldList) {
-        for (SQLTable table : datasource.getTables()) {
-          fieldList.add(new AbstractGroupBox() {
-            @Override
-            protected String getConfiguredLabel() {
-              return table.getName();
-            }
+          @Override
+          protected void injectFieldsInternal(List<IFormField> fieldList) {
+            for (SQLTable table : datasource.getTables()) {
+              fieldList.add(new AbstractGroupBox() {
+                @Override
+                protected String getConfiguredLabel() {
+                  return table.getName();
+                }
 
-            @SuppressWarnings("hiding")
-            @Override
-            protected void injectFieldsInternal(List<IFormField> fieldList) {
-              for (SQLField field : table.getFields()) {
+                @SuppressWarnings("hiding")
+                @Override
+                protected void injectFieldsInternal(List<IFormField> fieldList) {
+                  for (SQLField field : table.getFields()) {
 
-                fieldList.add(new AbstractLabelField() {
-                  @Override
-                  protected String getConfiguredLabel() {
-                    return field.getName() + " - " + field.getType();
+                    fieldList.add(new AbstractLabelField() {
+                      @Override
+                      protected String getConfiguredLabel() {
+                        return field.getName() + " - " + field.getType();
+                      }
+                    });
                   }
-                });
-              }
+                }
+              });
             }
-          });
-        }
+          }
+        });
+      }
+      else {
+        fieldList.add(new AbstractLabelField() {
+          @Override
+          protected String getConfiguredLabel() {
+            return "ERROR:";
+          }
+
+          @Override
+          public String getFieldId() {
+            return "message_error";
+          }
+
+        });
+
       }
     }
   }
+
 }

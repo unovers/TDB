@@ -3,61 +3,60 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
-import org.eclipse.scout.commons.annotations.FormData;
-import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
-import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
-import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
-import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
-import org.eclipse.scout.rt.client.ui.form.fields.textfield.AbstractTextField;
-import org.eclipse.scout.rt.shared.TEXTS;
-import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
-import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.DatasourceField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.NameField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.PreviewButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm.MainBox.QueryField;
-import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.DatasourcesLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
-import ch.heigvd.bachelor.crescenzio.generator.shared.forms.inputs.NewDatasourceFormData;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
  */
-@FormData(value = NewDatasourceFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
-public class MySQLDatasetInputForm extends AbstractInputForm {
-
-  private Project project;
+public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public MySQLDatasetInputForm(Project project) throws ProcessingException {
-    super(false);
-    this.project = project;
+  public MySQLDatasetInputForm(MySQLDataset dataset) throws ProcessingException {
+    super(dataset);
     callInitializer();
   }
 
-  @Override
-  protected boolean getConfiguredAskIfNeedSave() {
-    return false;
+  public class ModifyHandler extends AbstractFormHandler {
+    @Override
+    protected void execLoad() throws ProcessingException {
+
+      MySQLDataset dataset = (MySQLDataset) getDataset();
+      ((AbstractStringField) getFieldById("name")).setValue(dataset.getName());
+      ((AbstractStringField) getFieldById("query")).setValue(dataset.getQuery());
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+      Desktop desktop = (Desktop) getDesktop();
+      String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
+      String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
+
+      MySQLDataset set = (MySQLDataset) getDataset();
+      set.setName(name);
+      set.setQuery(query);
+      desktop.refreshWorkspace();
+    }
   }
 
-  @Override
-  protected boolean getConfiguredModal() {
-    return false;
-  }
-
-  @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("NewDataset");
+  public class NewHandler extends AbstractFormHandler {
+    @Override
+    protected void execStore() throws ProcessingException {
+      Desktop desktop = (Desktop) getDesktop();
+      String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
+      String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
+      AbstractDatasource datasource = (AbstractDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
+      datasource.addDataset(new MySQLDataset(name, query));
+      desktop.refreshWorkspace();
+    }
   }
 
   /**
@@ -74,139 +73,5 @@ public class MySQLDatasetInputForm extends AbstractInputForm {
   @Override
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
-  }
-
-  /**
-   * @return the DatasourceField
-   */
-  public DatasourceField getDatasourceField() {
-    return getFieldByClass(DatasourceField.class);
-  }
-
-  /**
-   * @return the NameField
-   */
-  public NameField getNameField() {
-    return getFieldByClass(NameField.class);
-  }
-
-  /**
-   * @return the PreviewButton
-   */
-  public PreviewButton getPreviewButton() {
-    return getFieldByClass(PreviewButton.class);
-  }
-
-  /**
-   * @return the QueryField
-   */
-  public QueryField getQueryField() {
-    return getFieldByClass(QueryField.class);
-  }
-
-  @Order(10.0)
-  public class MainBox extends AbstractGroupBox {
-
-    @Override
-    protected int getConfiguredGridColumnCount() {
-      return 1;
-    }
-
-    @Override
-    protected boolean getConfiguredMandatory() {
-      return true;
-    }
-
-    @Order(10.0)
-    public class NameField extends AbstractStringField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Name");
-      }
-
-      @Override
-      public String getFieldId() {
-        // TODO Auto-generated method stub
-        return "name";
-      }
-    }
-
-    @Order(20.0)
-    public class QueryField extends AbstractTextField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Query");
-      }
-
-      @Override
-      public String getFieldId() {
-        // TODO Auto-generated method stub
-        return "query";
-      }
-    }
-
-    @Order(10.0)
-    public class DatasourceField extends AbstractSmartField<Datasource> {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Datasource");
-      }
-
-      @Override
-      public String getFieldId() {
-        return "datasource";
-      }
-
-      @Override
-      protected Class<? extends ILookupCall<Datasource>> getConfiguredLookupCall() {
-        return DatasourcesLookupCall.class;
-      }
-
-      @Override
-      protected void execPrepareLookup(ILookupCall<Datasource> call) throws ProcessingException {
-        DatasourcesLookupCall c = (DatasourcesLookupCall) call;
-        c.setProject(project);
-      }
-
-      @Override
-      protected int getConfiguredLabelWidthInPixel() {
-        return 150;
-      }
-    }
-
-    @Order(40.0)
-    public class OkButton extends AbstractOkButton {
-    }
-
-    @Order(50.0)
-    public class CancelButton extends AbstractCancelButton {
-    }
-
-    @Order(60.0)
-    public class PreviewButton extends AbstractButton {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Preview");
-      }
-    }
-  }
-
-  public class ModifyHandler extends AbstractFormHandler {
-  }
-
-  public class NewHandler extends AbstractFormHandler {
-    @Override
-    protected void execStore() throws ProcessingException {
-      Desktop desktop = (Desktop) getDesktop();
-      String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
-      String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
-      Datasource datasource = (Datasource) ((AbstractSmartField<Datasource>) getFieldById("datasource")).getValue();
-      datasource.addDataset(new MySQLDataset(name, query));
-      desktop.refreshWorkspace();
-    }
   }
 }

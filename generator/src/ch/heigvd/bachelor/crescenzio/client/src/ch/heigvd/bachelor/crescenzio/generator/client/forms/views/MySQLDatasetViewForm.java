@@ -6,10 +6,13 @@ package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasetInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasetViewForm.MainBox.DeleteDatasetButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasetViewForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasetViewForm.MainBox.QueryField;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
@@ -17,7 +20,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
 /**
  * @author Fabio
  */
-public class MySQLDatasetViewForm extends AbstractDatasetViewForm {
+public class MySQLDatasetViewForm extends AbstractSQLDatasetViewForm {
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
@@ -29,7 +32,7 @@ public class MySQLDatasetViewForm extends AbstractDatasetViewForm {
 
   @Override
   public void startView() throws ProcessingException {
-    startInternal(new MySQLDatasetViewForm.ViewHandler());
+    startInternal(new ViewHandler());
   }
 
   public class ViewHandler extends AbstractFormHandler {
@@ -39,6 +42,13 @@ public class MySQLDatasetViewForm extends AbstractDatasetViewForm {
       getNameField().setValue(getDataset().getName());
       getQueryField().setValue(((MySQLDataset) getDataset()).getQuery());
     }
+  }
+
+  /**
+   * @return the DeleteDatasetButton
+   */
+  public DeleteDatasetButton getDeleteDatasetButton() {
+    return getFieldByClass(DeleteDatasetButton.class);
   }
 
   /**
@@ -130,6 +140,38 @@ public class MySQLDatasetViewForm extends AbstractDatasetViewForm {
       @Override
       protected boolean getConfiguredWrapText() {
         return true;
+      }
+    }
+
+    @Order(30.0)
+    public class PreviewButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("PreviewDataset");
+      }
+    }
+
+    @Order(40.0)
+    public class EditDatasetButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("EditDataset");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        new MySQLDatasetInputForm((MySQLDataset) getDataset()).startModify();
+      }
+    }
+
+    @Order(50.0)
+    public class DeleteDatasetButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DeleteDataset");
       }
     }
   }

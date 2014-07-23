@@ -7,29 +7,27 @@ import java.util.List;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.basic.table.ITableRow;
-import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
-import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
-import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm.MainBox.FieldsField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox.AddFieldButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox.FieldsField;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
@@ -94,6 +92,13 @@ public class FieldsViewForm extends AbstractForm {
   }
 
   /**
+   * @return the OkButton
+   */
+  public OkButton getOkButton() {
+    return getFieldByClass(OkButton.class);
+  }
+
+  /**
    * @return the FieldsField
    */
   public FieldsField getFieldsField() {
@@ -143,57 +148,73 @@ public class FieldsViewForm extends AbstractForm {
           return TEXTS.get("Fields");
         }
 
-        @Order(10.0)
-        public class FieldsField extends AbstractTableField<FieldsField.Table> {
-
-          @Override
-          protected String getConfiguredLabel() {
-            return TEXTS.get("Fields");
-          }
-
-          @Override
-          protected boolean getConfiguredLabelVisible() {
-            return false;
-          }
-
-          @Order(10.0)
-          public class Table extends AbstractExtensibleTable {
-
-            @Override
-            protected boolean getConfiguredAutoResizeColumns() {
-              return true;
-            }
-
-            @Override
-            protected boolean getConfiguredHeaderVisible() {
-              return false;
-            }
-
-            @Override
-            protected boolean getConfiguredMultiCheck() {
-              return false;
-            }
-
-            @Override
-            protected boolean getConfiguredMultiSelect() {
-              return false;
-            }
-
-            /**
-             * @return the NameColumn
-             */
-            public NameColumn getNameColumn() {
-              return getColumnSet().getColumnByClass(NameColumn.class);
-            }
-
-            @Order(10.0)
-            public class NameColumn extends AbstractStringColumn {
+        @Override
+        protected void injectFieldsInternal(List<IFormField> fieldList) {
+          //Créer tous les champs
+          for (Field field : project.getFields()) {
+            fieldList.add(new AbstractGroupBox() {
+              @Override
+              protected String getConfiguredLabel() {
+                return "";
+              }
 
               @Override
-              protected String getConfiguredHeaderText() {
-                return TEXTS.get("Name");
+              protected int getConfiguredGridColumnCount() {
+                return 3;
               }
-            }
+
+              @Override
+              protected int getConfiguredGridW() {
+                return 3;
+              }
+
+              @Override
+              protected void injectFieldsInternal(List<IFormField> fieldList) {
+                //Créer pour chaque champs les informations (nom - button edit - button delete"
+                fieldList.add(new AbstractLabelField() {
+
+                  @Override
+                  protected String getConfiguredLabel() {
+                    return TEXTS.get("Name");
+                  }
+
+                  @Override
+                  public String getFieldId() {
+                    return field.getId();
+                  }
+                });
+
+                if (!field.getName().equals("__item_type")) {
+                  fieldList.add(new AbstractButton() {
+
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("Edit");
+                    }
+
+                    @Override
+                    protected void execClickAction() throws ProcessingException {
+                      FieldInputForm form = new FieldInputForm(project);
+                      form.setField(field);
+                      form.startModify();
+                    }
+
+                  });
+                  fieldList.add(new AbstractButton() {
+
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("Delete");
+                    }
+
+                    @Override
+                    protected void execClickAction() throws ProcessingException {
+                      project.removeField(field);
+                    }
+                  });
+                }
+              }
+            });
           }
         }
 
@@ -233,8 +254,8 @@ public class FieldsViewForm extends AbstractForm {
 
         @Override
         protected void injectFieldsInternal(List<IFormField> fieldList) {
-          for (Datasource datasource : project.getDatasources()) {
-            for (Dataset dataset : datasource.getDatasets()) {
+          for (AbstractDatasource datasource : project.getDatasources()) {
+            for (AbstractDataset dataset : datasource.getDatasets()) {
               fieldList.add(new AbstractGroupBox() {
 
                 @Override
@@ -250,10 +271,36 @@ public class FieldsViewForm extends AbstractForm {
                       protected String getConfiguredLabel() {
                         return field.getName();
                       }
+
+                      @Override
+                      public String getFieldId() {
+                        return dataset.getId() + "_" + field.getId();
+                      }
                     });
                   }
                 }
               });
+            }
+          }
+        }
+
+        @Order(10.0)
+        public class OkButton extends AbstractButton {
+
+          @Override
+          protected String getConfiguredLabel() {
+            return TEXTS.get("Ok");
+          }
+
+          @Override
+          protected void execClickAction() throws ProcessingException {
+            for (AbstractDatasource datasource : project.getDatasources()) {
+              for (AbstractDataset dataset : datasource.getDatasets()) {
+                for (Field field : project.getFields()) {
+                  IFormField f = getFieldById(dataset.getId() + "_" + field.getId());
+                  project.setMapping(field, dataset, ((AbstractStringField) f).getValue());
+                }
+              }
             }
           }
         }
@@ -271,10 +318,25 @@ public class FieldsViewForm extends AbstractForm {
     @Override
     protected void execLoad() throws ProcessingException {
       for (Field field : project.getFields()) {
-        ITableRow row = getFieldsField().getTable().createRow();
-        getFieldsField().getTable().getNameColumn().setValue(row, field.getName());
-        getFieldsField().getTable().addRow(row);
+        IFormField f = getFieldById(field.getId());
+        ((AbstractLabelField) f).setValue(field.getName());
       }
+
+      for (AbstractDatasource datasource : project.getDatasources()) {
+        for (AbstractDataset dataset : datasource.getDatasets()) {
+          for (Field field : project.getFields()) {
+            IFormField f = getFieldById(dataset.getId() + "_" + field.getId());
+            ((AbstractStringField) f).setValue(project.getMapping(field, dataset));
+          }
+        }
+      }
+    }
+
+    /* (non-Javadoc)
+     * @see org.eclipse.scout.rt.client.ui.form.AbstractFormHandler#execStore()
+     */
+    @Override
+    protected void execStore() throws ProcessingException {
     }
   }
 }

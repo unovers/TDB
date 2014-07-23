@@ -10,7 +10,7 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLField;
 
-public class MySQLDatasource extends SQLDatasource {
+public class MySQLDatasource extends AbstractSQLDatasource {
   private Connection connexion = null;
   private Statement statement;
 
@@ -104,8 +104,7 @@ public class MySQLDatasource extends SQLDatasource {
       }
     }
     catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      throw new ProcessingException("DESCRIBE_DB_ERROR");
     }
 
     disconnect();

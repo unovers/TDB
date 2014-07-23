@@ -8,14 +8,21 @@ package ch.heigvd.bachelor.crescenzio.generator.outputs;
  */
 public class ItemType {
   private String name;
+  private static int counter;
+  private int id;
   private String itemlist_file_path;
   private String itemview_file_path;
+
+  static {
+    counter = 0;
+  }
 
   /**
    * @param string
    */
   public ItemType(String name) {
     this.name = name;
+    this.id = counter++;
   }
 
   /**
@@ -61,6 +68,13 @@ public class ItemType {
    */
   public void setItemview_file_path(String itemview_file_path) {
     this.itemview_file_path = itemview_file_path;
+  }
+
+  /**
+   * @return
+   */
+  public int getId() {
+    return id;
   }
 
 }

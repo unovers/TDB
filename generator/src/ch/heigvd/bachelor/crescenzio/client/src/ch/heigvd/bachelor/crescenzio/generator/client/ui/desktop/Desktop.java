@@ -315,7 +315,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
     @Override
     protected String getConfiguredText() {
-      return TEXTS.get("Edition");
+      return TEXTS.get("Edit");
     }
 
     @Override
@@ -327,7 +327,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected String getConfiguredText() {
-        return TEXTS.get("EditProject");
+        return "";
       }
 
       @Override

@@ -2,9 +2,9 @@ package ch.heigvd.bachelor.crescenzio.generator;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.SQLDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractSQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.PHPServer;
 
@@ -12,8 +12,8 @@ public class Test {
 
   public static void test() {
 
-    Project project = new Project("Project", "ch.heigvd.app", "Crescenzio Fabio", "HEIG-VD", "icon.png");
-    Datasource source1 = new MySQLDatasource("MySQL1", "hostname", 3333, "database", "admin", "password");
+    Project project = new Project("Project", "ch.heigvd.app", "Crescenzio Fabio", "HEIG-VD");
+    AbstractDatasource source1 = new MySQLDatasource("MySQL1", "hostname", 3333, "database", "admin", "password");
     try {
       source1.describe();
     }
@@ -22,13 +22,13 @@ public class Test {
       e.printStackTrace();
     }
 
-    Dataset set1 = new SQLDataset("Set1", "");
+    AbstractDataset set1 = new AbstractSQLDataset("Set1", "");
     set1.addField(new Field("Field1"));
     set1.addField(new Field("Field2"));
     set1.addField(new Field("Field3"));
     set1.addField(new Field("Field4"));
 
-    Dataset set2 = new SQLDataset("Set1", "");
+    AbstractDataset set2 = new AbstractSQLDataset("Set1", "");
     set2.addField(new Field("Field1"));
     set2.addField(new Field("Field2"));
     set2.addField(new Field("Field3"));

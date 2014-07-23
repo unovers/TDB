@@ -1,16 +1,13 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AndroidOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.FileField;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.StringField;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 
 public class Project {
@@ -18,24 +15,23 @@ public class Project {
   private String packageName;
   private String author;
   private String organisation;
-  private String icon;
   private Server server;
   private LinkedList<AbstractOutputApplication> outputs;
-  private LinkedList<Datasource> datasources;
+  private LinkedList<AbstractDatasource> datasources;
   private LinkedList<Field> fields;
+  private HashMap<AbstractDataset, HashMap<Field, String>> mapping = new HashMap<AbstractDataset, HashMap<Field, String>>();
 
   private static LinkedList<Project> projects;
 
   public Project(String name, String packageName, String author,
-      String organisation, String icon) {
+      String organisation) {
     if (Project.projects == null) Project.projects = new LinkedList<Project>();
     this.name = name;
     this.packageName = packageName;
     this.author = author;
     this.organisation = organisation;
-    this.icon = icon;
     this.outputs = new LinkedList<AbstractOutputApplication>();
-    this.datasources = new LinkedList<Datasource>();
+    this.datasources = new LinkedList<AbstractDatasource>();
     this.fields = new LinkedList<Field>();
     fields.add(new Field("__item_type"));
     projects.add(this);
@@ -65,11 +61,11 @@ public class Project {
     this.outputs.add(output);
   }
 
-  public LinkedList<Datasource> getDatasources() {
+  public LinkedList<AbstractDatasource> getDatasources() {
     return datasources;
   }
 
-  public void addDatasource(Datasource datasource) {
+  public void addDatasource(AbstractDatasource datasource) {
     this.datasources.add(datasource);
   }
 
@@ -109,14 +105,6 @@ public class Project {
     this.organisation = organisation;
   }
 
-  public void setIcon(String icon) {
-    this.icon = icon;
-  }
-
-  public String getIcon() {
-    return icon;
-  }
-
   public boolean create() {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
   }
@@ -148,10 +136,10 @@ public class Project {
 
     System.out.println("Datasources info : ");
 
-    for (Datasource source : datasources) {
+    for (AbstractDatasource source : datasources) {
       System.out.println("Name :" + source.getName());
 
-      for (Dataset set : source.getDatasets()) {
+      for (AbstractDataset set : source.getDatasets()) {
         System.out.println("dataset " + set.getName());
         for (Field field : set.getFields()) {
           System.out.print(field.getName() + " ");
@@ -168,18 +156,9 @@ public class Project {
    */
   public static LinkedList<Project> getAll()
   {
-    if (projects == null) {
+    if (projects == null || projects.size() == 0) {
       projects = new LinkedList<Project>();
-      Project p1 = new Project("P1", "pck1", "author1", "organ1", "icon1");
-      AndroidOutputApplication android = new AndroidOutputApplication(p1, "Android output");
-      android.addApplicationField(new Field("project_icon72"), new FileField());
-      android.addApplicationField(new Field("application_title"), new StringField(p1.getName()));
-      android.setField(new Field("name"), null);
-      android.setField(new Field("icon"), null);
-      android.setField(new Field("date"), null);
-      android.setField(new Field("description"), null);
-      android.addItemType(new ItemType("user"));
-      android.addItemType(new ItemType("task"));
+      Project p1 = new Project("P1", "pck1", "author1", "organ1");
 
       MySQLDatasource datasource = new MySQLDatasource("MySQL", "localhost", 3306, "letstodoit", "root", "Qwe12345");
       p1.addDatasource(datasource);
@@ -190,13 +169,47 @@ public class Project {
       p1.addField(new Field("Type"));
       p1.addField(new Field("Date"));
       p1.addField(new Field("Icon"));
-      p1.addOutput(android);
 
-      new Project("P2", "pck2", "author2", "organ2", "icon2");
-      new Project("P3", "pck3", "author3", "organ3", "icon3");
-      new Project("P4", "pck4", "author4", "organ4", "icon4");
+      new Project("P2", "pck2", "author2", "organ2");
+      new Project("P3", "pck3", "author3", "organ3");
+      new Project("P4", "pck4", "author4", "organ4");
+
     }
     return projects;
   }
 
+  /**
+   * @param field
+   * @param dataset
+   * @return
+   */
+  public String getMapping(Field field, AbstractDataset dataset) {
+    HashMap<Field, String> datasetmap = mapping.get(dataset);
+    if (datasetmap == null) {
+      mapping.put(dataset, new HashMap<Field, String>());
+      return "";
+    }
+    else {
+      String value = datasetmap.get(field);
+      if (value == null) {
+        value = "";
+      }
+      return value;
+    }
+  }
+
+  /**
+   * @param field
+   * @param dataset
+   */
+  public void setMapping(Field field, AbstractDataset dataset, String value) {
+    HashMap<Field, String> datasetmap = mapping.get(dataset);
+    if (datasetmap == null) {
+      mapping.put(dataset, new HashMap<Field, String>());
+    }
+    else {
+      if (datasetmap.get(field) != null) datasetmap.remove(field);
+      datasetmap.put(field, value);
+    }
+  }
 }

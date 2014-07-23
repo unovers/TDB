@@ -6,15 +6,19 @@ package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MySQLDatasourceInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseHostField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseLoginField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabaseNameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabasePasswordField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DatabasePortField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.DeleteDatasourceButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.EditDatasourceButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.MySQLDatasourceViewForm.MainBox.TypeField;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
@@ -22,33 +26,25 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 /**
  * @author Fabio
  */
-public class MySQLDatasourceViewForm extends AbstractViewForm {
-
-  private MySQLDatasource datasource;
-
+public class MySQLDatasourceViewForm extends AbstractSQLDatasourceViewForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public MySQLDatasourceViewForm(MySQLDatasource datasource) throws ProcessingException {
-    super(false);
-    this.datasource = datasource;
+    super(datasource);
     callInitializer();
   }
 
   @Override
-  protected String getConfiguredTitle() {
-    return TEXTS.get("DatasourceInfo");
-  }
-
   public void startView() throws ProcessingException {
-    startInternal(new MySQLDatasourceViewForm.ViewHandler());
-    new SQLDatabaseTableViewForm(datasource).startView();
+    startInternal(new ViewHandler());
   }
 
   public class ViewHandler extends AbstractFormHandler {
 
     @Override
     protected void execLoad() throws ProcessingException {
+      MySQLDatasource datasource = (MySQLDatasource) getDatasource();
       getDatabaseHostField().setValue(datasource.getHostname());
       getDatabaseLoginField().setValue(datasource.getLogin());
       getDatabasePasswordField().setValue(datasource.getPassword());
@@ -93,6 +89,20 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
    */
   public DatabasePortField getDatabasePortField() {
     return getFieldByClass(DatabasePortField.class);
+  }
+
+  /**
+   * @return the DeleteDatasourceButton
+   */
+  public DeleteDatasourceButton getDeleteDatasourceButton() {
+    return getFieldByClass(DeleteDatasourceButton.class);
+  }
+
+  /**
+   * @return the EditDatasourceButton
+   */
+  public EditDatasourceButton getEditDatasourceButton() {
+    return getFieldByClass(EditDatasourceButton.class);
   }
 
   /**
@@ -276,5 +286,44 @@ public class MySQLDatasourceViewForm extends AbstractViewForm {
         return 200;
       }
     }
+
+    @Order(80.0)
+    public class PreviewDatasourceButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("PreviewDatabaseContent");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        new SQLDatabaseTableViewForm((MySQLDatasource) getDatasource()).startView();
+      }
+    }
+
+    @Order(90.0)
+    public class EditDatasourceButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("EditDatasource");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        MySQLDatasourceInputForm form = new MySQLDatasourceInputForm((MySQLDatasource) getDatasource());
+        form.startModify();
+      }
+    }
+
+    @Order(100.0)
+    public class DeleteDatasourceButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("DeleteDatasource");
+      }
+    }
   }
+
 }

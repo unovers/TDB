@@ -18,6 +18,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
 import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTable;
@@ -31,6 +32,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.MultiField.Table;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestSmartField;
 
 /**
  * @author Fabio
@@ -146,6 +148,13 @@ public class MultipleForm extends AbstractForm {
     return getFieldByClass(TestField.class);
   }
 
+  /**
+   * @return the TestSmartField
+   */
+  public TestSmartField getTestSmartField(){
+    return getFieldByClass(TestSmartField.class);
+  }
+
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
@@ -251,14 +260,34 @@ public class MultipleForm extends AbstractForm {
     }
 
     @Order(40.0)
-    public class OkButton extends AbstractOkButton {
+    public class TestSmartField extends AbstractSmartField<String> {
+
+      @Override
+      protected String getConfiguredBrowseNewText() {
+        return "aaa";
+      }
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("test");
+      }
+
+      @Override
+      protected void execInitField() throws ProcessingException {
+        //TODO [Fabio] Auto-generated method stub.
+        super.execInitField();
+      }
     }
 
     @Order(50.0)
-    public class CancelButton extends AbstractCancelButton {
+    public class OkButton extends AbstractOkButton {
     }
 
     @Order(60.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+
+    @Order(70.0)
     public class AddFieldButton extends AbstractButton {
 
       @Override

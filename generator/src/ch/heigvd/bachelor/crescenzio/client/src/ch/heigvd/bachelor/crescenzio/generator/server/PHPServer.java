@@ -3,7 +3,7 @@ package ch.heigvd.bachelor.crescenzio.generator.server;
 import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.Datasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 public class PHPServer extends Server {
 
@@ -12,7 +12,7 @@ public class PHPServer extends Server {
   }
 
   @Override
-  public void generateScripts(LinkedList<Datasource> datasources, LinkedList<Field> fields) {
+  public void generateScripts(LinkedList<AbstractDatasource> datasources, LinkedList<Field> fields) {
 
     StringBuffer output = new StringBuffer();
     output.append("<?php\n");

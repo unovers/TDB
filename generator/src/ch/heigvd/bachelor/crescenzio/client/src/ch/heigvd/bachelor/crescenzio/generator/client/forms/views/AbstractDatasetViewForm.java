@@ -4,19 +4,18 @@
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasets.Dataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
 
 /**
  * @author Fabio
  */
-public abstract class AbstractDatasetViewForm extends AbstractForm {
+public abstract class AbstractDatasetViewForm extends AbstractViewForm {
 
   /**
    * @return the dataset
    */
-  protected Dataset getDataset() {
+  protected AbstractDataset getDataset() {
     return dataset;
   }
 
@@ -24,16 +23,16 @@ public abstract class AbstractDatasetViewForm extends AbstractForm {
    * @param dataset
    *          the dataset to set
    */
-  public void setDataset(Dataset dataset) {
+  public void setDataset(AbstractDataset dataset) {
     this.dataset = dataset;
   }
 
-  private Dataset dataset;
+  private AbstractDataset dataset;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public AbstractDatasetViewForm(Dataset dataset) throws ProcessingException {
+  public AbstractDatasetViewForm(AbstractDataset dataset) throws ProcessingException {
     super(false);
     this.dataset = dataset;
   }
@@ -62,6 +61,4 @@ public abstract class AbstractDatasetViewForm extends AbstractForm {
   protected String getConfiguredTitle() {
     return dataset.getName();
   }
-
-  public abstract void startView() throws ProcessingException;
 }

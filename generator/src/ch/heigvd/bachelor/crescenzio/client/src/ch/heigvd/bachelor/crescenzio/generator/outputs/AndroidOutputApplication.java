@@ -1,6 +1,8 @@
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
-import ch.heigvd.bachelor.crescenzio.generator.Project;
+import java.util.Map.Entry;
+
+import ch.heigvd.bachelor.crescenzio.generator.Field;
 
 public class AndroidOutputApplication extends AbstractOutputApplication {
 
@@ -8,8 +10,8 @@ public class AndroidOutputApplication extends AbstractOutputApplication {
    * @param project
    * @param name
    */
-  public AndroidOutputApplication(Project project, String name) {
-    super(project, name);
+  public AndroidOutputApplication(String name) {
+    super(name);
   }
 
   @Override
@@ -17,9 +19,24 @@ public class AndroidOutputApplication extends AbstractOutputApplication {
   }
 
   @Override
-  public AndroidOutputApplication clone() {
-    //AndroidOutputApplication output = new AndroidOutputApplication(project, name);
+  public AndroidOutputApplication duplicate() {
+    AndroidOutputApplication output = new AndroidOutputApplication(getName());
+    for (Entry<Field, OutputField> entry : getApplicationFields().entrySet()) {
+      Field field = entry.getKey();
+      OutputField outputField = entry.getValue();
+      output.addApplicationField(field, outputField);
+    }
 
-    return null;
+    for (Entry<Field, Field> entry : getMappedFields().entrySet()) {
+      Field field = entry.getKey();
+      Field mappedField = entry.getValue();
+      output.addMappedField(field, mappedField);
+    }
+
+    for (ItemType itemType : getItemsTypes()) {
+      output.addItemType(itemType);
+    }
+
+    return output;
   }
 }
