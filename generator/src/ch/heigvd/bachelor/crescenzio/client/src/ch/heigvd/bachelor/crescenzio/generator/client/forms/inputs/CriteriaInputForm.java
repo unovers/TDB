@@ -12,37 +12,38 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
-import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.CancelButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.NameField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.TitleField;
+import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
  * @author Fabio
  */
-public class FieldInputForm extends AbstractInputForm {
+public class CriteriaInputForm extends AbstractInputForm {
 
   private Project project;
-  private Field field;
+  private Criteria criteria;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public FieldInputForm(Project project) throws ProcessingException {
+  public CriteriaInputForm(Project project) throws ProcessingException {
     super(false);
     this.project = project;
     callInitializer();
   }
 
-  @Override
-  protected boolean getConfiguredAskIfNeedSave() {
-    return false;
+  public CriteriaInputForm(Project project, Criteria criteria) throws ProcessingException {
+    super(false);
+    this.project = project;
+    this.criteria = criteria;
+    callInitializer();
   }
 
-  @Override
-  protected boolean getConfiguredModal() {
-    return false;
+  public void setCriteria(Criteria criteria) {
+    this.criteria = criteria;
   }
 
   @Override
@@ -81,10 +82,10 @@ public class FieldInputForm extends AbstractInputForm {
   }
 
   /**
-   * @return the NameField
+   * @return the TitleField
    */
-  public NameField getNameField() {
-    return getFieldByClass(NameField.class);
+  public TitleField getTitleField() {
+    return getFieldByClass(TitleField.class);
   }
 
   /**
@@ -98,11 +99,11 @@ public class FieldInputForm extends AbstractInputForm {
   public class MainBox extends AbstractGroupBox {
 
     @Order(10.0)
-    public class NameField extends AbstractStringField {
+    public class TitleField extends AbstractStringField {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("Name");
+        return TEXTS.get("Field");
       }
 
       @Override
@@ -123,26 +124,20 @@ public class FieldInputForm extends AbstractInputForm {
   public class ModifyHandler extends AbstractFormHandler {
     @Override
     protected void execLoad() throws ProcessingException {
-      getNameField().setValue(field.getName());
+      getTitleField().setValue(criteria.getTitle());
     }
 
     @Override
     protected void execStore() throws ProcessingException {
-      field.setName(getNameField().getValue());
+      criteria.setTitle(getTitleField().getValue());
     }
   }
 
   public class NewHandler extends AbstractFormHandler {
     @Override
     protected void execStore() throws ProcessingException {
-      project.addField(new Field(getNameField().getValue()));
+      project.addCriteria(new Criteria(getTitleField().getValue()));
     }
   }
 
-  /**
-   * @param field
-   */
-  public void setField(Field field) {
-    this.field = field;
-  }
 }

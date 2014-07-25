@@ -9,40 +9,33 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
-import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.CancelButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.NameField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.CancelButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.NameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.FieldsOutputMappingLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
  * @author Fabio
  */
-public class FieldInputForm extends AbstractInputForm {
-
+public class ConditionInputForm extends AbstractInputForm {
+  private Criteria criteria;
   private Project project;
-  private Field field;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
-  public FieldInputForm(Project project) throws ProcessingException {
+  public ConditionInputForm(Project project, Criteria criteria) throws ProcessingException {
     super(false);
     this.project = project;
+    this.criteria = criteria;
     callInitializer();
-  }
-
-  @Override
-  protected boolean getConfiguredAskIfNeedSave() {
-    return false;
-  }
-
-  @Override
-  protected boolean getConfiguredModal() {
-    return false;
   }
 
   @Override
@@ -55,7 +48,6 @@ public class FieldInputForm extends AbstractInputForm {
    */
   @Override
   public void startModify() throws ProcessingException {
-    startInternal(new ModifyHandler());
   }
 
   /**
@@ -98,7 +90,7 @@ public class FieldInputForm extends AbstractInputForm {
   public class MainBox extends AbstractGroupBox {
 
     @Order(10.0)
-    public class NameField extends AbstractStringField {
+    public class NameField extends AbstractSmartField<Field> {
 
       @Override
       protected String getConfiguredLabel() {
@@ -108,6 +100,17 @@ public class FieldInputForm extends AbstractInputForm {
       @Override
       protected boolean getConfiguredMandatory() {
         return true;
+      }
+
+      @Override
+      protected Class<? extends ILookupCall<Field>> getConfiguredLookupCall() {
+        return FieldsOutputMappingLookupCall.class;
+      }
+
+      @Override
+      protected void execPrepareLookup(ILookupCall<Field> call) throws ProcessingException {
+        FieldsOutputMappingLookupCall c = (FieldsOutputMappingLookupCall) call;
+        c.setProject(project);
       }
     }
 
@@ -120,29 +123,10 @@ public class FieldInputForm extends AbstractInputForm {
     }
   }
 
-  public class ModifyHandler extends AbstractFormHandler {
-    @Override
-    protected void execLoad() throws ProcessingException {
-      getNameField().setValue(field.getName());
-    }
-
-    @Override
-    protected void execStore() throws ProcessingException {
-      field.setName(getNameField().getValue());
-    }
-  }
-
   public class NewHandler extends AbstractFormHandler {
     @Override
     protected void execStore() throws ProcessingException {
-      project.addField(new Field(getNameField().getValue()));
+      criteria.addCondition(getNameField().getValue());
     }
-  }
-
-  /**
-   * @param field
-   */
-  public void setField(Field field) {
-    this.field = field;
   }
 }

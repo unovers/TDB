@@ -36,11 +36,11 @@ public class MySQLDatasource extends AbstractSQLDatasource {
       /* Connexion à la base de données */
       try {
         connexion = DriverManager.getConnection(url, getLogin(), getPassword());
+        setConnectionOpenStatus(true);
       }
       catch (SQLException e) {
-        throw new ProcessingException();
+        throw new ProcessingException(e.toString());
       }
-      setConnectionOpenStatus(true);
     }
 
     return true;
@@ -52,21 +52,20 @@ public class MySQLDatasource extends AbstractSQLDatasource {
       connexion.close();
     }
     catch (SQLException ignore) {
-      System.out.println(ignore);
     }
     setConnectionOpenStatus(false);
     return true;
   }
 
   @Override
-  public void query(String query) {
+  public void query(String query) throws ProcessingException {
     System.out.println(query);
     try {
       statement = connexion.createStatement();
       statement.executeQuery(query);
     }
     catch (SQLException e) {
-      System.out.println(e);
+      throw new ProcessingException(e.toString());
     }
   }
 
@@ -90,13 +89,11 @@ public class MySQLDatasource extends AbstractSQLDatasource {
 
     try {
       while (tablesResult.next()) {
-        System.out.println("Table : " + tablesResult.getString(1));
         SQLTable table = new SQLTable(tablesResult.getString(1));
         ResultSet resultat = queryDatas(String.format("describe %s;", table.getName()));
         while (resultat.next()) {
           String name = resultat.getString(1); // get column name
           String type = resultat.getString(2); // get column type
-          System.out.println("column : " + name + "  " + type);
 
           table.addField(new SQLField(name, type));
         }

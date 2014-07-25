@@ -36,6 +36,7 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
   public ProjectGenerationViewForm(Project project) throws ProcessingException {
     super(false);
     this.project = project;
+    project.generateProject();
     callInitializer();
   }
 

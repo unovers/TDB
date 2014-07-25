@@ -1,9 +1,8 @@
 package ch.heigvd.bachelor.crescenzio.generator.server;
 
-import java.util.LinkedList;
+import org.eclipse.scout.commons.exception.ProcessingException;
 
-import ch.heigvd.bachelor.crescenzio.generator.Field;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 public abstract class Server {
   private String host;
@@ -30,6 +29,5 @@ public abstract class Server {
     this.rootFolder = rootFolder;
   }
 
-  public abstract void generateScripts(LinkedList<AbstractDatasource> datasources, LinkedList<Field> fields);
-
+  public abstract void generateScripts(Project project) throws ProcessingException;
 }

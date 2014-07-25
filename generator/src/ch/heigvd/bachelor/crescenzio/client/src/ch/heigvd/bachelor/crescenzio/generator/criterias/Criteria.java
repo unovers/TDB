@@ -5,17 +5,42 @@ package ch.heigvd.bachelor.crescenzio.generator.criterias;
 
 import java.util.LinkedList;
 
+import ch.heigvd.bachelor.crescenzio.generator.Field;
+
 /**
  * @author Fabio
  */
-public abstract class Criteria {
-  private LinkedList<Condition> conditions;
+public class Criteria {
+  private LinkedList<Field> conditions;
   private String title;
+  private int id;
+  private static int counter;
+
+  static {
+    counter = 0;
+  }
+
+  public Criteria(String title) {
+    this.title = title;
+    this.conditions = new LinkedList<Field>();
+    this.id = counter++;
+  }
+
+  /**
+   * @return the id
+   */
+  public int getId() {
+    return id;
+  }
+
+  public void addCondition(Field field) {
+    if (!conditions.contains(field)) conditions.add(field);
+  }
 
   /**
    * @return the conditions
    */
-  public LinkedList<Condition> getConditions() {
+  public LinkedList<Field> getConditions() {
     return conditions;
   }
 
@@ -23,7 +48,7 @@ public abstract class Criteria {
    * @param conditions
    *          the conditions to set
    */
-  public void setConditions(LinkedList<Condition> conditions) {
+  public void setConditions(LinkedList<Field> conditions) {
     this.conditions = conditions;
   }
 

@@ -1,11 +1,13 @@
 package ch.heigvd.bachelor.crescenzio.generator.datasets;
 
-public class AbstractSQLDataset extends AbstractDataset {
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractSQLDatasource;
+
+public abstract class AbstractSQLDataset extends AbstractDataset {
 
   private String query;
 
-  public AbstractSQLDataset(String name, String query) {
-    super(name);
+  public AbstractSQLDataset(AbstractSQLDatasource datasource, String name, String query) {
+    super(datasource, name);
     this.query = query;
   }
 

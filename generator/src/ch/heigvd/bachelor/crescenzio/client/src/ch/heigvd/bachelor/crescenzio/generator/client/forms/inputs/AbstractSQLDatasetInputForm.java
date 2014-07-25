@@ -28,6 +28,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractSQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 
 /**
  * @author Fabio
@@ -190,8 +191,8 @@ public abstract class AbstractSQLDatasetInputForm extends AbstractDatasetInputFo
       Desktop desktop = (Desktop) getDesktop();
       String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
       String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
-      AbstractDatasource datasource = (AbstractDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
-      datasource.addDataset(new MySQLDataset(name, query));
+      MySQLDatasource datasource = (MySQLDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
+      datasource.addDataset(new MySQLDataset(datasource, name, query));
       desktop.refreshWorkspace();
     }
   }

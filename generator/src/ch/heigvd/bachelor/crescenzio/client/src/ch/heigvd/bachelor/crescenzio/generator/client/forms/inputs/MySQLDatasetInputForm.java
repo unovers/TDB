@@ -8,9 +8,11 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 
+import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
 
 /**
  * @author Fabio
@@ -22,6 +24,14 @@ public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
    */
   public MySQLDatasetInputForm(MySQLDataset dataset) throws ProcessingException {
     super(dataset);
+    callInitializer();
+  }
+
+  /**
+   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   */
+  public MySQLDatasetInputForm(Project project) throws ProcessingException {
+    super(project);
     callInitializer();
   }
 
@@ -53,8 +63,8 @@ public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
       Desktop desktop = (Desktop) getDesktop();
       String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
       String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
-      AbstractDatasource datasource = (AbstractDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
-      datasource.addDataset(new MySQLDataset(name, query));
+      MySQLDatasource datasource = (MySQLDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
+      datasource.addDataset(new MySQLDataset(datasource, name, query));
       desktop.refreshWorkspace();
     }
   }

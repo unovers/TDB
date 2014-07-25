@@ -150,6 +150,11 @@ public class MySQLDatasetViewForm extends AbstractSQLDatasetViewForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("PreviewDataset");
       }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        new SQLDatasetPreviewViewForm((MySQLDataset) getDataset()).startView();
+      }
     }
 
     @Order(40.0)

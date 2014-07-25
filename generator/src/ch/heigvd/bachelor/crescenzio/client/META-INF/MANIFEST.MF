@@ -12,6 +12,7 @@ Export-Package: ch.heigvd.bachelor.crescenzio.generator.client,
  ch.heigvd.bachelor.crescenzio.generator.client.services.lookup,
  ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop,
  ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines,
+ ch.heigvd.bachelor.crescenzio.generator.server.scripts,
  ch.heigvd.bachelor.crescenzio.generator.datasources
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client;visibility:=reexport,

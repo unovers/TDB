@@ -20,7 +20,6 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm.MainBox.FieldsField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox.OkButton;
@@ -96,13 +95,6 @@ public class FieldsViewForm extends AbstractForm {
    */
   public OkButton getOkButton() {
     return getFieldByClass(OkButton.class);
-  }
-
-  /**
-   * @return the FieldsField
-   */
-  public FieldsField getFieldsField() {
-    return getFieldByClass(FieldsField.class);
   }
 
   /**
@@ -332,10 +324,6 @@ public class FieldsViewForm extends AbstractForm {
       }
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.scout.rt.client.ui.form.AbstractFormHandler#execStore()
-     */
-    @Override
     protected void execStore() throws ProcessingException {
     }
   }

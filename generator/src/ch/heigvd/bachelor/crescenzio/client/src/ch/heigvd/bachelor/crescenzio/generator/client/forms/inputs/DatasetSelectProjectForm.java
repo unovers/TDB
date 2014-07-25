@@ -155,8 +155,8 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
         if (datasourceTypeFound) {
           String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
           String clss = pckage + "." + type + "InputForm";
-          Class datasourceClass = Class.forName(clss);
-          java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{Project.class});
+          Class datasetClass = Class.forName(clss);
+          java.lang.reflect.Constructor constructor = datasetClass.getConstructor(new Class[]{Project.class});
           AbstractInputForm form = (AbstractInputForm) constructor.newInstance(new Object[]{project});
           form.startNew();
         }

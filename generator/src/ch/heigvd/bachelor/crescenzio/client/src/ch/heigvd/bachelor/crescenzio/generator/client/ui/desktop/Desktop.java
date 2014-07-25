@@ -33,6 +33,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.AbstractInput
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSelectionInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
@@ -72,6 +73,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   protected void execOpened() throws ProcessingException {
     getMenu(EditProjectMenu.class).setEnabled(false);
 
+    new WorkspaceSelectionInputForm().startNew();
     if (Project.getAll() == null || Project.getAll().size() == 0) {
       startForm = new StartForm();
       startForm.startView();
@@ -79,6 +81,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     else {
       initWorkspace();
     }
+
   }
 
   @Order(10.0)

@@ -71,6 +71,5 @@ public abstract class AbstractDatasource {
 
   public abstract void describe() throws ProcessingException;
 
-  public abstract void query(String query);
-
+  public abstract void query(String query) throws ProcessingException;
 }

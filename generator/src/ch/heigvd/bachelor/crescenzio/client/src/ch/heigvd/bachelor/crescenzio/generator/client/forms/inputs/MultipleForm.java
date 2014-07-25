@@ -18,6 +18,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
+import org.eclipse.scout.rt.client.ui.form.fields.pagefield.AbstractPageField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tablefield.AbstractTableField;
@@ -31,8 +32,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.MultiField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.MultiField.Table;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TestSmartField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.MultipleForm.MainBox.TesttabField;
 
 /**
  * @author Fabio
@@ -142,6 +145,13 @@ public class MultipleForm extends AbstractForm {
   }
 
   /**
+   * @return the TestBox
+   */
+  public TestBox getTestBox() {
+    return getFieldByClass(TestBox.class);
+  }
+
+  /**
    * @return the TestField
    */
   public TestField getTestField() {
@@ -151,8 +161,15 @@ public class MultipleForm extends AbstractForm {
   /**
    * @return the TestSmartField
    */
-  public TestSmartField getTestSmartField(){
+  public TestSmartField getTestSmartField() {
     return getFieldByClass(TestSmartField.class);
+  }
+
+  /**
+   * @return the TesttabField
+   */
+  public TesttabField getTesttabField() {
+    return getFieldByClass(TesttabField.class);
   }
 
   @Order(10.0)
@@ -280,14 +297,36 @@ public class MultipleForm extends AbstractForm {
     }
 
     @Order(50.0)
-    public class OkButton extends AbstractOkButton {
+    public class TesttabField extends AbstractTableField<TesttabField.Table> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("test");
+      }
+
+      @Order(10.0)
+      public class Table extends AbstractExtensibleTable {
+      }
     }
 
     @Order(60.0)
-    public class CancelButton extends AbstractCancelButton {
+    public class TestBox extends AbstractPageField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("test");
+      }
     }
 
     @Order(70.0)
+    public class OkButton extends AbstractOkButton {
+    }
+
+    @Order(80.0)
+    public class CancelButton extends AbstractCancelButton {
+    }
+
+    @Order(90.0)
     public class AddFieldButton extends AbstractButton {
 
       @Override
