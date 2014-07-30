@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : OutputApplicationTypeForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
@@ -20,15 +30,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTyp
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.ProjectField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AndroidOutputApplicationViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.OutputTypeLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm;
 
-/**
- * @author Fabio
- */
 public class OutputApplicationTypeForm extends AbstractForm {
 
   /**
@@ -177,9 +184,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
   }
 
   public class NewHandler extends AbstractFormHandler {
-    /* (non-Javadoc)
-     * @see org.eclipse.scout.rt.client.ui.form.AbstractFormHandler#execStore()
-     */
+    @SuppressWarnings("unchecked")
     @Override
     protected void execStore() throws ProcessingException {
       Desktop desktop = (Desktop) getDesktop();
@@ -190,7 +195,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
       new_output.setProject(project);
       project.addOutput(new_output);
 
-      new AndroidOutputApplicationViewForm(project, new_output);
+      new AndroidSimpleListOutputApplicationViewForm(project, new_output);
       desktop.refreshWorkspace();
     }
   }

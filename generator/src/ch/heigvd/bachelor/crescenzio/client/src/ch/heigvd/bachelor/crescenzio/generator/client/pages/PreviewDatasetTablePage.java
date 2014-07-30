@@ -11,7 +11,7 @@ import org.eclipse.scout.rt.client.ui.basic.table.columns.IColumn;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPageWithTable;
 import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 
 public class PreviewDatasetTablePage extends AbstractPageWithTable<PreviewDatasetTablePage.Table> {
   private List<IColumn<?>> m_injectedColumns;

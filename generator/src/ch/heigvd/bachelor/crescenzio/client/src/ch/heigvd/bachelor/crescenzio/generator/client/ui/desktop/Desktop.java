@@ -1,10 +1,29 @@
+/**
+ * Nom du fichier         : Desktop.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.scout.commons.CollectionUtility;
 import org.eclipse.scout.commons.annotations.Order;
@@ -23,11 +42,21 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
+import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import ch.heigvd.bachelor.crescenzio.generator.DatasourceType;
+import ch.heigvd.bachelor.crescenzio.generator.OutputType;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.ProjectXMLLoader;
+import ch.heigvd.bachelor.crescenzio.generator.ServerType;
 import ch.heigvd.bachelor.crescenzio.generator.client.ClientSession;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.AbstractInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm;
@@ -39,21 +68,150 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewFor
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
+
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
-  //private LogsViewForm logs;
   private StartForm startForm;
   private ProjectViewForm projectInfoForm;
   private LogsViewForm logsForm;
-  private LinkedList<Project> projects;
   private DefaultOutlineTreeForm treeForm;
   private DefaultOutlineTableForm tableForm;
   private HashMap<Project, ProjectViewForm> projectsInfoForms;
+  private String workspace;
 
-  public Desktop() {
-    projects = new LinkedList<Project>();
+  private static HashMap<String, DatasourceType> datasourceTypeList;
+  private static HashMap<String, OutputType> outputTypeList;
+  private static HashMap<String, ServerType> serverTypeList;
+  private static boolean init = false;
+
+  static {
+    loadDatas();
+  }
+
+  private void loadProjectsInWorkspace() {
+
+    String[] folderContent = new File(workspace).list();
+    for (int i = 0; i < folderContent.length; i++) {
+      if (new File(workspace + File.separator + folderContent[i]).isDirectory()) {
+        try {
+          String filePathString = workspace + File.separator + folderContent[i] + File.separator + "project.xml";
+          File file = new File(filePathString);
+          if (file.exists() && !file.isDirectory()) {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            ProjectXMLLoader.loadProject(doc.getDocumentElement());
+          }
+        }
+        catch (ParserConfigurationException | SAXException | IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  private static void loadDatas() {
+    if (!init) {
+      try {
+        datasourceTypeList = new HashMap<String, DatasourceType>();
+        outputTypeList = new HashMap<String, OutputType>();
+        serverTypeList = new HashMap<String, ServerType>();
+
+        //charge les types de sources de données
+        Document document;
+        DocumentBuilderFactory factory = null;
+        try {
+          factory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder builder = factory.newDocumentBuilder();
+          document = builder.parse(AbstractDatasource.class.getResourceAsStream("datasources.xml"));
+          NodeList nList = document.getElementsByTagName("datasources");
+          for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element eElement = (Element) nNode;
+              datasourceTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                  new DatasourceType(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
+                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+
+            }
+          }
+        }
+        catch (Exception e) {
+          throw new ProcessingException("Could not load datasource type");
+        }
+
+        //charge les types de serveurs
+        try {
+          factory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder builder = factory.newDocumentBuilder();
+          document = builder.parse(Server.class.getResourceAsStream("servers.xml"));
+          NodeList nList = document.getElementsByTagName("servers");
+          for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element eElement = (Element) nNode;
+              serverTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                  new ServerType(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
+                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+
+            }
+          }
+        }
+        catch (Exception e) {
+          throw new ProcessingException("Could not load server types");
+        }
+
+        //charge les types de sorties d'application
+        try {
+          factory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder builder = factory.newDocumentBuilder();
+          document = builder.parse(AbstractOutputApplication.class.getResourceAsStream("outputs.xml"));
+          NodeList nList = document.getElementsByTagName("outputs");
+          for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+              Element eElement = (Element) nNode;
+              outputTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                  new OutputType(eElement.getElementsByTagName("name").item(0).getTextContent(),
+                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
+                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+            }
+          }
+        }
+        catch (Exception e) {
+          throw new ProcessingException("Could not load outputs type");
+        }
+      }
+      catch (ProcessingException e1) {
+        new MessageBox("Error loading", e1.getMessage(), "ok").startMessageBox();
+      }
+      init = true;
+    }
+  }
+
+  public static HashMap<String, DatasourceType> getDatasourceTypes() {
+    return datasourceTypeList;
+  }
+
+  public static HashMap<String, OutputType> getOutputTypes() {
+    return outputTypeList;
+  }
+
+  public static HashMap<String, ServerType> getServerTypes() {
+    return serverTypeList;
+  }
+
+  public Desktop() throws ProcessingException {
     projectsInfoForms = new HashMap<Project, ProjectViewForm>();
   }
 
@@ -73,7 +231,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   protected void execOpened() throws ProcessingException {
     getMenu(EditProjectMenu.class).setEnabled(false);
 
-    new WorkspaceSelectionInputForm().startNew();
+    AbstractInputForm form = new WorkspaceSelectionInputForm();
+    form.startNew();
+    form.waitFor();
+    loadProjectsInWorkspace();
     if (Project.getAll() == null || Project.getAll().size() == 0) {
       startForm = new StartForm();
       startForm.startView();
@@ -81,6 +242,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     else {
       initWorkspace();
     }
+    refreshWorkspace();
 
   }
 
@@ -136,8 +298,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
-          String[] datasources = new String[]{"MySQLDatasource"};
-          for (String datasource : datasources) {
+
+          for (Entry<String, DatasourceType> entry : datasourceTypeList.entrySet()) {
+            String datasource = entry.getValue().getName() + "Datasource";
             nodeList.add(new AbstractExtensibleMenu() {
 
               @Override
@@ -153,9 +316,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
               @Override
               protected void execAction() throws ProcessingException {
                 try {
-                  String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
+                  String pckage = entry.getValue().getLocation();
                   String clss = pckage + "." + datasource + "InputForm";
-                  Class datasourceClass = Class.forName(clss);
+                  Class<?> datasourceClass = Class.forName(clss);
                   java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{});
                   AbstractInputForm form = (AbstractInputForm) constructor.newInstance();
                   form.startNew();
@@ -189,8 +352,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
-          String[] datasets = new String[]{"MySQLDataset"};
-          for (String dataset : datasets) {
+          for (Entry<String, DatasourceType> entry : datasourceTypeList.entrySet()) {
+            String dataset = entry.getValue().getName() + "Dataset";
             nodeList.add(new AbstractExtensibleMenu() {
 
               @Override
@@ -254,19 +417,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     @Override
     protected String getConfiguredText() {
       return TEXTS.get("ToolsMenu");
-    }
-
-    @Order(10.0)
-    public class AfficherDetailsProjetMenu extends AbstractExtensibleMenu {
-
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("AfficherDetailsProjet");
-      }
-
-      @Override
-      protected void execAction() throws ProcessingException {
-      }
     }
   }
 
@@ -352,10 +502,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  public LinkedList<Project> getProjects() {
-    return projects;
-  }
-
   public void refreshWorkspace() throws ProcessingException {
     if (treeForm != null && !treeForm.isShowing()) {
       treeForm.startView();
@@ -363,15 +509,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (getOutline() != null) getOutline().resetOutline();
   }
 
-//
-//  /**
-//   * @param string
-//   */
-//  public void Log(String string) {
-//    logsForm.getLogsField().setValue(string);
-//  }
-
-  @SuppressWarnings("hiding")
   public void displayProjectInfo(Project project) throws ProcessingException {
     if (projectsInfoForms.get(project) != null) {
       projectsInfoForms.get(project).doClose();
@@ -379,16 +516,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
 
     projectsInfoForms.put(project, new ProjectViewForm(project));
-  }
-
-  @SuppressWarnings("hiding")
-  public void createProject(Project project) {
-    projects.add(project);
-  }
-
-  @SuppressWarnings("hiding")
-  public void removeProject(Project project) {
-    projects.remove(project);
   }
 
   /**
@@ -422,8 +549,18 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       setOutline(firstOutline);
     }
 
-//    logsForm = new LogsViewForm();
-//    logsForm.startModify();
+  }
 
+  /**
+   */
+  public void setWorkspace(String workspace) {
+    this.workspace = workspace;
+  }
+
+  /**
+   * @return
+   */
+  public String getWorkspace() {
+    return workspace;
   }
 }

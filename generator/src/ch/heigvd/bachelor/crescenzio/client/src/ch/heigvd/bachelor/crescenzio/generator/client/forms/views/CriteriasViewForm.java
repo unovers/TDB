@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : CriteriasViewForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -77,8 +87,8 @@ public class CriteriasViewForm extends AbstractForm {
       for (Criteria criteria : project.getCriterias()) {
         fieldList.add(new AbstractGroupBox() {
           @Override
-          protected void injectFieldsInternal(List<IFormField> fieldList) {
-            fieldList.add(new AbstractLabelField() {
+          protected void injectFieldsInternal(List<IFormField> fieldList2) {
+            fieldList2.add(new AbstractLabelField() {
               @Override
               protected String getConfiguredLabel() {
                 return TEXTS.get("Title");
@@ -87,10 +97,10 @@ public class CriteriasViewForm extends AbstractForm {
               @Override
               public String getFieldId() {
                 return "critera_" + criteria.getId();
-              };
+              }
             });
 
-            fieldList.add(new AbstractGroupBox() {
+            fieldList2.add(new AbstractGroupBox() {
 
               @Override
               protected String getConfiguredLabel() {
@@ -98,9 +108,9 @@ public class CriteriasViewForm extends AbstractForm {
               }
 
               @Override
-              protected void injectFieldsInternal(List<IFormField> fieldList) {
+              protected void injectFieldsInternal(List<IFormField> fieldList3) {
                 for (Field condition : criteria.getConditions()) {
-                  fieldList.add(new AbstractLabelField() {
+                  fieldList3.add(new AbstractLabelField() {
                     @Override
                     protected String getConfiguredLabel() {
                       return TEXTS.get("Field");
@@ -109,14 +119,14 @@ public class CriteriasViewForm extends AbstractForm {
                     @Override
                     public String getFieldId() {
                       return condition.getId();
-                    };
+                    }
                   });
                 }
               }
 
             });
 
-            fieldList.add(new AbstractButton() {
+            fieldList2.add(new AbstractButton() {
               @Override
               protected String getConfiguredLabel() {
                 // TODO Auto-generated method stub
@@ -129,7 +139,7 @@ public class CriteriasViewForm extends AbstractForm {
               }
             });
 
-            fieldList.add(new AbstractButton() {
+            fieldList2.add(new AbstractButton() {
               @Override
               protected String getConfiguredLabel() {
                 return TEXTS.get("Edit");
@@ -141,7 +151,7 @@ public class CriteriasViewForm extends AbstractForm {
               }
 
             });
-            fieldList.add(new AbstractButton() {
+            fieldList2.add(new AbstractButton() {
               @Override
               protected String getConfiguredLabel() {
                 return TEXTS.get("Delete");

@@ -4,13 +4,29 @@ import java.util.LinkedList;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
-import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 public abstract class AbstractDatasource {
   private String name;
+  private Project project;
   private LinkedList<AbstractDataset> datasets;
   private boolean isConnectionOpen;
   private boolean isDescribed;
+
+  /**
+   * @return the project
+   */
+  public Project getProject() {
+    return project;
+  }
+
+  /**
+   * @param project
+   *          the project to set
+   */
+  public void setProject(Project project) {
+    this.project = project;
+  }
 
   /**
    * @return the isDescribed
@@ -27,7 +43,8 @@ public abstract class AbstractDatasource {
     this.isDescribed = isDescribed;
   }
 
-  protected AbstractDatasource(String name) {
+  protected AbstractDatasource(Project project, String name) {
+    this.project = project;
     this.name = name;
     this.datasets = new LinkedList<AbstractDataset>();
     this.isConnectionOpen = false;

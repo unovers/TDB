@@ -16,6 +16,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSelectionInputForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSelectionInputForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSelectionInputForm.MainBox.WorkspaceField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
  * @author Fabio
@@ -89,8 +90,43 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
     public class WorkspaceField extends AbstractFileChooserField {
 
       @Override
+      protected String getConfiguredDirectory() {
+        return null;
+      }
+
+      @Override
+      protected boolean getConfiguredFolderMode() {
+        return true;
+      }
+
+      @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("Workspace");
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+      }
+
+      @Override
+      protected boolean getConfiguredShowDirectory() {
+        return true;
+      }
+
+      @Override
+      protected boolean getConfiguredShowFileExtension() {
+        return false;
+      }
+
+      @Override
+      protected boolean getConfiguredShowFileName() {
+        return false;
+      }
+
+      @Override
+      protected boolean getConfiguredTypeLoad() {
+        return true;
       }
     }
 
@@ -123,6 +159,11 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
   }
 
   public class NewHandler extends AbstractFormHandler {
+    @Override
+    protected void execStore() throws ProcessingException {
+      Desktop desktop = (Desktop) getDesktop();
+      desktop.setWorkspace(getWorkspaceField().getValue());
+    }
   }
 
 }

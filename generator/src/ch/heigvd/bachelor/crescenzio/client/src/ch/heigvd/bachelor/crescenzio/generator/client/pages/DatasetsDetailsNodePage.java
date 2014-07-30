@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : DatasetsDetailsNodePage.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -11,7 +21,9 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasetPage;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
@@ -43,10 +55,10 @@ public class DatasetsDetailsNodePage extends AbstractPageWithNodes {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (AbstractDatasource datasource : project.getDatasources()) {
       for (AbstractDataset dataset : datasource.getDatasets()) {
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String pckage = Desktop.getDatasourceTypes().get(datasource.getClass().getSimpleName().replace("Datasource", "")).getLocation();
         String clss = pckage + "." + datasource.getClass().getSimpleName() + "DatasetPage";
         clss = clss.replace("Datasource", "");
-        Class datasetPageClass;
+        Class<?> datasetPageClass;
         try {
           datasetPageClass = Class.forName(clss);
           java.lang.reflect.Constructor constructor = datasetPageClass.getConstructor(new Class[]{dataset.getClass()});

@@ -25,7 +25,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox.AddFieldButton;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
@@ -161,9 +161,9 @@ public class FieldsViewForm extends AbstractForm {
               }
 
               @Override
-              protected void injectFieldsInternal(List<IFormField> fieldList) {
+              protected void injectFieldsInternal(List<IFormField> fieldList2) {
                 //Créer pour chaque champs les informations (nom - button edit - button delete"
-                fieldList.add(new AbstractLabelField() {
+                fieldList2.add(new AbstractLabelField() {
 
                   @Override
                   protected String getConfiguredLabel() {
@@ -177,7 +177,7 @@ public class FieldsViewForm extends AbstractForm {
                 });
 
                 if (!field.getName().equals("__item_type")) {
-                  fieldList.add(new AbstractButton() {
+                  fieldList2.add(new AbstractButton() {
 
                     @Override
                     protected String getConfiguredLabel() {
@@ -192,7 +192,7 @@ public class FieldsViewForm extends AbstractForm {
                     }
 
                   });
-                  fieldList.add(new AbstractButton() {
+                  fieldList2.add(new AbstractButton() {
 
                     @Override
                     protected String getConfiguredLabel() {
@@ -256,9 +256,9 @@ public class FieldsViewForm extends AbstractForm {
                 }
 
                 @Override
-                protected void injectFieldsInternal(List<IFormField> fieldList) {
+                protected void injectFieldsInternal(List<IFormField> fieldList2) {
                   for (Field field : project.getFields()) {
-                    fieldList.add(new AbstractStringField() {
+                    fieldList2.add(new AbstractStringField() {
                       @Override
                       protected String getConfiguredLabel() {
                         return field.getName();
@@ -322,9 +322,6 @@ public class FieldsViewForm extends AbstractForm {
           }
         }
       }
-    }
-
-    protected void execStore() throws ProcessingException {
     }
   }
 }

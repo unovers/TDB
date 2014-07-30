@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplication;
 
 public abstract class AbstractOutputApplication {
   private HashMap<Field, OutputField> applicationFields;
@@ -75,7 +76,7 @@ public abstract class AbstractOutputApplication {
     return project;
   }
 
-  public abstract AndroidOutputApplication duplicate();
+  public abstract AndroidSimpleListOutputApplication duplicate();
 
   public void removeItemType(ItemType itemType) {
     if (itemsTypes.contains(itemType)) itemsTypes.remove(itemType);

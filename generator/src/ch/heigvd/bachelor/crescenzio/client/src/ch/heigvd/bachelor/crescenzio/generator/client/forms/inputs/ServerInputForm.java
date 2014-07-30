@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ServerInputForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
@@ -26,9 +36,6 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 import ch.heigvd.bachelor.crescenzio.generator.shared.ConfigureServerFormData;
 
-/**
- * @author Fabio
- */
 @FormData(value = ConfigureServerFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class ServerInputForm extends AbstractInputForm {
 
@@ -203,7 +210,7 @@ public class ServerInputForm extends AbstractInputForm {
         Desktop desktop = (Desktop) getDesktop();
         String pckage = "ch.heigvd.bachelor.crescenzio.generator.server";
         String clss = pckage + "." + getServerTypeSmartField().getValue();
-        Class datasourceClass = Class.forName(clss);
+        Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});
         Server server = (Server) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});
@@ -224,7 +231,7 @@ public class ServerInputForm extends AbstractInputForm {
         Desktop desktop = (Desktop) getDesktop();
         String pckage = "ch.heigvd.bachelor.crescenzio.generator.server";
         String clss = pckage + "." + getServerTypeSmartField().getValue();
-        Class datasourceClass = Class.forName(clss);
+        Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});
         Server server = (Server) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});

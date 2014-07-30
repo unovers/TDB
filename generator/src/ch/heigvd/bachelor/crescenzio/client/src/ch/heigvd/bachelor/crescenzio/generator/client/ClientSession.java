@@ -1,3 +1,11 @@
+/**
+ * Nom du fichier         : AbstractResourceType.java
+ * Commentaires           : Pré géneré par Eclipse Scout
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.client;
 
 import org.eclipse.scout.commons.exception.ProcessingException;

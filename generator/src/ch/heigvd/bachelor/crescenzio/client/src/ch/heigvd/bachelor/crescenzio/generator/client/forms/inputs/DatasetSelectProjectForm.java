@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : DatasetSelectProjectForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
@@ -20,6 +30,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelect
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
@@ -140,12 +151,15 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
   }
 
   public class NewHandler extends AbstractFormHandler {
+    @SuppressWarnings("unchecked")
     @Override
     protected void execStore() throws ProcessingException {
       try {
         Project project = (Project) ((AbstractSmartField<Project>) getFieldById("project")).getValue();
-        String pckageClssDatasource = "ch.heigvd.bachelor.crescenzio.generator.datasources";
-        String clssDatasource = pckageClssDatasource + "." + type.replace("Dataset", "") + "Datasource";
+        String pckage = Desktop.getDatasourceTypes().get(type.replace("Dataset", "")).getLocation();
+        String clssDatasource = pckage + "." + type.replace("Dataset", "") + "Datasource";
+
+        //Verifie si un datasource de ce type existe
         boolean datasourceTypeFound = false;
         for (AbstractDatasource datasource : project.getDatasources()) {
           if (Class.forName(clssDatasource).isInstance(datasource)) {
@@ -153,7 +167,6 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
           }
         }
         if (datasourceTypeFound) {
-          String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs";
           String clss = pckage + "." + type + "InputForm";
           Class datasetClass = Class.forName(clss);
           java.lang.reflect.Constructor constructor = datasetClass.getConstructor(new Class[]{Project.class});

@@ -14,10 +14,10 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AndroidOutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileField;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.StringField;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplication;
 
 /**
  * @author Fabio
@@ -29,7 +29,7 @@ public class OutputTypeLookupCall extends LocalLookupCall<AbstractOutputApplicat
   protected List<ILookupRow<AbstractOutputApplication>> execCreateLookupRows() throws ProcessingException {
     List<ILookupRow<AbstractOutputApplication>> rows = new ArrayList<ILookupRow<AbstractOutputApplication>>();
     LinkedList<AbstractOutputApplication> outputs = new LinkedList<AbstractOutputApplication>();
-    AndroidOutputApplication android = new AndroidOutputApplication("Android output");
+    AndroidSimpleListOutputApplication android = new AndroidSimpleListOutputApplication("Android output");
     android.addApplicationField(new Field("project_icon72"), new FileField());
     android.addApplicationField(new Field("application_title"), new StringField(""));
     android.setField(new Field("name"), null);

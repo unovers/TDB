@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : DatasourcesDetailsNodePage.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -11,11 +21,10 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourcePage;
 
-/**
- * @author Fabio
- */
 public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
 
   private Project project;
@@ -42,9 +51,9 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (AbstractDatasource datasource : project.getDatasources()) {
       try {
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String pckage = Desktop.getDatasourceTypes().get(datasource.getClass().getSimpleName().replace("Datasource", "")).getLocation();
         String clss = pckage + "." + datasource.getClass().getSimpleName() + "Page";
-        Class datasourceClass = Class.forName(clss);
+        Class<?> datasourceClass = Class.forName(clss);
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{datasource.getClass()});
         AbstractDatasourcePage page = (AbstractDatasourcePage) constructor.newInstance(new Object[]{datasource});
         pageList.add(page);

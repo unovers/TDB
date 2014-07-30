@@ -1,3 +1,16 @@
+/**
+ * Nom du fichier         : Project.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator;
 
 import java.util.HashMap;
@@ -6,13 +19,13 @@ import java.util.LinkedList;
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.AbstractDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasets.MySQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.MySQLDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.server.PHPServer;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.php.PHPServer;
 
 public class Project {
   private static LinkedList<Project> projects;
@@ -31,8 +44,8 @@ public class Project {
       projects = new LinkedList<Project>();
       Project p1 = new Project("P1", "pck1", "author1", "organ1");
       p1.setServer(new PHPServer("localhost", "a"));
-      MySQLDatasource datasource = new MySQLDatasource("MySQL", "localhost", 3306, "letstodoit", "root", "Qwe12345");
-      MySQLDatasource datasource2 = new MySQLDatasource("MySQL2", "localhost", 3306, "example", "root", "");
+      MySQLDatasource datasource = new MySQLDatasource(p1, "MySQL", "localhost", 3306, "letstodoit", "root", "Qwe12345");
+      MySQLDatasource datasource2 = new MySQLDatasource(p1, "MySQL2", "localhost", 3306, "example", "root", "");
       p1.addDatasource(datasource);
       p1.addDatasource(datasource2);
       datasource.addDataset(new MySQLDataset(datasource, "Set1", "SELECT * FROM tasks;"));
@@ -112,7 +125,7 @@ public class Project {
 
     System.out.println("Server infos : ");
     System.out
-        .println("host: " + server.getHost() + server.getRootFolder());
+    .println("host: " + server.getHost() + server.getRootFolder());
     try {
       getServer().generateScripts(this);
     }
@@ -216,6 +229,7 @@ public class Project {
     HashMap<Field, String> datasetmap = mapping.get(dataset);
     if (datasetmap == null) {
       mapping.put(dataset, new HashMap<Field, String>());
+      mapping.get(dataset).put(field, value);
     }
     else {
       if (datasetmap.get(field) != null) datasetmap.remove(field);
@@ -245,5 +259,35 @@ public class Project {
   public void removeCriteria(Criteria criteria) {
     this.criterias.remove(criteria);
 
+  }
+
+  /**
+   * @param textContent
+   * @return
+   */
+  public Field getFieldByName(String fieldName) {
+    for (Field f : fields) {
+      if (f.getName().equals(fieldName)) {
+        return f;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @param attribute
+   * @return
+   */
+  public AbstractDataset getDatasetByName(String type, String datasourceName, String datasetName) {
+    for (AbstractDatasource datasource : datasources) {
+      if (datasource.getClass().getSimpleName().replace("Datasource", "").equals(type) && datasource.getName().equals(datasourceName)) {
+        for (AbstractDataset dataset : datasource.getDatasets()) {
+          if (dataset.getName().equals(datasetName)) {
+            return dataset;
+          }
+        }
+      }
+    }
+    return null;
   }
 }

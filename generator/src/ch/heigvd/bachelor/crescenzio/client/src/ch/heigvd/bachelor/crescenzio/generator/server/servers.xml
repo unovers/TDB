@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+	<server>
+		<name>PHP</name>
+		<displayName>PHP server</displayName>
+		<location>ch.heigvd.bachelor.crescenzio.generator.server.php</location>
+	</server>
+</servers>

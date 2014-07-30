@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : OutputsDetailsNodePage.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -11,7 +21,9 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplicationPage;
 
 /**
  * @author Fabio
@@ -47,9 +59,9 @@ public class OutputsDetailsNodePage extends AbstractPageWithNodes {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (AbstractOutputApplication output : project.getOutputs()) {
       try {
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.client.pages";
+        String pckage = Desktop.getOutputTypes().get(output.getClass().getSimpleName()).getLocation();
         String clss = pckage + "." + output.getClass().getSimpleName() + "Page";
-        Class outputClass = Class.forName(clss);
+        Class<?> outputClass = Class.forName(clss);
         java.lang.reflect.Constructor constructor = outputClass.getConstructor(new Class[]{Project.class, output.getClass()});
         AbstractOutputApplicationPage page = (AbstractOutputApplicationPage) constructor.newInstance(new Object[]{project, output});
         pageList.add(page);

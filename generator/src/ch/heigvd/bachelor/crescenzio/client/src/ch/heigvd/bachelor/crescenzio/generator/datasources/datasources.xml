@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<datasource>
+		<name>MySQL</name>
+		<displayName>MySQL</displayName>
+		<location>ch.heigvd.bachelor.crescenzio.generator.datasources.mysql</location>
+	</datasource>
+</datasources>

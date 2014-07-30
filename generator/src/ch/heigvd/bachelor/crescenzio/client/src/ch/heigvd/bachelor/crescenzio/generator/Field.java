@@ -1,25 +1,22 @@
+/**
+ * Nom du fichier         : Field.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator;
 
 public class Field {
 
   private String name;
   private String id;
-  private String value;
-
-  /**
-   * @return the value
-   */
-  public String getValue() {
-    return value;
-  }
-
-  /**
-   * @param value
-   *          the value to set
-   */
-  public void setValue(String value) {
-    this.value = value;
-  }
 
   /**
    * @param id

@@ -3,6 +3,18 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
+import java.io.File;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
@@ -11,8 +23,10 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.w3c.dom.Document;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.ProjectXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.AuthorField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.DeleteProjectButton;
@@ -20,6 +34,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewFor
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.OrganisationField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.PackageNameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 
 /**
@@ -174,6 +189,43 @@ public class ProjectViewForm extends AbstractViewForm {
       @Override
       protected void execClickAction() throws ProcessingException {
         new ProjectGenerationViewForm(project).startView();
+      }
+    }
+
+    @Order(60.0)
+    public class SaveOProjectButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Save");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder;
+        try {
+          //Créer le dossier de l'application si il n'existe pas
+          String folderPath = ((Desktop) getDesktop()).getWorkspace() + File.separator + project.getName().replaceAll("[-+.^:,]", "");
+          File folder = new File(folderPath);
+          folder.mkdirs();
+
+          docBuilder = docFactory.newDocumentBuilder();
+
+          TransformerFactory transformerFactory = TransformerFactory.newInstance();
+          Transformer transformer = transformerFactory.newTransformer();
+          Document document = docBuilder.newDocument();
+          document.appendChild(ProjectXMLLoader.createProjectElement(document, project));
+          DOMSource source = new DOMSource(document);
+
+          StreamResult result = new StreamResult(new File(folderPath + File.separator + "project.xml"));
+          transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+          transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+          transformer.transform(source, result);
+        }
+        catch (ParserConfigurationException | TransformerException e) {
+          e.printStackTrace();
+        }
       }
     }
 

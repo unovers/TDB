@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : FieldInputForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
@@ -18,9 +28,6 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputFor
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.OkButton;
 
-/**
- * @author Fabio
- */
 public class FieldInputForm extends AbstractInputForm {
 
   private Project project;

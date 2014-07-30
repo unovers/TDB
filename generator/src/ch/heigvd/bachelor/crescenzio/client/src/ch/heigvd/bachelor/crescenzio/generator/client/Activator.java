@@ -1,3 +1,11 @@
+/**
+ * Nom du fichier         : Activator.java
+ * Commentaires           : Pré géneré par Eclipse Scout
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.client;
 
 import org.eclipse.core.runtime.Plugin;
@@ -42,7 +50,7 @@ public class Activator extends Plugin {
 
   /**
    * Returns the shared instance
-   * 
+   *
    * @return the shared instance
    */
   public static Activator getDefault() {

@@ -1,10 +1,19 @@
 /**
+ * Nom du fichier         : CriteriasViewForm.java
+ * Version                : 0.1
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           :
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
 import org.eclipse.scout.commons.annotations.ConfigOperation;
-import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
@@ -24,12 +33,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputF
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.ProjectNameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
-import ch.heigvd.bachelor.crescenzio.generator.shared.CreateProjectFormData;
 
-/**
- * @author Fabio
- */
-@FormData(value = CreateProjectFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class ProjectInputForm extends AbstractForm {
   private Project project;
 
@@ -193,7 +197,6 @@ public class ProjectInputForm extends AbstractForm {
   public class ModifyHandler extends AbstractFormHandler {
     @Override
     protected void execLoad() throws ProcessingException {
-      Desktop desktop = (Desktop) getDesktop();
       getProjectNameField().setValue(project.getName());
       getAuthorField().setValue(project.getAuthor());
       getOrganisationField().setValue(project.getOrganisation());
