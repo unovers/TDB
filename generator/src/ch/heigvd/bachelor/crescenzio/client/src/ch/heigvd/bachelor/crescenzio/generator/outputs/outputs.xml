@@ -3,6 +3,6 @@
 	<output>
 		<name>AndroidSimpleList</name>
 		<displayName>Android simple list</displayName>
-		<location>ch.heigvd.bachelor.crescenzio.generator.outputs.android</location>
+		<location>androidsimplelist</location>
 	</output>
 </outputs>

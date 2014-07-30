@@ -136,6 +136,10 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
 
     @Order(30.0)
     public class CancelButton extends AbstractCancelButton {
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("ExitMenu");
+      }
     }
   }
 
@@ -164,6 +168,7 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
       Desktop desktop = (Desktop) getDesktop();
       desktop.setWorkspace(getWorkspaceField().getValue());
     }
+
   }
 
 }

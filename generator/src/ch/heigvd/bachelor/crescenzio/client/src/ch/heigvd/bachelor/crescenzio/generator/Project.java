@@ -21,11 +21,8 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDataset;
-import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
-import ch.heigvd.bachelor.crescenzio.generator.server.php.PHPServer;
 
 public class Project {
   private static LinkedList<Project> projects;
@@ -40,27 +37,8 @@ public class Project {
    */
   public static LinkedList<Project> getAll()
   {
-    if (projects == null || projects.size() == 0) {
+    if (projects == null) {
       projects = new LinkedList<Project>();
-      Project p1 = new Project("P1", "pck1", "author1", "organ1");
-      p1.setServer(new PHPServer("localhost", "a"));
-      MySQLDatasource datasource = new MySQLDatasource(p1, "MySQL", "localhost", 3306, "letstodoit", "root", "Qwe12345");
-      MySQLDatasource datasource2 = new MySQLDatasource(p1, "MySQL2", "localhost", 3306, "example", "root", "");
-      p1.addDatasource(datasource);
-      p1.addDatasource(datasource2);
-      datasource.addDataset(new MySQLDataset(datasource, "Set1", "SELECT * FROM tasks;"));
-      datasource.addDataset(new MySQLDataset(datasource, "Set2", "SELECT * FROM users;"));
-      datasource2.addDataset(new MySQLDataset(datasource2, "Set1", "SELECT * FROM table1;"));
-
-      p1.addField(new Field("Name"));
-      p1.addField(new Field("Type"));
-      p1.addField(new Field("Date"));
-      p1.addField(new Field("Icon"));
-
-      new Project("P2", "pck2", "author2", "organ2");
-      new Project("P3", "pck3", "author3", "organ3");
-      new Project("P4", "pck4", "author4", "organ4");
-
     }
     return projects;
   }
@@ -73,7 +51,7 @@ public class Project {
   private String name;
   private String organisation;
 
-  private LinkedList<AbstractOutputApplication> outputs;
+  private LinkedList<OutputApplication> outputs;
 
   private String packageName;
 
@@ -86,7 +64,7 @@ public class Project {
     this.packageName = packageName;
     this.author = author;
     this.organisation = organisation;
-    this.outputs = new LinkedList<AbstractOutputApplication>();
+    this.outputs = new LinkedList<OutputApplication>();
     this.datasources = new LinkedList<AbstractDatasource>();
     this.criterias = new LinkedList<Criteria>();
     this.fields = new LinkedList<Field>();
@@ -106,7 +84,7 @@ public class Project {
     this.fields.add(field);
   }
 
-  public void addOutput(AbstractOutputApplication output) {
+  public void addOutput(OutputApplication output) {
     this.outputs.add(output);
   }
 
@@ -125,7 +103,7 @@ public class Project {
 
     System.out.println("Server infos : ");
     System.out
-    .println("host: " + server.getHost() + server.getRootFolder());
+        .println("host: " + server.getHost() + server.getRootFolder());
     try {
       getServer().generateScripts(this);
     }
@@ -201,7 +179,7 @@ public class Project {
     return organisation;
   }
 
-  public LinkedList<AbstractOutputApplication> getOutputs() {
+  public LinkedList<OutputApplication> getOutputs() {
     return outputs;
   }
 

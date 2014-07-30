@@ -30,11 +30,11 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTyp
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.ProjectField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.OutputTypeLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 public class OutputApplicationTypeForm extends AbstractForm {
 
@@ -43,6 +43,16 @@ public class OutputApplicationTypeForm extends AbstractForm {
    */
   public OutputApplicationTypeForm() throws ProcessingException {
     super();
+  }
+
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
+  }
+
+  @Override
+  protected boolean getConfiguredModal() {
+    return false;
   }
 
   @Override
@@ -111,7 +121,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
     }
 
     @Order(10.0)
-    public class ServerTypeSmartField extends AbstractSmartField<AbstractOutputApplication> {
+    public class ServerTypeSmartField extends AbstractSmartField<OutputApplication> {
 
       @Override
       protected String getConfiguredLabel() {
@@ -124,7 +134,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
       }
 
       @Override
-      protected Class<? extends ILookupCall<AbstractOutputApplication>> getConfiguredLookupCall() {
+      protected Class<? extends ILookupCall<OutputApplication>> getConfiguredLookupCall() {
         return OutputTypeLookupCall.class;
       }
 
@@ -190,12 +200,12 @@ public class OutputApplicationTypeForm extends AbstractForm {
       Desktop desktop = (Desktop) getDesktop();
       Project project = (Project) ((AbstractSmartField<Project>) getFieldById("project")).getValue();
 
-      AbstractOutputApplication output = (AbstractOutputApplication) ((AbstractSmartField<AbstractOutputApplication>) getFieldById("output")).getValue();
-      AbstractOutputApplication new_output = output.duplicate();
+      OutputApplication output = (OutputApplication) ((AbstractSmartField<OutputApplication>) getFieldById("output")).getValue();
+      OutputApplication new_output = output.duplicate();
       new_output.setProject(project);
       project.addOutput(new_output);
 
-      new AndroidSimpleListOutputApplicationViewForm(project, new_output);
+      new OutputApplicationViewForm(project, new_output);
       desktop.refreshWorkspace();
     }
   }

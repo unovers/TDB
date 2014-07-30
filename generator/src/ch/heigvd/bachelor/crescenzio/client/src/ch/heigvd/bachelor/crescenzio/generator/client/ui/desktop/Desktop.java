@@ -69,7 +69,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 
@@ -175,7 +175,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         try {
           factory = DocumentBuilderFactory.newInstance();
           DocumentBuilder builder = factory.newDocumentBuilder();
-          document = builder.parse(AbstractOutputApplication.class.getResourceAsStream("outputs.xml"));
+          document = builder.parse(OutputApplication.class.getResourceAsStream("outputs.xml"));
           NodeList nList = document.getElementsByTagName("outputs");
           for (int temp = 0; temp < nList.getLength(); temp++) {
             Node nNode = nList.item(temp);
@@ -234,15 +234,20 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     AbstractInputForm form = new WorkspaceSelectionInputForm();
     form.startNew();
     form.waitFor();
-    loadProjectsInWorkspace();
-    if (Project.getAll() == null || Project.getAll().size() == 0) {
-      startForm = new StartForm();
-      startForm.startView();
+    if (form.isFormStored()) {
+      loadProjectsInWorkspace();
+      if (Project.getAll() == null || Project.getAll().size() == 0) {
+        startForm = new StartForm();
+        startForm.startView();
+      }
+      else {
+        initWorkspace();
+      }
+      refreshWorkspace();
     }
     else {
-      initWorkspace();
+      ClientSyncJob.getCurrentSession(ClientSession.class).stopSession();
     }
-    refreshWorkspace();
 
   }
 

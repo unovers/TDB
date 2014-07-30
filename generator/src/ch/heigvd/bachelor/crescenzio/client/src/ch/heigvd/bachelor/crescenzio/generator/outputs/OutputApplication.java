@@ -2,12 +2,13 @@ package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplication;
 
-public abstract class AbstractOutputApplication {
+public class OutputApplication {
+
   private HashMap<Field, OutputField> applicationFields;
   private LinkedList<ItemType> itemsTypes;
   private HashMap<Field, Field> mappedFields;
@@ -18,7 +19,7 @@ public abstract class AbstractOutputApplication {
    * @param project
    * @param name
    */
-  public AbstractOutputApplication(String name) {
+  public OutputApplication(String name) {
     this.name = name;
     this.mappedFields = new HashMap<Field, Field>();
     this.applicationFields = new HashMap<Field, OutputField>();
@@ -39,7 +40,9 @@ public abstract class AbstractOutputApplication {
     itemsTypes.add(itemType);
   }
 
-  public abstract void generate();
+  public void generate() {
+
+  }
 
   /**
    * @return the applicationFields
@@ -76,8 +79,6 @@ public abstract class AbstractOutputApplication {
     return project;
   }
 
-  public abstract AndroidSimpleListOutputApplication duplicate();
-
   public void removeItemType(ItemType itemType) {
     if (itemsTypes.contains(itemType)) itemsTypes.remove(itemType);
   }
@@ -101,5 +102,26 @@ public abstract class AbstractOutputApplication {
    */
   public void setProject(Project project) {
     this.project = project;
+  }
+
+  public OutputApplication duplicate() {
+    OutputApplication output = new OutputApplication(getName());
+    for (Entry<Field, OutputField> entry : getApplicationFields().entrySet()) {
+      Field field = entry.getKey();
+      OutputField outputField = entry.getValue();
+      output.addApplicationField(field, outputField);
+    }
+
+    for (Entry<Field, Field> entry : getMappedFields().entrySet()) {
+      Field field = entry.getKey();
+      Field mappedField = entry.getValue();
+      output.addMappedField(field, mappedField);
+    }
+
+    for (ItemType itemType : getItemsTypes()) {
+      output.addItemType(itemType);
+    }
+
+    return output;
   }
 }

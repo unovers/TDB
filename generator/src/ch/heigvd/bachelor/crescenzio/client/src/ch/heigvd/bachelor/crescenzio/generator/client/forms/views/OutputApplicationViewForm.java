@@ -1,23 +1,14 @@
 /**
- * Nom du fichier         :
- * Version                : 0.1
- * Auteur                 : Crescenzio Fabio
- *
- * Date dernière révision : 30.07.2014
- *
- * Commentaires           :
- *
- * Historiques des modifications
- * -
  *
  */
-package ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist;
+package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
@@ -31,28 +22,62 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AbstractOutputViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.DeleteOutputButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox.ItemsTypesBox;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox.ItemsTypesBox.AddItemTypeButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox.OutputsDetailsBox;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.SaveChangesButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.FieldsOutputMappingLookupCall;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileField;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.StringField;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.DeleteOutputButton;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.OutputsSectionBox;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.OutputsSectionBox.ItemsTypesBox;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.OutputsSectionBox.ItemsTypesBox.AddItemTypeButton;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.OutputsSectionBox.OutputsDetailsBox;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist.AndroidSimpleListOutputApplicationViewForm.MainBox.SaveChangesButton;
 
-public class AndroidSimpleListOutputApplicationViewForm extends AbstractOutputViewForm {
+/**
+ * @author Fabio
+ */
+public class OutputApplicationViewForm extends AbstractForm {
+
+  private OutputApplication output;
+  private Project project;
+
+  public OutputApplicationViewForm(Project project, OutputApplication output) throws ProcessingException {
+    super(false);
+    this.output = output;
+    this.project = project;
+    callInitializer();
+  }
 
   /**
-   * @throws org.eclipse.scout.commons.exception.ProcessingException
+   * @return the output
    */
-  public AndroidSimpleListOutputApplicationViewForm(Project project, AbstractOutputApplication output) throws ProcessingException {
-    super(project, output);
-    callInitializer();
+  public OutputApplication getOutput() {
+    return output;
+  }
+
+  /**
+   * @param output
+   *          the output to set
+   */
+  public void setOutput(OutputApplication output) {
+    this.output = output;
+  }
+
+  /**
+   * @return the project
+   */
+  public Project getProject() {
+    return project;
+  }
+
+  /**
+   * @param project
+   *          the project to set
+   */
+  public void setProject(Project project) {
+    this.project = project;
   }
 
   /**
@@ -376,8 +401,8 @@ public class AndroidSimpleListOutputApplicationViewForm extends AbstractOutputVi
           AbstractFileChooserField item_list_view_file = (AbstractFileChooserField) getFieldById("item_list_view_" + item.getId());
           AbstractFileChooserField item_view_file = (AbstractFileChooserField) getFieldById("item_view_" + item.getId());
           item.setName(name.getValue());
-          item.setItemlist_file_path(item_list_view_file.getValue());
-          item.setItemlist_file_path(item_view_file.getValue());
+          item.setItemListViewFileName(item_list_view_file.getValue());
+          item.setItemViewFileName(item_view_file.getValue());
         }
       }
     }
@@ -392,9 +417,8 @@ public class AndroidSimpleListOutputApplicationViewForm extends AbstractOutputVi
     }
   }
 
-  @Override
   public void startView() throws ProcessingException {
-    startInternal(new AndroidSimpleListOutputApplicationViewForm.ViewHandler());
+    startInternal(new ViewHandler());
   }
 
   public class ViewHandler extends AbstractFormHandler {
@@ -436,14 +460,13 @@ public class AndroidSimpleListOutputApplicationViewForm extends AbstractOutputVi
         AbstractFileChooserField item_list_view_file = (AbstractFileChooserField) getFieldById("item_list_view_" + item.getId());
         AbstractFileChooserField item_view_file = (AbstractFileChooserField) getFieldById("item_view_" + item.getId());
         if (item.getName() != null) name.setValue(item.getName());
-        if (item.getItemlist_file_path() != null) {
-          item_list_view_file.setValue(item.getItemlist_file_path());
+        if (item.getItemListViewFileName() != null) {
+          item_list_view_file.setValue(item.getItemListViewFileName());
         }
-        if (item.getItemview_file_path() != null) {
-          item_view_file.setValue(item.getItemview_file_path());
+        if (item.getItemViewFileName() != null) {
+          item_view_file.setValue(item.getItemViewFileName());
         }
       }
     }
-
   }
 }

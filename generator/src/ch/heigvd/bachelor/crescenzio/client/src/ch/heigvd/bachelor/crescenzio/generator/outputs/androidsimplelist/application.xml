@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application>
+	<name>AndroidSimpleList</name>
+	<applicationFields>
+		<field type="file">Application icon 72px</field>
+		<field type="string">Application title</field>
+	</applicationFields>
+	<mappingFields>
+		<field>Name</field>
+		<field>Icon</field>
+		<field>Date</field>
+		<field>Description</field>
+	</mappingFields>
+	<itemTypes>
+		<type>
+			<name>Default</name>
+			<files>
+				<file>
+					<name>itemListViewFile</name>
+					<format>xml</format>
+					<displayName>list view</displayName>
+					<default>code/itemListView.xml</default>
+				</file>
+				<file>
+					<name>itemViewFile</name>
+					<format>java</format>
+					<displayName>itemView</displayName>
+					<default>code/itemView.xml</default>
+				</file>
+			</files>
+		</type>
+	</itemTypes>
+</application>

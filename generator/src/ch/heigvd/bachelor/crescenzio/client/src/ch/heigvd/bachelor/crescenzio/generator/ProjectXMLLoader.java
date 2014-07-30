@@ -26,8 +26,8 @@ import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceXMLLoader;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputXMLLoader;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 
 public class ProjectXMLLoader {
@@ -137,14 +137,7 @@ public class ProjectXMLLoader {
       for (int i = 0; i < nodeOutputs.getChildNodes().getLength(); i++) {
         Node node = nodeOutputs.getChildNodes().item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-          String outputType = ((Element) node).getAttribute("type");
-          String pckage = Desktop.getDatasourceTypes().get(outputType).getLocation();
-          String clssLoader = pckage + "." + outputType + "XMLLoader";
-          Class<?> outputClass = Class.forName(clssLoader);
-
-          java.lang.reflect.Constructor constructor = outputClass.getConstructor();
-          AbstractOutputXMLLoader loader = (AbstractOutputXMLLoader) constructor.newInstance();
-          project.addOutput(loader.loadOutput((Element) node));
+          project.addOutput(OutputApplicationXMLLoader.loadOutput((Element) node));
         }
       }
     }
@@ -201,16 +194,9 @@ public class ProjectXMLLoader {
         nodeDatasources.appendChild(loader.createElementDatasource(document, datasource));
       }
       //Ajoute les sorties
-      for (AbstractOutputApplication output : project.getOutputs()) {
-        String outputType = output.getClass().getSimpleName().replace("OutputApplication", "");
-        String pckage = Desktop.getOutputTypes().get(outputType).getLocation();
-        String clss = pckage + "." + outputType + "XMLLoader";
-        Class<?> outputClass;
-        outputClass = Class.forName(clss);
-        java.lang.reflect.Constructor constructor = outputClass.getConstructor();
-        AbstractOutputXMLLoader loader = (AbstractOutputXMLLoader) constructor.newInstance();
+      for (OutputApplication output : project.getOutputs()) {
 
-        nodeOutputs.appendChild(loader.createElementOutput(document, output));
+        nodeOutputs.appendChild(OutputApplicationXMLLoader.createElementOutput(document, output));
       }
 
       //Ajoute les champs
