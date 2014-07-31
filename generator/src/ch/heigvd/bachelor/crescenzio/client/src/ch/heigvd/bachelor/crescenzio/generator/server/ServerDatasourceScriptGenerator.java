@@ -1,5 +1,7 @@
 package ch.heigvd.bachelor.crescenzio.generator.server;
 
+import java.io.IOException;
+
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
@@ -47,5 +49,10 @@ public abstract class ServerDatasourceScriptGenerator {
   public void setProject(Project project) {
     this.project = project;
   }
+
+  /**
+   * créer les fichiers nécessaires dans le répertoire
+   */
+  public abstract void createFiles(String destination) throws IOException;
 
 }

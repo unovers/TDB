@@ -13,6 +13,11 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.server.php;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
@@ -27,7 +32,7 @@ public class PHPServer extends Server {
   }
 
   @Override
-  public void generateScripts(Project project) throws ProcessingException {
+  public void generateScripts(Project project, String destination) throws ProcessingException {
 
     StringBuffer output = new StringBuffer();
     output.append("<?php\n");
@@ -44,6 +49,7 @@ public class PHPServer extends Server {
         java.lang.reflect.Constructor constructor = generatorClass.getConstructor(new Class[]{Project.class, datasource.getClass()});
         ServerDatasourceScriptGenerator generator = (ServerDatasourceScriptGenerator) constructor.newInstance(new Object[]{project, datasource});
         output.append(generator.generate());
+        generator.createFiles(destination);
       }
       catch (Exception e) {
         e.printStackTrace();
@@ -69,6 +75,20 @@ public class PHPServer extends Server {
     output.append("}\n");
     output.append("?>");
 
-    System.out.println(output);
+    try {
+      File destinationFile = new File(destination + File.separator + "datas.php");
+      if (destinationFile.exists()) {
+        destinationFile.delete();
+      }
+      BufferedWriter out = new BufferedWriter(
+          new FileWriter(destination + File.separator + "datas.php"));
+      String outText = output.toString();
+      out.write(outText);
+      out.close();
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 }

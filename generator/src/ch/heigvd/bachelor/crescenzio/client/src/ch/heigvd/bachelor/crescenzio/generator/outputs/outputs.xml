@@ -3,6 +3,11 @@
 	<output>
 		<name>AndroidSimpleList</name>
 		<displayName>Android simple list</displayName>
-		<location>androidsimplelist</location>
+		<location>ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist</location>		
 	</output>
+	<output>
+		<name>WindowsSimpleList</name>
+		<displayName>Windows simple list</displayName>
+		<location>ch.heigvd.bachelor.crescenzio.generator.outputs.windowssimplelist</location>		
+	</output>	
 </outputs>

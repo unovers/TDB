@@ -20,6 +20,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerat
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.OrganisationField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.PackageNameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 
 /**
@@ -29,6 +30,7 @@ import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 public class ProjectGenerationViewForm extends AbstractViewForm {
 
   private Project project;
+  private boolean generate;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
@@ -36,7 +38,19 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
   public ProjectGenerationViewForm(Project project) throws ProcessingException {
     super(false);
     this.project = project;
-    project.generateProject();
+    this.generate = false;
+    try {
+      //Réalise toutes les vérifications
+      if (project.getDatasources().size() == 0) {
+        throw new Exception();
+      }
+
+      project.generateProject(((Desktop) getDesktop()).getWorkspace());
+      generate = true;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
     callInitializer();
   }
 

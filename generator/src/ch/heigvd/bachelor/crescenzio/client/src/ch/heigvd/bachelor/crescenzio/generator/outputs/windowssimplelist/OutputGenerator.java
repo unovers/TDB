@@ -1,7 +1,7 @@
 /**
  *
  */
-package ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist;
+package ch.heigvd.bachelor.crescenzio.generator.outputs.windowssimplelist;
 
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
@@ -20,7 +20,6 @@ public class OutputGenerator extends AbstractOutputGenerator {
 
   @Override
   public void generate(String destination) {
-    System.out.println("GENERATION DE ANDROIDSIMPLELIST");
 
   }
 

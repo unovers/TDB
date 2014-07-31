@@ -13,14 +13,18 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 
@@ -92,7 +96,7 @@ public class Project {
     throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
   }
 
-  public void generateProject() {
+  public void generateProject(String destination) {
 
     System.out.println("Project infos : ");
     System.out.println("Project name         : " + name);
@@ -102,37 +106,80 @@ public class Project {
     System.out.println();
 
     System.out.println("Server infos : ");
-    System.out
-        .println("host: " + server.getHost() + server.getRootFolder());
+    System.out.println("host: " + server.getHost() + server.getRootFolder());
     try {
-      getServer().generateScripts(this);
+      //créer le dossier script :
+      String path = destination + File.separator + getName() + File.separator + "serverScript";
+      new File(path).mkdirs();
+      // appele le generateur
+      getServer().generateScripts(this, destination + File.separator + getName() + File.separator + "serverScript");
     }
     catch (ProcessingException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
-    System.out.println("Fields : ");
-    for (Field field : fields) {
-      System.out.print(field.getName() + " ");
-    }
-    System.out.println();
+    for (OutputApplication output : getOutputs()) {
+      try {
+        String pckage = Desktop.getOutputTypes().get(output.getName()).getLocation();
+        String clss = pckage + "." + "OutputGenerator";
+        System.out.println(pckage);
+        Class<?> outputGenerator;
+        outputGenerator = Class.forName(clss);
+        java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class, String.class});
+        AbstractOutputGenerator generator = (AbstractOutputGenerator) constructor.newInstance(new Object[]{output, destination});
+        generator.generate(destination);
 
-    System.out.println("Datasources info : ");
-
-    for (AbstractDatasource source : datasources) {
-      System.out.println("Name :" + source.getName());
-
-      for (AbstractDataset set : source.getDatasets()) {
-        System.out.println("dataset " + set.getName());
-        for (Field field : set.getFields()) {
+        System.out.println("Fields : ");
+        for (Field field : fields) {
           System.out.print(field.getName() + " ");
         }
         System.out.println();
-      }
-      System.out.println();
-    }
 
+        System.out.println("Datasources info : ");
+
+        for (AbstractDatasource source : datasources) {
+          System.out.println("Name :" + source.getName());
+
+          for (AbstractDataset set : source.getDatasets()) {
+            System.out.println("dataset " + set.getName());
+            for (Field field : set.getFields()) {
+              System.out.print(field.getName() + " ");
+            }
+            System.out.println();
+          }
+          System.out.println();
+        }
+      }
+      catch (ClassNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (NoSuchMethodException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (SecurityException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (InstantiationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (IllegalAccessException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (IllegalArgumentException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      catch (InvocationTargetException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
+    }
   }
 
   public String getAuthor() {

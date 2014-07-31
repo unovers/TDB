@@ -17,7 +17,8 @@ Export-Package: ch.heigvd.bachelor.crescenzio.generator.client,
  ch.heigvd.bachelor.crescenzio.generator.datasources,
  ch.heigvd.bachelor.crescenzio.generator.datasources.mysql,
  ch.heigvd.bachelor.crescenzio.generator.outputs,
- ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist
+ ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist,
+ ch.heigvd.bachelor.crescenzio.generator.outputs.windowssimplelist
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client;visibility:=reexport,
  org.eclipse.scout.rt.extension.client;visibility:=reexport,

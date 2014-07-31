@@ -36,13 +36,38 @@ public class OutputApplicationXMLLoader {
       Node nodeField = nodeApplicationFields.getChildNodes().item(i);
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
         Node nodeFieldName = getDirectChild((Element) nodeField, "name");
+        Node nodeFieldValue = getDirectChild((Element) nodeField, "value");
+        Node nodeFieldDescription = getDirectChild((Element) nodeField, "description");
         String typeField = ((Element) nodeField).getAttribute("type");
         OutputField outputField = null;
         if (typeField.equals("string")) {
           outputField = new StringField("");
+          outputField.setDescription(nodeFieldDescription.getTextContent());
         }
         else if (typeField.equals("file")) {
+          Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeField, "extensions");
+
+          LinkedList<String> exts = new LinkedList<String>();
+          //Ajoute les extensions supportées
+          for (int k = 0; k < nodeTypeResourceAcceptedExtension.getChildNodes().getLength(); k++) {
+            Node nodeTypeExtension = nodeTypeResourceAcceptedExtension.getChildNodes().item(k);
+            if (nodeTypeExtension.getNodeType() == Node.ELEMENT_NODE) {
+              exts.add(nodeTypeExtension.getTextContent());
+            }
+          }
+
+          String[] extensions = new String[exts.size()];
+          for (int k = 0; k < exts.size(); k++) {
+            extensions[k] = exts.get(k);
+          }
+
           outputField = new FileField();
+          outputField.setExtensions(extensions);
+          outputField.setValue(nodeFieldValue.getTextContent());
+          outputField.setDescription(nodeFieldDescription.getTextContent());
+        }
+        else {
+          throw new UnsupportedOperationException();
         }
 
         output.addApplicationField(new Field(nodeFieldName.getTextContent()), outputField);
@@ -129,12 +154,15 @@ public class OutputApplicationXMLLoader {
 
       Node nodeApplicationFieldName = document.createElement("name");
       Node nodeApplicationFieldValue = document.createElement("value");
+      Node nodeApplicationFieldDescription = document.createElement("description");
 
       nodeApplicationFieldName.setTextContent(applicationField.getKey().getName());
       nodeApplicationFieldValue.setTextContent(applicationField.getValue().getValue());
+      nodeApplicationFieldDescription.setTextContent(applicationField.getValue().getDescription());
 
       nodeApplicationField.appendChild(nodeApplicationFieldName);
       nodeApplicationField.appendChild(nodeApplicationFieldValue);
+      nodeApplicationField.appendChild(nodeApplicationFieldDescription);
       nodeApplicationFields.appendChild(nodeApplicationField);
     }
 
@@ -215,19 +243,38 @@ public class OutputApplicationXMLLoader {
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
         Node nodeApplicationFieldName = getDirectChild((Element) nodeField, "name");
         Node nodeApplicationFieldValue = getDirectChild((Element) nodeField, "value");
+        Node nodeApplicationFieldDescription = getDirectChild((Element) nodeField, "description");
         String typeField = ((Element) nodeField).getAttribute("type");
         OutputField outputField = null;
         if (typeField.equals("string")) {
           outputField = new StringField("");
         }
         else if (typeField.equals("file")) {
+          Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeField, "extensions");
+
+          LinkedList<String> exts = new LinkedList<String>();
+          //Ajoute les extensions supportées
+          for (int k = 0; k < nodeTypeResourceAcceptedExtension.getChildNodes().getLength(); k++) {
+            Node nodeTypeExtension = nodeTypeResourceAcceptedExtension.getChildNodes().item(k);
+            if (nodeTypeExtension.getNodeType() == Node.ELEMENT_NODE) {
+              exts.add(nodeTypeExtension.getTextContent());
+            }
+          }
+
+          String[] extensions = new String[exts.size()];
+          for (int k = 0; k < exts.size(); k++) {
+            extensions[k] = exts.get(k);
+          }
+
           outputField = new FileField();
+          outputField.setExtensions(extensions);
         }
         else {
           throw new UnsupportedOperationException();
         }
 
         outputField.setValue(nodeApplicationFieldValue.getTextContent());
+        outputField.setDescription(nodeApplicationFieldDescription.getTextContent());
 
         output.addApplicationField(new Field(nodeApplicationFieldName.getTextContent()), outputField);
       }

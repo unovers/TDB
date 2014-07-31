@@ -29,5 +29,5 @@ public abstract class Server {
     this.rootFolder = rootFolder;
   }
 
-  public abstract void generateScripts(Project project) throws ProcessingException;
+  public abstract void generateScripts(Project project, String destination) throws ProcessingException;
 }

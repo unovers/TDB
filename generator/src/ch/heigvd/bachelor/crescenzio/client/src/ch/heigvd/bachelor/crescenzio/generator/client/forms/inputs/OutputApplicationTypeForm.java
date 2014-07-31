@@ -13,6 +13,8 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
+import java.io.File;
+
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
@@ -34,6 +36,8 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicat
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.OutputTypeLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 public class OutputApplicationTypeForm extends AbstractForm {
@@ -202,8 +206,31 @@ public class OutputApplicationTypeForm extends AbstractForm {
 
       OutputApplication output = (OutputApplication) ((AbstractSmartField<OutputApplication>) getFieldById("output")).getValue();
       OutputApplication new_output = output.duplicate();
+
+      String path = desktop.getWorkspace() + File.separator + project.getName() + File.separator + output.getName();
       new_output.setProject(project);
       project.addOutput(new_output);
+      //créer le répertoire de l'application dans le dossier du projet
+      new File(path).mkdirs();
+      new File(path + File.separator + "code").mkdirs();
+
+      for (ItemType itemType : output.getItemsTypes()) {
+        String type_path = path + File.separator + "code" + File.separator + "types" + File.separator + itemType.getName();
+        new File(type_path).mkdirs();
+
+        for (FileResource resource : itemType.getResources()) {
+          String pathSrc = getClass().getProtectionDomain().getCodeSource().getLocation().getPath() + File.separator + output.getName().toLowerCase();
+//          try {
+          System.out.println("copy " + pathSrc + File.separator + resource.getValue() + " to " + type_path);
+          //Files.copy(new File(pathSrc + File.separator + resource.getValue()).toPath(), new File(type_path).toPath());
+//          }
+//          catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//          }
+        }
+
+      }
 
       new OutputApplicationViewForm(project, new_output);
       desktop.refreshWorkspace();

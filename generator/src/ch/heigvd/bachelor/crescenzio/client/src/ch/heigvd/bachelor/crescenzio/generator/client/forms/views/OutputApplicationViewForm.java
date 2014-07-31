@@ -3,6 +3,10 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -31,6 +35,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicat
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox.OutputsDetailsBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.SaveChangesButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.FieldsOutputMappingLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileField;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
@@ -412,7 +417,8 @@ public class OutputApplicationViewForm extends AbstractForm {
       @SuppressWarnings("unchecked")
       @Override
       protected void execClickAction() throws ProcessingException {
-
+        String workspace = ((Desktop) getDesktop()).getWorkspace();
+        String project_path = workspace + File.separator + project.getName();
         //application infos
         for (Entry<Field, OutputField> entry : getOutput().getApplicationFields().entrySet()) {
           Field field = entry.getKey();
@@ -424,6 +430,30 @@ public class OutputApplicationViewForm extends AbstractForm {
           else if (outputField instanceof FileField) {
             AbstractFileChooserField f = (AbstractFileChooserField) getFieldById("application_" + field.getId());
             getOutput().getApplicationFields().get(field).setValue(f.getValue());
+
+            //S'assure que le répertoire soit correct
+            String old_value = (project_path + File.separator + output.getName() + File.separator + outputField.getValue()).replace("/", File.separator).replace("\\", File.separator);
+
+            String new_value = f.getValue();
+            String application_path = "code" + File.separator + "application" + File.separator + field.getName();
+            String file_path = application_path + File.separator + new File(new_value).getName();
+            new File(project_path + File.separator + output.getName() + File.separator + application_path).mkdirs();
+
+            if (!old_value.equals(new_value)) {
+              //Supprime l'ancienne valeur
+              File file = new File(old_value);
+              if (file.exists()) {
+                file.delete();
+              }
+              //Copie la nouvelle valeur
+              try {
+                Files.copy(new File(new_value).toPath(), new File(project_path + File.separator + output.getName() + File.separator + application_path + file.separator + new File(new_value).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+              }
+              catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
           }
         }
 
@@ -436,14 +466,39 @@ public class OutputApplicationViewForm extends AbstractForm {
         }
 
         //item infos
-        for (ItemType item : getOutput().getItemsTypes()) {
-          if (!item.getName().equals("__default")) {
-            AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
-            item.setName(name.getValue());
+        for (ItemType itemType : getOutput().getItemsTypes()) {
+          if (!itemType.getName().equals("__default")) {
+            AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
+            itemType.setName(name.getValue());
           }
-          for (FileResource resource : item.getResources()) {
-            AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + item.getId());
-            resource.setValue(itemResourceFile.getValue());
+          for (FileResource resource : itemType.getResources()) {
+            AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + itemType.getId());
+
+            //S'assure que le répertoire soit correct
+            String old_value = (project_path + File.separator + output.getName() + File.separator + resource.getValue()).replace("/", File.separator).replace("\\", File.separator);
+
+            String new_value = itemResourceFile.getValue();
+            String type_path = "code" + File.separator + "types" + File.separator + itemType.getName();
+            String file_path = type_path + File.separator + new File(new_value).getName();
+            new File(project_path + File.separator + output.getName() + File.separator + type_path).mkdirs();
+
+            if (!old_value.equals(new_value)) {
+
+              //Supprime l'ancienne valeur
+              File file = new File(old_value);
+              if (file.exists()) {
+                file.delete();
+              }
+              //Copie la nouvelle valeur
+              try {
+                Files.copy(new File(new_value).toPath(), new File(project_path + File.separator + output.getName() + File.separator + type_path + file.separator + new File(new_value).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+              }
+              catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
+            resource.setValue(type_path);
           }
         }
       }
@@ -464,8 +519,11 @@ public class OutputApplicationViewForm extends AbstractForm {
   }
 
   public class ViewHandler extends AbstractFormHandler {
+    @SuppressWarnings("unchecked")
     @Override
     protected void execLoad() throws ProcessingException {
+      String workspace = ((Desktop) getDesktop()).getWorkspace();
+      String project_path = workspace + File.separator + project.getName();
       //application infos
       for (Entry<Field, OutputField> entry : getOutput().getApplicationFields().entrySet()) {
         Field field = entry.getKey();
@@ -476,7 +534,10 @@ public class OutputApplicationViewForm extends AbstractForm {
         }
         else if (outputField instanceof FileField) {
           AbstractFileChooserField f = (AbstractFileChooserField) getFieldById("application_" + field.getId());
-          if (outputField.getValue() != null) f.setValue(outputField.getValue());
+
+          //S'assure que le répertoire soit correct
+          String old_value = (project_path + File.separator + output.getName() + File.separator + outputField.getValue()).replace("/", File.separator).replace("\\", File.separator);
+          f.setValue(old_value);
         }
       }
 
@@ -489,18 +550,21 @@ public class OutputApplicationViewForm extends AbstractForm {
       }
 
       //item infos
-      for (ItemType item : getOutput().getItemsTypes()) {
-        if (!item.getName().equals("__default")) {
-          AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
-          name.setValue(item.getName());
+      for (ItemType itemType : getOutput().getItemsTypes()) {
+        if (!itemType.getName().equals("__default")) {
+          AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
+          name.setValue(itemType.getName());
         }
         else {
-          AbstractLabelField name = (AbstractLabelField) getFieldById("item_id_" + item.getId());
-          name.setValue(item.getName());
+          AbstractLabelField name = (AbstractLabelField) getFieldById("item_id_" + itemType.getId());
+          name.setValue(itemType.getName());
         }
-        for (FileResource resource : item.getResources()) {
-          AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + item.getId());
-          itemResourceFile.setValue(resource.getValue());
+        for (FileResource resource : itemType.getResources()) {
+          AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + itemType.getId());
+          //S'assure que le répertoire soit correct
+          String old_value = (project_path + File.separator + output.getName() + File.separator + resource.getValue()).replace("/", File.separator).replace("\\", File.separator);
+
+          itemResourceFile.setValue(old_value);
         }
       }
     }

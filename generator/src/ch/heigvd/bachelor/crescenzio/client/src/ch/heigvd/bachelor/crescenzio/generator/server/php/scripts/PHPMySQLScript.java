@@ -1,5 +1,9 @@
 package ch.heigvd.bachelor.crescenzio.generator.server.php.scripts;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
@@ -39,5 +43,15 @@ public class PHPMySQLScript extends ServerDatasourceScriptGenerator {
     }
     output.append("  $connexion = null;\n");
     return output.toString();
+  }
+
+  @Override
+  public void createFiles(String destination) throws IOException {
+    File destinationFile = new File(destination + File.separator + "function_and_classes.php");
+    if (destinationFile.exists()) {
+      destinationFile.delete();
+    }
+    Files.copy(PHPMySQLScript.class.getResourceAsStream("function_and_classes.php"), destinationFile.toPath());
+
   }
 }

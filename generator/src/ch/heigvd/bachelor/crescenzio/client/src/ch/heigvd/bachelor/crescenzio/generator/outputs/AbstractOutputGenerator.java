@@ -15,5 +15,5 @@ public abstract class AbstractOutputGenerator {
     this.destinationPath = destinationPath;
   }
 
-  public abstract void generate();
+  public abstract void generate(String destination);
 }

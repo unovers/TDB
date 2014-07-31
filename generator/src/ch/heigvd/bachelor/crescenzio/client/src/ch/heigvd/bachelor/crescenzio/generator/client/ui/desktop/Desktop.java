@@ -49,7 +49,6 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import ch.heigvd.bachelor.crescenzio.generator.DatasourceType;
@@ -84,13 +83,22 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private HashMap<Project, ProjectViewForm> projectsInfoForms;
   private String workspace;
 
-  private static HashMap<String, DatasourceType> datasourceTypeList;
-  private static HashMap<String, OutputType> outputTypeList;
-  private static HashMap<String, ServerType> serverTypeList;
+  private static HashMap<String, DatasourceType> datasourceType;
+  private static HashMap<String, OutputType> outputType;
+  private static HashMap<String, ServerType> serverTypes;
   private static boolean init = false;
 
   static {
     loadDatas();
+  }
+
+  private static Element getDirectChild(Element parent, String name)
+  {
+    for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
+    {
+      if (child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
+    }
+    return null;
   }
 
   private void loadProjectsInWorkspace() {
@@ -121,9 +129,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static void loadDatas() {
     if (!init) {
       try {
-        datasourceTypeList = new HashMap<String, DatasourceType>();
-        outputTypeList = new HashMap<String, OutputType>();
-        serverTypeList = new HashMap<String, ServerType>();
+        datasourceType = new HashMap<String, DatasourceType>();
+        outputType = new HashMap<String, OutputType>();
+        serverTypes = new HashMap<String, ServerType>();
 
         //charge les types de sources de données
         Document document;
@@ -132,15 +140,17 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           factory = DocumentBuilderFactory.newInstance();
           DocumentBuilder builder = factory.newDocumentBuilder();
           document = builder.parse(AbstractDatasource.class.getResourceAsStream("datasources.xml"));
-          NodeList nList = document.getElementsByTagName("datasources");
-          for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element eElement = (Element) nNode;
-              datasourceTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                  new DatasourceType(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
-                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+          Node nodeDatasources = document.getDocumentElement();
+          for (int i = 0; i < nodeDatasources.getChildNodes().getLength(); i++) {
+            Node nodeDatasource = nodeDatasources.getChildNodes().item(i);
+            if (nodeDatasource.getNodeType() == Node.ELEMENT_NODE) {
+              Node nodeDatasourceName = getDirectChild((Element) nodeDatasource, "name");
+              Node nodeDatasourceDisplayName = getDirectChild((Element) nodeDatasource, "displayName");
+              Node nodeDatasourceLocation = getDirectChild((Element) nodeDatasource, "location");
+              datasourceType.put(nodeDatasourceName.getTextContent(),
+                  new DatasourceType(nodeDatasourceName.getTextContent(),
+                      nodeDatasourceDisplayName.getTextContent(),
+                      nodeDatasourceLocation.getTextContent()));
 
             }
           }
@@ -154,15 +164,17 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           factory = DocumentBuilderFactory.newInstance();
           DocumentBuilder builder = factory.newDocumentBuilder();
           document = builder.parse(Server.class.getResourceAsStream("servers.xml"));
-          NodeList nList = document.getElementsByTagName("servers");
-          for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element eElement = (Element) nNode;
-              serverTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                  new ServerType(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
-                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+          Node nodeServers = document.getDocumentElement();
+          for (int i = 0; i < nodeServers.getChildNodes().getLength(); i++) {
+            Node nodeServer = nodeServers.getChildNodes().item(i);
+            if (nodeServer.getNodeType() == Node.ELEMENT_NODE) {
+              Node nodeServerName = getDirectChild((Element) nodeServer, "name");
+              Node nodeServerDisplayName = getDirectChild((Element) nodeServer, "displayName");
+              Node nodeServerLocation = getDirectChild((Element) nodeServer, "location");
+              serverTypes.put(nodeServerName.getTextContent(),
+                  new ServerType(nodeServerName.getTextContent(),
+                      nodeServerDisplayName.getTextContent(),
+                      nodeServerLocation.getTextContent()));
 
             }
           }
@@ -176,15 +188,19 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           factory = DocumentBuilderFactory.newInstance();
           DocumentBuilder builder = factory.newDocumentBuilder();
           document = builder.parse(OutputApplication.class.getResourceAsStream("outputs.xml"));
-          NodeList nList = document.getElementsByTagName("outputs");
-          for (int temp = 0; temp < nList.getLength(); temp++) {
-            Node nNode = nList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-              Element eElement = (Element) nNode;
-              outputTypeList.put(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                  new OutputType(eElement.getElementsByTagName("name").item(0).getTextContent(),
-                      eElement.getElementsByTagName("displayName").item(0).getTextContent(),
-                      eElement.getElementsByTagName("location").item(0).getTextContent()));
+
+          Node nodeOuputs = document.getDocumentElement();
+          for (int i = 0; i < nodeOuputs.getChildNodes().getLength(); i++) {
+            Node nodeOutput = nodeOuputs.getChildNodes().item(i);
+            if (nodeOutput.getNodeType() == Node.ELEMENT_NODE) {
+              Node nodeOutputName = getDirectChild((Element) nodeOutput, "name");
+              Node nodeOutputDisplayName = getDirectChild((Element) nodeOutput, "displayName");
+              Node nodeOutputLocation = getDirectChild((Element) nodeOutput, "location");
+              outputType.put(nodeOutputName.getTextContent(),
+                  new OutputType(nodeOutputName.getTextContent(),
+                      nodeOutputDisplayName.getTextContent(),
+                      nodeOutputLocation.getTextContent()));
+
             }
           }
         }
@@ -200,15 +216,15 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   public static HashMap<String, DatasourceType> getDatasourceTypes() {
-    return datasourceTypeList;
+    return datasourceType;
   }
 
   public static HashMap<String, OutputType> getOutputTypes() {
-    return outputTypeList;
+    return outputType;
   }
 
   public static HashMap<String, ServerType> getServerTypes() {
-    return serverTypeList;
+    return serverTypes;
   }
 
   public Desktop() throws ProcessingException {
@@ -304,7 +320,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
 
-          for (Entry<String, DatasourceType> entry : datasourceTypeList.entrySet()) {
+          for (Entry<String, DatasourceType> entry : datasourceType.entrySet()) {
             String datasource = entry.getValue().getName() + "Datasource";
             nodeList.add(new AbstractExtensibleMenu() {
 
@@ -357,7 +373,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
-          for (Entry<String, DatasourceType> entry : datasourceTypeList.entrySet()) {
+          for (Entry<String, DatasourceType> entry : datasourceType.entrySet()) {
             String dataset = entry.getValue().getName() + "Dataset";
             nodeList.add(new AbstractExtensibleMenu() {
 
