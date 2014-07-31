@@ -3,6 +3,8 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
+import java.util.LinkedList;
+
 /**
  * @author Fabio
  */
@@ -10,9 +12,7 @@ public class ItemType {
   private String name;
   private static int counter;
   private int id;
-  private String itemListViewFileName;
-  private String itemViewFileName;
-
+  private LinkedList<FileResource> resources;
   static {
     counter = 0;
   }
@@ -22,6 +22,7 @@ public class ItemType {
    */
   public ItemType(String name) {
     this.name = name;
+    this.resources = new LinkedList<FileResource>();
     this.id = counter++;
   }
 
@@ -41,40 +42,29 @@ public class ItemType {
   }
 
   /**
-   * @return the itemListViewFileName
-   */
-  public String getItemListViewFileName() {
-    return itemListViewFileName;
-  }
-
-  /**
-   * @param itemListViewFileName
-   *          the itemListViewFileName to set
-   */
-  public void setItemListViewFileName(String itemListViewFileName) {
-    this.itemListViewFileName = itemListViewFileName;
-  }
-
-  /**
-   * @return the itemViewFileName
-   */
-  public String getItemViewFileName() {
-    return itemViewFileName;
-  }
-
-  /**
-   * @param itemViewFileName
-   *          the itemViewFileName to set
-   */
-  public void setItemViewFileName(String itemViewFileName) {
-    this.itemViewFileName = itemViewFileName;
-  }
-
-  /**
    * @return
    */
   public int getId() {
     return id;
+  }
+
+  /**
+   * @return the resources
+   */
+  public LinkedList<FileResource> getResources() {
+    return resources;
+  }
+
+  /**
+   * @param resources
+   *          the resources to set
+   */
+  public void setResources(LinkedList<FileResource> resources) {
+    this.resources = resources;
+  }
+
+  public void addResource(FileResource res) {
+    this.resources.add(res);
   }
 
 }

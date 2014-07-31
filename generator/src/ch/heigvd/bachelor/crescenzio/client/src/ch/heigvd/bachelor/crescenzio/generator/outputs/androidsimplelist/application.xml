@@ -2,32 +2,48 @@
 <application>
 	<name>AndroidSimpleList</name>
 	<applicationFields>
-		<field type="file">Application icon 72px</field>
-		<field type="string">Application title</field>
+		<field type="file">
+			<name>Application icon 72px</name>
+		</field>
+		<field type="string">
+			<name>Application title</name>
+		</field>
 	</applicationFields>
-	<mappingFields>
-		<field>Name</field>
-		<field>Icon</field>
-		<field>Date</field>
-		<field>Description</field>
-	</mappingFields>
+	<mappedFields>
+		<field>
+			<name>Name</name>
+		</field>
+		<field>
+			<name>Icon</name>
+		</field>
+		<field>
+			<name>Date</name>
+		</field>
+		<field>
+			<name>Description</name>
+		</field>
+	</mappedFields>
 	<itemTypes>
-		<type>
-			<name>Default</name>
-			<files>
-				<file>
+		<itemType>
+			<name>__default</name>
+			<resources>
+				<resource>
 					<name>itemListViewFile</name>
-					<format>xml</format>
-					<displayName>list view</displayName>
-					<default>code/itemListView.xml</default>
-				</file>
-				<file>
+					<extensions>
+						<extension>xml</extension>
+					</extensions>
+					<description>list view</description>
+					<value>code/itemListView.xml</value>
+				</resource>
+				<resource>
 					<name>itemViewFile</name>
-					<format>java</format>
-					<displayName>itemView</displayName>
-					<default>code/itemView.xml</default>
-				</file>
-			</files>
-		</type>
+					<extensions>
+						<extension>xml</extension>
+					</extensions>					
+					<description>itemView</description>
+					<value>code/itemView.xml</value>
+				</resource>
+			</resources>
+		</itemType>
 	</itemTypes>
 </application>

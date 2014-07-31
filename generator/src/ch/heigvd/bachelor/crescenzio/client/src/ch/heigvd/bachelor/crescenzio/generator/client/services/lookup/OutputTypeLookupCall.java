@@ -46,7 +46,7 @@ public class OutputTypeLookupCall extends LocalLookupCall<OutputApplication> {
 
         Document doc = dBuilder.parse(OutputApplication.class.getResourceAsStream(outputTypes.get(outputType).getLocation() + File.separator + "application.xml"));
         doc.getDocumentElement().normalize();
-        OutputApplication output = new OutputApplicationXMLLoader().loadOutput(doc.getDocumentElement());
+        OutputApplication output = OutputApplicationXMLLoader.loadOutput(doc.getDocumentElement());
 
         rows.add(new LookupRow<OutputApplication>(output, output.getName()));
       }

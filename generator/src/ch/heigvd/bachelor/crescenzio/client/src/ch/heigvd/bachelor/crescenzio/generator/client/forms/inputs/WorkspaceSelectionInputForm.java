@@ -115,11 +115,6 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
       }
 
       @Override
-      protected boolean getConfiguredShowFileExtension() {
-        return false;
-      }
-
-      @Override
       protected boolean getConfiguredShowFileName() {
         return false;
       }

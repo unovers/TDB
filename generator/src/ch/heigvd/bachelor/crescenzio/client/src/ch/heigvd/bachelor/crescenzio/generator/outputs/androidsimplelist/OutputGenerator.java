@@ -14,8 +14,8 @@ public class OutputGenerator extends AbstractOutputGenerator {
   /**
    * @param output
    */
-  public OutputGenerator(OutputApplication output) {
-    super(output);
+  public OutputGenerator(OutputApplication output, String destinationPath) {
+    super(output, destinationPath);
   }
 
   @Override

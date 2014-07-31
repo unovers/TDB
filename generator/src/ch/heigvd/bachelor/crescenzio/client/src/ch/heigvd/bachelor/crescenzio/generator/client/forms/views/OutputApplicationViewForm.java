@@ -14,6 +14,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.filechooserfield.AbstractFileChooserField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
+import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.client.ui.form.fields.tabbox.AbstractTabBox;
@@ -22,6 +23,7 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ItemTypeInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.DeleteOutputButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.OutputsSectionBox.ItemsTypesBox;
@@ -30,6 +32,7 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicat
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm.MainBox.SaveChangesButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.FieldsOutputMappingLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileField;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
@@ -195,6 +198,16 @@ public class OutputApplicationViewForm extends AbstractForm {
                 }
 
                 @Override
+                protected boolean getConfiguredShowDirectory() {
+                  return true;
+                }
+
+                @Override
+                protected boolean getConfiguredTypeLoad() {
+                  return true;
+                }
+
+                @Override
                 public String getFieldId() {
                   return "application_" + field.getId();
                 }
@@ -299,42 +312,64 @@ public class OutputApplicationViewForm extends AbstractForm {
 
               @Override
               protected void injectFieldsInternal(List<IFormField> fieldList2) {
-                fieldList2.add(new AbstractStringField() {
-                  @Override
-                  protected String getConfiguredLabel() {
-                    return TEXTS.get("Name");
-                  }
+                if (item.getName().equals("__default")) {
+                  fieldList2.add(new AbstractLabelField() {
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("Name");
+                    }
 
-                  @Override
-                  public String getFieldId() {
-                    // TODO Auto-generated method stub
-                    return "item_id_" + item.getId();
-                  }
-                });
-                fieldList2.add(new AbstractFileChooserField() {
-                  @Override
-                  protected String getConfiguredLabel() {
-                    return TEXTS.get("ItemListView");
-                  }
+                    @Override
+                    public String getFieldId() {
+                      // TODO Auto-generated method stub
+                      return "item_id_" + item.getId();
+                    }
+                  });
+                }
+                else {
+                  fieldList2.add(new AbstractStringField() {
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("Name");
+                    }
 
-                  @Override
-                  public String getFieldId() {
-                    // TODO Auto-generated method stub
-                    return "item_list_view_" + item.getId();
-                  }
-                });
-                fieldList2.add(new AbstractFileChooserField() {
-                  @Override
-                  protected String getConfiguredLabel() {
-                    return TEXTS.get("ItemView");
-                  }
+                    @Override
+                    public String getFieldId() {
+                      // TODO Auto-generated method stub
+                      return "item_id_" + item.getId();
+                    }
+                  });
+                }
 
-                  @Override
-                  public String getFieldId() {
-                    // TODO Auto-generated method stub
-                    return "item_view_" + item.getId();
-                  }
-                });
+                for (FileResource resource : item.getResources()) {
+                  fieldList2.add(new AbstractFileChooserField() {
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return resource.getName();
+                    }
+
+                    @Override
+                    protected boolean getConfiguredShowDirectory() {
+                      return true;
+                    }
+
+                    @Override
+                    protected boolean getConfiguredTypeLoad() {
+                      return true;
+                    }
+
+                    @Override
+                    public String getTooltipText() {
+                      return resource.getDescription();
+                    }
+
+                    @Override
+                    public String getFieldId() {
+                      // TODO Auto-generated method stub
+                      return "itemResourceFile_" + resource.getId() + "_" + item.getId();
+                    }
+                  });
+                }
 
                 if (!item.getName().equals("__default")) {
                   fieldList2.add(new AbstractButton() {
@@ -356,6 +391,11 @@ public class OutputApplicationViewForm extends AbstractForm {
           @Override
           protected String getConfiguredLabel() {
             return TEXTS.get("AddItemType");
+          }
+
+          @Override
+          protected void execClickAction() throws ProcessingException {
+            new ItemTypeInputForm(output).startNew();
           }
         }
       }
@@ -397,12 +437,14 @@ public class OutputApplicationViewForm extends AbstractForm {
 
         //item infos
         for (ItemType item : getOutput().getItemsTypes()) {
-          AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
-          AbstractFileChooserField item_list_view_file = (AbstractFileChooserField) getFieldById("item_list_view_" + item.getId());
-          AbstractFileChooserField item_view_file = (AbstractFileChooserField) getFieldById("item_view_" + item.getId());
-          item.setName(name.getValue());
-          item.setItemListViewFileName(item_list_view_file.getValue());
-          item.setItemViewFileName(item_view_file.getValue());
+          if (!item.getName().equals("__default")) {
+            AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
+            item.setName(name.getValue());
+          }
+          for (FileResource resource : item.getResources()) {
+            AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + item.getId());
+            resource.setValue(itemResourceFile.getValue());
+          }
         }
       }
     }
@@ -422,14 +464,6 @@ public class OutputApplicationViewForm extends AbstractForm {
   }
 
   public class ViewHandler extends AbstractFormHandler {
-    @Override
-    protected void execFinally() throws ProcessingException {
-      for (Entry<Field, Field> entry : getOutput().getMappedFields().entrySet()) {
-        Field field = entry.getKey();
-        Field mappedField = entry.getValue();
-      }
-    }
-
     @Override
     protected void execLoad() throws ProcessingException {
       //application infos
@@ -456,15 +490,17 @@ public class OutputApplicationViewForm extends AbstractForm {
 
       //item infos
       for (ItemType item : getOutput().getItemsTypes()) {
-        AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
-        AbstractFileChooserField item_list_view_file = (AbstractFileChooserField) getFieldById("item_list_view_" + item.getId());
-        AbstractFileChooserField item_view_file = (AbstractFileChooserField) getFieldById("item_view_" + item.getId());
-        if (item.getName() != null) name.setValue(item.getName());
-        if (item.getItemListViewFileName() != null) {
-          item_list_view_file.setValue(item.getItemListViewFileName());
+        if (!item.getName().equals("__default")) {
+          AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + item.getId());
+          name.setValue(item.getName());
         }
-        if (item.getItemViewFileName() != null) {
-          item_view_file.setValue(item.getItemViewFileName());
+        else {
+          AbstractLabelField name = (AbstractLabelField) getFieldById("item_id_" + item.getId());
+          name.setValue(item.getName());
+        }
+        for (FileResource resource : item.getResources()) {
+          AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + item.getId());
+          itemResourceFile.setValue(resource.getValue());
         }
       }
     }

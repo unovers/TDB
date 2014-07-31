@@ -8,9 +8,11 @@ package ch.heigvd.bachelor.crescenzio.generator.outputs;
  */
 public abstract class AbstractOutputGenerator {
   private OutputApplication output;
+  private String destinationPath;
 
-  public AbstractOutputGenerator(OutputApplication output) {
+  public AbstractOutputGenerator(OutputApplication output, String destinationPath) {
     this.output = output;
+    this.destinationPath = destinationPath;
   }
 
   public abstract void generate();

@@ -33,7 +33,7 @@ public class OutputApplication {
 
   public void addMappedField(Field field, Field outputField) {
     if (mappedFields.get(field) != null) mappedFields.remove(field);
-    mappedFields.put(field, field);
+    mappedFields.put(field, outputField);
   }
 
   public void addItemType(ItemType itemType) {

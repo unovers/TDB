@@ -137,7 +137,7 @@ public class ProjectXMLLoader {
       for (int i = 0; i < nodeOutputs.getChildNodes().getLength(); i++) {
         Node node = nodeOutputs.getChildNodes().item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-          project.addOutput(OutputApplicationXMLLoader.loadOutput((Element) node));
+          project.addOutput(OutputApplicationXMLLoader.loadSavedOutput(project, (Element) node));
         }
       }
     }
