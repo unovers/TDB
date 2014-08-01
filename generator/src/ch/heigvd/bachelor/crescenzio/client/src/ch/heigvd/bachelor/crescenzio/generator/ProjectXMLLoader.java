@@ -29,30 +29,22 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceXML
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
 
 public class ProjectXMLLoader {
-  public static Element getDirectChild(Element parent, String name)
-  {
-    for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
-    {
-      if (child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
-    }
-    return null;
-  }
-
   public static void loadProject(Element element) {
     Project project;
 
     try {
-      project = new Project(getDirectChild(element, "name").getTextContent(),
-          getDirectChild(element, "package").getTextContent(),
-          getDirectChild(element, "author").getTextContent(),
-          getDirectChild(element, "organisation").getTextContent());
-      Node nodeDatasources = getDirectChild(element, "datasources");
-      Node nodeOutputs = getDirectChild(element, "outputs");
-      Node nodeCriterias = getDirectChild(element, "criterias");
-      Node nodeFields = getDirectChild(element, "fields");
-      Node nodeServer = getDirectChild(element, "server");
+      project = new Project(Utils.getDirectChild(element, "name").getTextContent(),
+          Utils.getDirectChild(element, "package").getTextContent(),
+          Utils.getDirectChild(element, "author").getTextContent(),
+          Utils.getDirectChild(element, "organisation").getTextContent());
+      Node nodeDatasources = Utils.getDirectChild(element, "datasources");
+      Node nodeOutputs = Utils.getDirectChild(element, "outputs");
+      Node nodeCriterias = Utils.getDirectChild(element, "criterias");
+      Node nodeFields = Utils.getDirectChild(element, "fields");
+      Node nodeServer = Utils.getDirectChild(element, "server");
 
       //ajoute les sources de données
       for (int i = 0; i < nodeDatasources.getChildNodes().getLength(); i++) {
@@ -75,15 +67,15 @@ public class ProjectXMLLoader {
         if (node.getNodeType() == Node.ELEMENT_NODE) {
           Field field;
           //Test si c'est le champs par defaut, si oui, ne le rajoute pas mais le recupère
-          if (getDirectChild((Element) node, "name").getTextContent().equals("__item_type")) {
+          if (Utils.getDirectChild((Element) node, "name").getTextContent().equals("__item_type")) {
             field = project.getFieldByName("__item_type");
           }
           else {
-            field = new Field(getDirectChild((Element) node, "name").getTextContent());
+            field = new Field(Utils.getDirectChild((Element) node, "name").getTextContent());
             project.addField(field);
           }
 
-          Node nodeMapping = getDirectChild((Element) node, "mapping");
+          Node nodeMapping = Utils.getDirectChild((Element) node, "mapping");
           for (int j = 0; j < nodeMapping.getChildNodes().getLength(); j++) {
             Node nodeMapField = nodeMapping.getChildNodes().item(j);
             if (nodeMapField.getNodeType() == Node.ELEMENT_NODE) {
@@ -94,7 +86,7 @@ public class ProjectXMLLoader {
                   project.getDatasetByName(elementMapField.getAttribute("type"),
                       elementMapField.getAttribute("datasource"),
                       elementMapField.getAttribute("name")),
-                  value);
+                      value);
             }
           }
         }
@@ -104,8 +96,8 @@ public class ProjectXMLLoader {
       for (int i = 0; i < nodeCriterias.getChildNodes().getLength(); i++) {
         Node nodeCriteria = nodeCriterias.getChildNodes().item(i);
         if (nodeCriteria.getNodeType() == Node.ELEMENT_NODE) {
-          Node nodeConditions = getDirectChild((Element) nodeCriteria, "conditions");
-          Node nodeCriteriaTitle = getDirectChild((Element) nodeCriteria, "title");
+          Node nodeConditions = Utils.getDirectChild((Element) nodeCriteria, "conditions");
+          Node nodeCriteriaTitle = Utils.getDirectChild((Element) nodeCriteria, "title");
           if (nodeCriteriaTitle.getNodeType() == Node.ELEMENT_NODE) {
             Criteria criteria = new Criteria(nodeCriteriaTitle.getTextContent());
             for (int j = 0; j < nodeConditions.getChildNodes().getLength(); j++) {
@@ -126,8 +118,8 @@ public class ProjectXMLLoader {
         String clss = pckage + "." + serverType + "Server";
         Class<?> serverClass = Class.forName(clss);
 
-        String serverRoot = getDirectChild((Element) nodeServer, "root").getTextContent();
-        String serverHost = getDirectChild((Element) nodeServer, "host").getTextContent();
+        String serverRoot = Utils.getDirectChild((Element) nodeServer, "root").getTextContent();
+        String serverHost = Utils.getDirectChild((Element) nodeServer, "host").getTextContent();
 
         java.lang.reflect.Constructor constructor = serverClass.getConstructor(new Class[]{String.class, String.class});
         project.setServer((Server) constructor.newInstance(new Object[]{serverHost, serverRoot}));

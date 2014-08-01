@@ -32,7 +32,7 @@
 	</mappedFields>
 	<itemTypes>
 		<itemType>
-			<name>__default</name>
+			<name>Default</name>
 			<resources>
 				<resource>
 					<name>itemListViewFile</name>

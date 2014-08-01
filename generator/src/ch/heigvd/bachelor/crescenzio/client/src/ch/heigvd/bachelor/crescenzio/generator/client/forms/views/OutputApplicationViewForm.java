@@ -317,7 +317,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
               @Override
               protected void injectFieldsInternal(List<IFormField> fieldList2) {
-                if (item.getName().equals("__default")) {
+                if (item.getName().equals("Default")) {
                   fieldList2.add(new AbstractLabelField() {
                     @Override
                     protected String getConfiguredLabel() {
@@ -376,7 +376,7 @@ public class OutputApplicationViewForm extends AbstractForm {
                   });
                 }
 
-                if (!item.getName().equals("__default")) {
+                if (!item.getName().equals("Default")) {
                   fieldList2.add(new AbstractButton() {
                     @Override
                     protected String getConfiguredLabel() {
@@ -435,8 +435,7 @@ public class OutputApplicationViewForm extends AbstractForm {
             String old_value = (project_path + File.separator + output.getName() + File.separator + outputField.getValue()).replace("/", File.separator).replace("\\", File.separator);
 
             String new_value = f.getValue();
-            String application_path = "code" + File.separator + "application" + File.separator + field.getName();
-            String file_path = application_path + File.separator + new File(new_value).getName();
+            String application_path = "resources" + File.separator + "application" + File.separator + field.getName();
             new File(project_path + File.separator + output.getName() + File.separator + application_path).mkdirs();
 
             if (!old_value.equals(new_value)) {
@@ -447,7 +446,9 @@ public class OutputApplicationViewForm extends AbstractForm {
               }
               //Copie la nouvelle valeur
               try {
-                Files.copy(new File(new_value).toPath(), new File(project_path + File.separator + output.getName() + File.separator + application_path + file.separator + new File(new_value).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(new_value).toPath(),
+                    new File(project_path + File.separator + output.getName() + File.separator + application_path + File.separator + new File(new_value).getName()).toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
               }
               catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -467,7 +468,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
         //item infos
         for (ItemType itemType : getOutput().getItemsTypes()) {
-          if (!itemType.getName().equals("__default")) {
+          if (!itemType.getName().equals("Default")) {
             AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
             itemType.setName(name.getValue());
           }
@@ -478,8 +479,7 @@ public class OutputApplicationViewForm extends AbstractForm {
             String old_value = (project_path + File.separator + output.getName() + File.separator + resource.getValue()).replace("/", File.separator).replace("\\", File.separator);
 
             String new_value = itemResourceFile.getValue();
-            String type_path = "code" + File.separator + "types" + File.separator + itemType.getName();
-            String file_path = type_path + File.separator + new File(new_value).getName();
+            String type_path = "resources" + File.separator + "types" + File.separator + itemType.getName();
             new File(project_path + File.separator + output.getName() + File.separator + type_path).mkdirs();
 
             if (!old_value.equals(new_value)) {
@@ -491,7 +491,9 @@ public class OutputApplicationViewForm extends AbstractForm {
               }
               //Copie la nouvelle valeur
               try {
-                Files.copy(new File(new_value).toPath(), new File(project_path + File.separator + output.getName() + File.separator + type_path + file.separator + new File(new_value).getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(new_value).toPath(),
+                    new File(project_path + File.separator + output.getName() + File.separator + type_path + File.separator + new File(new_value).getName()).toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
               }
               catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -551,7 +553,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
       //item infos
       for (ItemType itemType : getOutput().getItemsTypes()) {
-        if (!itemType.getName().equals("__default")) {
+        if (!itemType.getName().equals("Default")) {
           AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
           name.setValue(itemType.getName());
         }

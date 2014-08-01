@@ -71,6 +71,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.Server;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
+import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
@@ -90,15 +91,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   static {
     loadDatas();
-  }
-
-  private static Element getDirectChild(Element parent, String name)
-  {
-    for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
-    {
-      if (child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
-    }
-    return null;
   }
 
   private void loadProjectsInWorkspace() {
@@ -144,9 +136,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           for (int i = 0; i < nodeDatasources.getChildNodes().getLength(); i++) {
             Node nodeDatasource = nodeDatasources.getChildNodes().item(i);
             if (nodeDatasource.getNodeType() == Node.ELEMENT_NODE) {
-              Node nodeDatasourceName = getDirectChild((Element) nodeDatasource, "name");
-              Node nodeDatasourceDisplayName = getDirectChild((Element) nodeDatasource, "displayName");
-              Node nodeDatasourceLocation = getDirectChild((Element) nodeDatasource, "location");
+              Node nodeDatasourceName = Utils.getDirectChild((Element) nodeDatasource, "name");
+              Node nodeDatasourceDisplayName = Utils.getDirectChild((Element) nodeDatasource, "displayName");
+              Node nodeDatasourceLocation = Utils.getDirectChild((Element) nodeDatasource, "location");
               datasourceType.put(nodeDatasourceName.getTextContent(),
                   new DatasourceType(nodeDatasourceName.getTextContent(),
                       nodeDatasourceDisplayName.getTextContent(),
@@ -168,9 +160,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           for (int i = 0; i < nodeServers.getChildNodes().getLength(); i++) {
             Node nodeServer = nodeServers.getChildNodes().item(i);
             if (nodeServer.getNodeType() == Node.ELEMENT_NODE) {
-              Node nodeServerName = getDirectChild((Element) nodeServer, "name");
-              Node nodeServerDisplayName = getDirectChild((Element) nodeServer, "displayName");
-              Node nodeServerLocation = getDirectChild((Element) nodeServer, "location");
+              Node nodeServerName = Utils.getDirectChild((Element) nodeServer, "name");
+              Node nodeServerDisplayName = Utils.getDirectChild((Element) nodeServer, "displayName");
+              Node nodeServerLocation = Utils.getDirectChild((Element) nodeServer, "location");
               serverTypes.put(nodeServerName.getTextContent(),
                   new ServerType(nodeServerName.getTextContent(),
                       nodeServerDisplayName.getTextContent(),
@@ -193,9 +185,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           for (int i = 0; i < nodeOuputs.getChildNodes().getLength(); i++) {
             Node nodeOutput = nodeOuputs.getChildNodes().item(i);
             if (nodeOutput.getNodeType() == Node.ELEMENT_NODE) {
-              Node nodeOutputName = getDirectChild((Element) nodeOutput, "name");
-              Node nodeOutputDisplayName = getDirectChild((Element) nodeOutput, "displayName");
-              Node nodeOutputLocation = getDirectChild((Element) nodeOutput, "location");
+              Node nodeOutputName = Utils.getDirectChild((Element) nodeOutput, "name");
+              Node nodeOutputDisplayName = Utils.getDirectChild((Element) nodeOutput, "displayName");
+              Node nodeOutputLocation = Utils.getDirectChild((Element) nodeOutput, "location");
               outputType.put(nodeOutputName.getTextContent(),
                   new OutputType(nodeOutputName.getTextContent(),
                       nodeOutputDisplayName.getTextContent(),

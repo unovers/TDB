@@ -9,35 +9,27 @@ import org.w3c.dom.Node;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
+import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
 
 public class OutputApplicationXMLLoader {
-
-  public static Element getDirectChild(Element parent, String name)
-  {
-    for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
-    {
-      if (child instanceof Element && name.equals(child.getNodeName())) return (Element) child;
-    }
-    return null;
-  }
 
   public static OutputApplication loadOutput(Element element) {
     OutputApplication output = null;
 
-    Node nodeName = getDirectChild(element, "name");
+    Node nodeName = Utils.getDirectChild(element, "name");
     output = new OutputApplication(nodeName.getTextContent());
 
-    Node nodeApplicationFields = getDirectChild(element, "applicationFields");
-    Node nodeMappedFields = getDirectChild(element, "mappedFields");
-    Node nodeItemTypes = getDirectChild(element, "itemTypes");
+    Node nodeApplicationFields = Utils.getDirectChild(element, "applicationFields");
+    Node nodeMappedFields = Utils.getDirectChild(element, "mappedFields");
+    Node nodeItemTypes = Utils.getDirectChild(element, "itemTypes");
 
     //Ajoute les champs d'application simple
     for (int i = 0; i < nodeApplicationFields.getChildNodes().getLength(); i++) {
       Node nodeField = nodeApplicationFields.getChildNodes().item(i);
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeFieldName = getDirectChild((Element) nodeField, "name");
-        Node nodeFieldValue = getDirectChild((Element) nodeField, "value");
-        Node nodeFieldDescription = getDirectChild((Element) nodeField, "description");
+        Node nodeFieldName = Utils.getDirectChild((Element) nodeField, "name");
+        Node nodeFieldValue = Utils.getDirectChild((Element) nodeField, "value");
+        Node nodeFieldDescription = Utils.getDirectChild((Element) nodeField, "description");
         String typeField = ((Element) nodeField).getAttribute("type");
         OutputField outputField = null;
         if (typeField.equals("string")) {
@@ -45,7 +37,7 @@ public class OutputApplicationXMLLoader {
           outputField.setDescription(nodeFieldDescription.getTextContent());
         }
         else if (typeField.equals("file")) {
-          Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeField, "extensions");
+          Node nodeTypeResourceAcceptedExtension = Utils.getDirectChild((Element) nodeField, "extensions");
 
           LinkedList<String> exts = new LinkedList<String>();
           //Ajoute les extensions supportées
@@ -62,7 +54,7 @@ public class OutputApplicationXMLLoader {
           }
 
           outputField = new FileField();
-          outputField.setExtensions(extensions);
+          ((FileField) outputField).setExtensions(extensions);
           outputField.setValue(nodeFieldValue.getTextContent());
           outputField.setDescription(nodeFieldDescription.getTextContent());
         }
@@ -78,7 +70,7 @@ public class OutputApplicationXMLLoader {
     for (int i = 0; i < nodeMappedFields.getChildNodes().getLength(); i++) {
       Node nodeField = nodeMappedFields.getChildNodes().item(i);
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeFieldName = getDirectChild((Element) nodeField, "name");
+        Node nodeFieldName = Utils.getDirectChild((Element) nodeField, "name");
         output.addMappedField(new Field(nodeFieldName.getTextContent()), null);
       }
     }
@@ -88,19 +80,19 @@ public class OutputApplicationXMLLoader {
       Node nodeItemType = nodeItemTypes.getChildNodes().item(i);
 
       if (nodeItemType.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeTypeName = getDirectChild((Element) nodeItemType, "name");
+        Node nodeTypeName = Utils.getDirectChild((Element) nodeItemType, "name");
         ItemType itemType = new ItemType(nodeTypeName.getTextContent());
 
-        Node nodeTypeResources = getDirectChild((Element) nodeItemType, "resources");
+        Node nodeTypeResources = Utils.getDirectChild((Element) nodeItemType, "resources");
         //Ajoute les ressources nécessaires pour ce type
         for (int j = 0; j < nodeTypeResources.getChildNodes().getLength(); j++) {
           Node nodeTypeResource = nodeTypeResources.getChildNodes().item(j);
           if (nodeTypeResource.getNodeType() == Node.ELEMENT_NODE) {
             LinkedList<String> exts = new LinkedList<String>();
-            Node nodeTypeResourceName = getDirectChild((Element) nodeTypeResource, "name");
-            Node nodeTypeResourceValue = getDirectChild((Element) nodeTypeResource, "value");
-            Node nodeTypeResourceDescription = getDirectChild((Element) nodeTypeResource, "description");
-            Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeTypeResource, "extensions");
+            Node nodeTypeResourceName = Utils.getDirectChild((Element) nodeTypeResource, "name");
+            Node nodeTypeResourceValue = Utils.getDirectChild((Element) nodeTypeResource, "value");
+            Node nodeTypeResourceDescription = Utils.getDirectChild((Element) nodeTypeResource, "description");
+            Node nodeTypeResourceAcceptedExtension = Utils.getDirectChild((Element) nodeTypeResource, "extensions");
 
             //Ajoute les extensions supportées
             for (int k = 0; k < nodeTypeResourceAcceptedExtension.getChildNodes().getLength(); k++) {
@@ -155,6 +147,16 @@ public class OutputApplicationXMLLoader {
       Node nodeApplicationFieldName = document.createElement("name");
       Node nodeApplicationFieldValue = document.createElement("value");
       Node nodeApplicationFieldDescription = document.createElement("description");
+      if (applicationField.getValue() instanceof FileField) {
+        Node nodeApplicationFieldExtensions = document.createElement("extensions");
+        FileField fileField = (FileField) applicationField.getValue();
+        for (String extension : fileField.getExtensions()) {
+          Node nodeApplcationFieldExtension = document.createElement("extension");
+          nodeApplcationFieldExtension.setTextContent(extension);
+          nodeApplicationFieldExtensions.appendChild(nodeApplcationFieldExtension);
+        }
+        nodeApplicationField.appendChild(nodeApplicationFieldExtensions);
+      }
 
       nodeApplicationFieldName.setTextContent(applicationField.getKey().getName());
       nodeApplicationFieldValue.setTextContent(applicationField.getValue().getValue());
@@ -173,7 +175,7 @@ public class OutputApplicationXMLLoader {
       Node nodeMappedFieldValue = document.createElement("value");
 
       nodeMappedFieldName.setTextContent(mappedField.getKey().getName());
-      nodeMappedFieldValue.setTextContent(mappedField.getValue().getName());
+      if (mappedField.getValue() != null) nodeMappedFieldValue.setTextContent(mappedField.getValue().getName());
 
       nodeMappedfield.appendChild(nodeMappedFieldName);
       nodeMappedfield.appendChild(nodeMappedFieldValue);
@@ -229,28 +231,28 @@ public class OutputApplicationXMLLoader {
   public static OutputApplication loadSavedOutput(Project project, Element element) {
     OutputApplication output = null;
 
-    Node nodeName = getDirectChild(element, "name");
+    Node nodeName = Utils.getDirectChild(element, "name");
     output = new OutputApplication(nodeName.getTextContent());
     output.setProject(project);
 
-    Node nodeApplicationFields = getDirectChild(element, "applicationFields");
-    Node nodeMappedFields = getDirectChild(element, "mappedFields");
-    Node nodeItemTypes = getDirectChild(element, "itemTypes");
+    Node nodeApplicationFields = Utils.getDirectChild(element, "applicationFields");
+    Node nodeMappedFields = Utils.getDirectChild(element, "mappedFields");
+    Node nodeItemTypes = Utils.getDirectChild(element, "itemTypes");
 
     //Ajoute les champs d'application simple
     for (int i = 0; i < nodeApplicationFields.getChildNodes().getLength(); i++) {
       Node nodeField = nodeApplicationFields.getChildNodes().item(i);
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeApplicationFieldName = getDirectChild((Element) nodeField, "name");
-        Node nodeApplicationFieldValue = getDirectChild((Element) nodeField, "value");
-        Node nodeApplicationFieldDescription = getDirectChild((Element) nodeField, "description");
+        Node nodeApplicationFieldName = Utils.getDirectChild((Element) nodeField, "name");
+        Node nodeApplicationFieldValue = Utils.getDirectChild((Element) nodeField, "value");
+        Node nodeApplicationFieldDescription = Utils.getDirectChild((Element) nodeField, "description");
         String typeField = ((Element) nodeField).getAttribute("type");
         OutputField outputField = null;
         if (typeField.equals("string")) {
           outputField = new StringField("");
         }
         else if (typeField.equals("file")) {
-          Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeField, "extensions");
+          Node nodeTypeResourceAcceptedExtension = Utils.getDirectChild((Element) nodeField, "extensions");
 
           LinkedList<String> exts = new LinkedList<String>();
           //Ajoute les extensions supportées
@@ -267,7 +269,7 @@ public class OutputApplicationXMLLoader {
           }
 
           outputField = new FileField();
-          outputField.setExtensions(extensions);
+          ((FileField) outputField).setExtensions(extensions);
         }
         else {
           throw new UnsupportedOperationException();
@@ -284,8 +286,8 @@ public class OutputApplicationXMLLoader {
     for (int i = 0; i < nodeMappedFields.getChildNodes().getLength(); i++) {
       Node nodeField = nodeMappedFields.getChildNodes().item(i);
       if (nodeField.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeMappedFieldName = getDirectChild((Element) nodeField, "name");
-        Node nodeMappedFieldValue = getDirectChild((Element) nodeField, "value");
+        Node nodeMappedFieldName = Utils.getDirectChild((Element) nodeField, "name");
+        Node nodeMappedFieldValue = Utils.getDirectChild((Element) nodeField, "value");
         output.addMappedField(new Field(nodeMappedFieldName.getTextContent()),
             output.getProject().getFieldByName(
                 nodeMappedFieldValue.getTextContent()
@@ -298,19 +300,19 @@ public class OutputApplicationXMLLoader {
       Node nodeItemType = nodeItemTypes.getChildNodes().item(i);
 
       if (nodeItemType.getNodeType() == Node.ELEMENT_NODE) {
-        Node nodeTypeName = getDirectChild((Element) nodeItemType, "name");
+        Node nodeTypeName = Utils.getDirectChild((Element) nodeItemType, "name");
         LinkedList<String> exts = new LinkedList<String>();
         ItemType itemType = new ItemType(nodeTypeName.getTextContent());
 
-        Node nodeTypeResources = getDirectChild((Element) nodeItemType, "resources");
+        Node nodeTypeResources = Utils.getDirectChild((Element) nodeItemType, "resources");
         //Ajoute les ressources nécessaires pour ce type
         for (int j = 0; j < nodeTypeResources.getChildNodes().getLength(); j++) {
           Node nodeTypeResource = nodeTypeResources.getChildNodes().item(j);
           if (nodeTypeResource.getNodeType() == Node.ELEMENT_NODE) {
-            Node nodeTypeResourceName = getDirectChild((Element) nodeTypeResource, "name");
-            Node nodeTypeResourceValue = getDirectChild((Element) nodeTypeResource, "value");
-            Node nodeTypeResourceDescription = getDirectChild((Element) nodeTypeResource, "description");
-            Node nodeTypeResourceAcceptedExtension = getDirectChild((Element) nodeTypeResource, "extensions");
+            Node nodeTypeResourceName = Utils.getDirectChild((Element) nodeTypeResource, "name");
+            Node nodeTypeResourceValue = Utils.getDirectChild((Element) nodeTypeResource, "value");
+            Node nodeTypeResourceDescription = Utils.getDirectChild((Element) nodeTypeResource, "description");
+            Node nodeTypeResourceAcceptedExtension = Utils.getDirectChild((Element) nodeTypeResource, "extensions");
 
             //Ajoute les extensions supportées
             for (int k = 0; k < nodeTypeResourceAcceptedExtension.getChildNodes().getLength(); k++) {

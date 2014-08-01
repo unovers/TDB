@@ -8,7 +8,7 @@
 			<extensions>
 				<extension>jpg</extension>
 			</extensions>			
-			<value>code\application\applicationIcon72\itemListView.xml</value>
+			<value>res\drawable-hdpi\logo.png</value>
 		</field>
 		<field type="string">
 			<name>applicationTitle</name>
@@ -32,24 +32,40 @@
 	</mappedFields>
 	<itemTypes>
 		<itemType>
-			<name>__default</name>
+			<name>Default</name>
 			<resources>
 				<resource>
-					<name>itemListViewFile</name>
+					<name>RowResFile</name>
 					<extensions>
 						<extension>xml</extension>
 					</extensions>
-					<description>list view</description>
-					<value>code/types/itemListView.xml</value>
+					<description>Row resource file</description>
+					<value>res\layout\layout1.xml</value>
 				</resource>
 				<resource>
-					<name>itemViewFile</name>
+					<name>RowSrcFile</name>
+					<extensions>
+						<extension>java</extension>
+					</extensions>					
+					<description>Row src file</description>
+					<value>src\row\DefaultRow.java</value>
+				</resource>
+				<resource>
+					<name>ActivityResFile</name>
 					<extensions>
 						<extension>xml</extension>
-					</extensions>					
-					<description>itemView</description>
-					<value>code/types/itemView.xml</value>
+					</extensions>
+					<description>Activity resource file</description>
+					<value>res\layout\layout1.xml</value>
 				</resource>
+				<resource>
+					<name>ActivitySrcFile</name>
+					<extensions>
+						<extension>java</extension>
+					</extensions>					
+					<description>Activity src file</description>
+					<value>src\DefaultActivity.java</value>
+				</resource>				
 			</resources>
 		</itemType>
 	</itemTypes>

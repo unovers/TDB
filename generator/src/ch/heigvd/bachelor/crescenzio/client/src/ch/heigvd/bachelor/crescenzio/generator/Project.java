@@ -14,6 +14,7 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -127,27 +128,12 @@ public class Project {
         outputGenerator = Class.forName(clss);
         java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class, String.class});
         AbstractOutputGenerator generator = (AbstractOutputGenerator) constructor.newInstance(new Object[]{output, destination});
-        generator.generate(destination);
-
-        System.out.println("Fields : ");
-        for (Field field : fields) {
-          System.out.print(field.getName() + " ");
+        try {
+          generator.generate(destination + File.separator + getName());
         }
-        System.out.println();
-
-        System.out.println("Datasources info : ");
-
-        for (AbstractDatasource source : datasources) {
-          System.out.println("Name :" + source.getName());
-
-          for (AbstractDataset set : source.getDatasets()) {
-            System.out.println("dataset " + set.getName());
-            for (Field field : set.getFields()) {
-              System.out.print(field.getName() + " ");
-            }
-            System.out.println();
-          }
-          System.out.println();
+        catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
         }
       }
       catch (ClassNotFoundException e) {
