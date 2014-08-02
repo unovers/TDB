@@ -28,7 +28,9 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.FieldsOutputMappingLookupCall;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
@@ -137,6 +139,7 @@ public class ConditionInputForm extends AbstractInputForm {
     @Override
     protected void execStore() throws ProcessingException {
       criteria.addCondition(getNameField().getValue());
+      Desktop.loadOrRefreshFormCriterias(project, new CriteriasViewForm(project));
     }
   }
 }

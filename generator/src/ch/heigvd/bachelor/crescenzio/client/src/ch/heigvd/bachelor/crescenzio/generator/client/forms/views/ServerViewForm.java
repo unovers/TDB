@@ -42,7 +42,7 @@ public class ServerViewForm extends AbstractViewForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("ServerInformations");
+    return project.getName() + " - " + TEXTS.get("ServerInformations");
   }
 
   /**

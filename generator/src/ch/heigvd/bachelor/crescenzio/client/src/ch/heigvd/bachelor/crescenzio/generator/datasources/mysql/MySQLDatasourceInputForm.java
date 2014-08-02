@@ -84,13 +84,15 @@ public class MySQLDatasourceInputForm extends AbstractSQLDatasourceInputForm {
       int databasePort = (Integer) ((AbstractIntegerField) getFieldById("databasePort")).getValue();
       String databasePassword = (String) ((AbstractStringField) getFieldById("databasePassword")).getValue();
 
-      MySQLDatasource source = (MySQLDatasource) getDatasource();
-      source.setName(name);
-      source.setDatabase(databaseName);
-      source.setLogin(databaseLogin);
-      source.setHostname(databaseHost);
-      source.setPassword(databasePassword);
-      source.setPort(databasePort);
+      MySQLDatasource datasource = (MySQLDatasource) getDatasource();
+      datasource.setName(name);
+      datasource.setDatabase(databaseName);
+      datasource.setLogin(databaseLogin);
+      datasource.setHostname(databaseHost);
+      datasource.setPassword(databasePassword);
+      datasource.setPort(databasePort);
+
+      Desktop.loadOrRefreshFormDatasource(datasource, new MySQLDatasourceViewForm(datasource));
       desktop.refreshWorkspace();
     }
   }
@@ -108,7 +110,10 @@ public class MySQLDatasourceInputForm extends AbstractSQLDatasourceInputForm {
       String databasePassword = (String) ((AbstractStringField) getFieldById("databasePassword")).getValue();
 
       Project project = (Project) ((AbstractSmartField<Project>) getFieldById("project")).getValue();
-      project.addDatasource(new MySQLDatasource(project, name, databaseHost, databasePort, databaseName, databaseLogin, databasePassword));
+      MySQLDatasource datasource = new MySQLDatasource(project, name, databaseHost, databasePort, databaseName, databaseLogin, databasePassword);
+      project.addDatasource(datasource);
+
+      Desktop.loadOrRefreshFormDatasource(datasource, new MySQLDatasourceViewForm(datasource));
       desktop.refreshWorkspace();
     }
   }

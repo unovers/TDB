@@ -5,6 +5,7 @@ package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasetPage;
 
 /**
@@ -12,12 +13,9 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasetPage;
  */
 public class MySQLDatasetPage extends AbstractDatasetPage {
 
-  /* (non-Javadoc)
-   * @see org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage#execPageActivated()
-   */
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new MySQLDatasetViewForm((MySQLDataset) getDataset()).startView();
+    Desktop.loadOrRefreshFormDataset(getDataset(), new MySQLDatasetViewForm((MySQLDataset) getDataset()));
   }
 
   /**
@@ -25,5 +23,6 @@ public class MySQLDatasetPage extends AbstractDatasetPage {
    */
   public MySQLDatasetPage(MySQLDataset dataset) {
     super(dataset);
+    callInitializer();
   }
 }

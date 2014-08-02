@@ -5,6 +5,7 @@ package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourcePage;
 
 /**
@@ -21,7 +22,7 @@ public class MySQLDatasourcePage extends AbstractDatasourcePage {
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new MySQLDatasourceViewForm((MySQLDatasource) getDatasource()).startView();
+    Desktop.loadOrRefreshFormDatasource(getDatasource(), new MySQLDatasourceViewForm((MySQLDatasource) getDatasource()));
   }
 
 }

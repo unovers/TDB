@@ -30,6 +30,8 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ItemTypeInputForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ItemTypeInputForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ItemTypeInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
@@ -179,6 +181,7 @@ public class ItemTypeInputForm extends AbstractInputForm {
         itemType.addResource(new_resource);
       }
       output.addItemType(itemType);
+      Desktop.loadOrRefreshFormOutput(output, new OutputApplicationViewForm(output.getProject(), output));
     }
   }
 

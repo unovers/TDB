@@ -26,6 +26,8 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm.MainBox.TitleField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
@@ -147,6 +149,7 @@ public class CriteriaInputForm extends AbstractInputForm {
     @Override
     protected void execStore() throws ProcessingException {
       project.addCriteria(new Criteria(getTitleField().getValue()));
+      Desktop.loadOrRefreshFormCriterias(project, new CriteriasViewForm(project));
     }
   }
 

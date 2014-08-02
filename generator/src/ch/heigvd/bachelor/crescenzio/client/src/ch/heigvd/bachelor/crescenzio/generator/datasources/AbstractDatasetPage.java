@@ -31,7 +31,9 @@ public abstract class AbstractDatasetPage extends AbstractPage {
    * @param dataset
    */
   protected AbstractDatasetPage(AbstractDataset dataset) {
+    super(false);
     this.dataset = dataset;
+    callInitializer();
   }
 
   @Override

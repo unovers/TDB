@@ -29,7 +29,6 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.ProjectXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.AuthorField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.DeleteProjectButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.EditProjectButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.OrganisationField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm.MainBox.PackageNameField;
@@ -56,7 +55,7 @@ public class ProjectViewForm extends AbstractViewForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("ProjectInformations");
+    return project.getName() + " - " + TEXTS.get("ProjectInformations");
   }
 
   /**
@@ -64,13 +63,6 @@ public class ProjectViewForm extends AbstractViewForm {
    */
   public AuthorField getAuthorField() {
     return getFieldByClass(AuthorField.class);
-  }
-
-  /**
-   * @return the DeleteProjectButton
-   */
-  public DeleteProjectButton getDeleteProjectButton() {
-    return getFieldByClass(DeleteProjectButton.class);
   }
 
   /**
@@ -206,7 +198,7 @@ public class ProjectViewForm extends AbstractViewForm {
         DocumentBuilder docBuilder;
         try {
           //Créer le dossier de l'application si il n'existe pas
-          String folderPath = ((Desktop) getDesktop()).getWorkspace() + File.separator + project.getName().replaceAll("[-+.^:,]", "");
+          String folderPath = ((Desktop) getDesktop()).getWorkspace() + File.separator + project.getName();
           File folder = new File(folderPath);
           folder.mkdirs();
 
@@ -224,7 +216,7 @@ public class ProjectViewForm extends AbstractViewForm {
           transformer.transform(source, result);
         }
         catch (ParserConfigurationException | TransformerException e) {
-          e.printStackTrace();
+          throw new ProcessingException(e.getMessage());
         }
       }
     }
@@ -240,15 +232,6 @@ public class ProjectViewForm extends AbstractViewForm {
       @Override
       protected void execClickAction() throws ProcessingException {
         new ProjectInputForm(project).startModify();
-      }
-    }
-
-    @Order(70.0)
-    public class DeleteProjectButton extends AbstractButton {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("DeleteProject");
       }
     }
   }

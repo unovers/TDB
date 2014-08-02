@@ -23,8 +23,10 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
    * @param project
    */
   public ProjectDetailsNodePage(Project project) {
+    super(false);
     this.project = project;
     setInitialExpanded(true);
+    callInitializer();
   }
 
   @Override

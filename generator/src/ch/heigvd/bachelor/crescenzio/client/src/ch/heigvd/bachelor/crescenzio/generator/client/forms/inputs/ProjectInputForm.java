@@ -31,8 +31,8 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputF
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.OrganisationField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.PackageNameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
-import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 
 public class ProjectInputForm extends AbstractForm {
   private Project project;
@@ -138,11 +138,6 @@ public class ProjectInputForm extends AbstractForm {
       }
 
       @Override
-      protected int getConfiguredLabelWidthInPixel() {
-        return 250;
-      }
-
-      @Override
       protected boolean getConfiguredMandatory() {
         return true;
       }
@@ -198,6 +193,7 @@ public class ProjectInputForm extends AbstractForm {
     @Override
     protected void execLoad() throws ProcessingException {
       getProjectNameField().setValue(project.getName());
+      getProjectNameField().setEnabled(false);
       getAuthorField().setValue(project.getAuthor());
       getOrganisationField().setValue(project.getOrganisation());
       getPackageNameField().setValue(project.getPackageName());
@@ -224,10 +220,10 @@ public class ProjectInputForm extends AbstractForm {
     protected void execStore() throws ProcessingException {
       Desktop desktop = ((Desktop) getDesktop());
       project = new Project(getProjectNameField().getValue(), getPackageNameField().getValue(), getAuthorField().getValue(), getOrganisationField().getValue());
-      desktop.getMenu(EditProjectMenu.class).setEnabled(true);
       desktop.closeStartForm();
-      desktop.displayProjectInfo(project);
       desktop.initWorkspace();
+
+      Desktop.loadOrRefreshFormProject(project, new ProjectViewForm(project));
       desktop.refreshWorkspace();
     }
 

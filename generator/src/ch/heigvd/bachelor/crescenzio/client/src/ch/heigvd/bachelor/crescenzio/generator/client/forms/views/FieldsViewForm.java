@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
-import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
@@ -25,13 +24,14 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.DatasetMappingBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm.MainBox.FieldsBox.FieldsListBox.AddFieldButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
  * @author Fabio
  */
-public class FieldsViewForm extends AbstractForm {
+public class FieldsViewForm extends AbstractViewForm {
 
   private Project project;
 
@@ -66,7 +66,7 @@ public class FieldsViewForm extends AbstractForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Fields");
+    return project.getName() + " - " + TEXTS.get("Fields");
   }
 
   /**
@@ -162,48 +162,74 @@ public class FieldsViewForm extends AbstractForm {
 
               @Override
               protected void injectFieldsInternal(List<IFormField> fieldList2) {
+
+                //Verifie si il y a au moins un set de données :
+                boolean projectHasDataset = false;
+                for (AbstractDatasource datasource : project.getDatasources()) {
+                  if (datasource.getDatasets().size() > 0) {
+                    projectHasDataset = true;
+                    break;
+                  }
+
+                }
+
                 //Créer pour chaque champs les informations (nom - button edit - button delete"
-                fieldList2.add(new AbstractLabelField() {
+                if (!projectHasDataset) {
+                  fieldList2.add(new AbstractLabelField() {
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("NoDatasetAvailable");
+                    }
 
-                  @Override
-                  protected String getConfiguredLabel() {
-                    return TEXTS.get("Name");
-                  }
-
-                  @Override
-                  public String getFieldId() {
-                    return field.getId();
-                  }
-                });
-
-                if (!field.getName().equals("__item_type")) {
-                  fieldList2.add(new AbstractButton() {
+                    @Override
+                    protected int getConfiguredLabelWidthInPixel() {
+                      return 300;
+                    }
+                  });
+                }
+                else {
+                  fieldList2.add(new AbstractLabelField() {
 
                     @Override
                     protected String getConfiguredLabel() {
-                      return TEXTS.get("Edit");
+                      return TEXTS.get("Name");
                     }
 
                     @Override
-                    protected void execClickAction() throws ProcessingException {
-                      FieldInputForm form = new FieldInputForm(project);
-                      form.setField(field);
-                      form.startModify();
-                    }
-
-                  });
-                  fieldList2.add(new AbstractButton() {
-
-                    @Override
-                    protected String getConfiguredLabel() {
-                      return TEXTS.get("Delete");
-                    }
-
-                    @Override
-                    protected void execClickAction() throws ProcessingException {
-                      project.removeField(field);
+                    public String getFieldId() {
+                      return field.getId();
                     }
                   });
+
+                  if (!field.getName().equals("__item_type")) {
+                    fieldList2.add(new AbstractButton() {
+
+                      @Override
+                      protected String getConfiguredLabel() {
+                        return TEXTS.get("Edit");
+                      }
+
+                      @Override
+                      protected void execClickAction() throws ProcessingException {
+                        FieldInputForm form = new FieldInputForm(project);
+                        form.setField(field);
+                        form.startModify();
+                      }
+
+                    });
+                    fieldList2.add(new AbstractButton() {
+
+                      @Override
+                      protected String getConfiguredLabel() {
+                        return TEXTS.get("Delete");
+                      }
+
+                      @Override
+                      protected void execClickAction() throws ProcessingException {
+                        project.removeField(field);
+                      }
+                    });
+                  }
                 }
               }
             });
@@ -294,6 +320,7 @@ public class FieldsViewForm extends AbstractForm {
                 }
               }
             }
+            Desktop.loadOrRefreshFormFields(project, new FieldsViewForm(project));
           }
         }
       }
@@ -301,6 +328,7 @@ public class FieldsViewForm extends AbstractForm {
 
   }
 
+  @Override
   public void startView() throws ProcessingException {
     startInternal(new FieldsViewForm.ViewHandler());
   }

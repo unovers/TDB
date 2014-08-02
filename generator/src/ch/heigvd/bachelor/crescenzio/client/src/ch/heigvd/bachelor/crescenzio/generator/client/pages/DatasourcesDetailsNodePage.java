@@ -33,8 +33,10 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
    * @param project
    */
   public DatasourcesDetailsNodePage(Project project) {
+    super(false);
     this.project = project;
     setInitialExpanded(true);
+    callInitializer();
   }
 
   @Override
@@ -59,6 +61,7 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
         pageList.add(page);
       }
       catch (Exception e) {
+        //TODO Log
         throw new ProcessingException(e.toString());
       }
     }

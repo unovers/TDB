@@ -27,6 +27,8 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputForm.MainBox.OkButton;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 public class FieldInputForm extends AbstractInputForm {
 
@@ -143,6 +145,7 @@ public class FieldInputForm extends AbstractInputForm {
     @Override
     protected void execStore() throws ProcessingException {
       project.addField(new Field(getNameField().getValue()));
+      Desktop.loadOrRefreshFormFields(project, new FieldsViewForm(project));
     }
   }
 

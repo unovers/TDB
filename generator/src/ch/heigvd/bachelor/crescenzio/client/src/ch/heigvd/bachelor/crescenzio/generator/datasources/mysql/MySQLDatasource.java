@@ -62,7 +62,6 @@ public class MySQLDatasource extends AbstractSQLDatasource {
 
   @Override
   public void query(String query) throws ProcessingException {
-    System.out.println(query);
     try {
       statement = connexion.createStatement();
       statement.executeQuery(query);

@@ -27,7 +27,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 
 public class Project {
   private static LinkedList<Project> projects;
@@ -60,7 +60,7 @@ public class Project {
 
   private String packageName;
 
-  private Server server;
+  private AbstractServer server;
 
   public Project(String name, String packageName, String author,
       String organisation) {
@@ -93,27 +93,33 @@ public class Project {
     this.outputs.add(output);
   }
 
-  public boolean create() {
-    throw new UnsupportedOperationException("NOT IMPLEMENTED YET");
+  public void saveFile(String location) {
+
   }
 
-  public void generateProject(String destination) {
+  public void removeOutput(OutputApplication output) {
+    outputs.remove(output);
+    //supprime les dossiers dans le projet si il y en a
+    String directory = "";
+    File appDirectory = new File(directory);
+    if (appDirectory.exists()) appDirectory.delete();
+  }
 
-    System.out.println("Project infos : ");
-    System.out.println("Project name         : " + name);
-    System.out.println("Project author       : " + author);
-    System.out.println("Project organisation : " + organisation);
-    System.out.println("Project package      : " + packageName);
-    System.out.println();
+  public void generateProject(String workspace) {
 
-    System.out.println("Server infos : ");
-    System.out.println("host: " + server.getHost() + server.getRootFolder());
+    String projectPath = workspace + File.separator + getName();
+    File generatedDirectory = new File(projectPath + File.separator + "generated");
+    File projectDirectory = new File(projectPath);
     try {
+      //supprime tout ancien dossier
+      if (generatedDirectory.exists()) generatedDirectory.delete();
       //créer le dossier script :
-      String path = destination + File.separator + getName() + File.separator + "serverScript";
-      new File(path).mkdirs();
-      // appele le generateur
-      getServer().generateScripts(this, destination + File.separator + getName() + File.separator + "serverScript");
+
+      String serverPath = generatedDirectory.toPath() + File.separator + "serverScript";
+      File serverDirectory = new File(serverPath);
+      serverDirectory.mkdirs();
+      // appele le generateur pour le serveur
+      getServer().generateScripts(this, serverPath);
     }
     catch (ProcessingException e) {
       e.printStackTrace();
@@ -126,10 +132,10 @@ public class Project {
         System.out.println(pckage);
         Class<?> outputGenerator;
         outputGenerator = Class.forName(clss);
-        java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class, String.class});
-        AbstractOutputGenerator generator = (AbstractOutputGenerator) constructor.newInstance(new Object[]{output, destination});
+        java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class});
+        AbstractOutputGenerator generator = (AbstractOutputGenerator) constructor.newInstance(new Object[]{output});
         try {
-          generator.generate(destination + File.separator + getName());
+          generator.generate(projectDirectory, generatedDirectory);
         }
         catch (IOException e) {
           // TODO Auto-generated catch block
@@ -220,7 +226,7 @@ public class Project {
     return packageName;
   }
 
-  public Server getServer() {
+  public AbstractServer getServer() {
     return server;
   }
 
@@ -260,7 +266,7 @@ public class Project {
     this.packageName = packageName;
   }
 
-  public void setServer(Server server) {
+  public void setServer(AbstractServer server) {
     this.server = server;
   }
 
@@ -300,5 +306,12 @@ public class Project {
       }
     }
     return null;
+  }
+
+  /**
+   * @param datasource
+   */
+  public void removeDatasource(AbstractDatasource datasource) {
+    datasources.remove();
   }
 }

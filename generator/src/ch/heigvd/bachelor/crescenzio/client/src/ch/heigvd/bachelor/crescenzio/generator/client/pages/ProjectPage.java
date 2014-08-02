@@ -9,6 +9,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
  * @author Fabio
@@ -22,12 +23,14 @@ public class ProjectPage extends AbstractPage {
    * @param project
    */
   public ProjectPage(Project project) {
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new ProjectViewForm(project).startView();
+    Desktop.loadOrRefreshFormProject(project, new ProjectViewForm(project));
   }
 
   @Override

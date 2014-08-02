@@ -28,7 +28,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
-import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
 
 public class ProjectXMLLoader {
@@ -122,7 +122,7 @@ public class ProjectXMLLoader {
         String serverHost = Utils.getDirectChild((Element) nodeServer, "host").getTextContent();
 
         java.lang.reflect.Constructor constructor = serverClass.getConstructor(new Class[]{String.class, String.class});
-        project.setServer((Server) constructor.newInstance(new Object[]{serverHost, serverRoot}));
+        project.setServer((AbstractServer) constructor.newInstance(new Object[]{serverHost, serverRoot}));
       }
 
       //ajoute les sorties

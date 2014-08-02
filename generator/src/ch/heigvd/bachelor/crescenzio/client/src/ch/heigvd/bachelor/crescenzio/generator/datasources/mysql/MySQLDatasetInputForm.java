@@ -59,9 +59,11 @@ public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
       String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
       String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
 
-      MySQLDataset set = (MySQLDataset) getDataset();
-      set.setName(name);
-      set.setQuery(query);
+      MySQLDataset dataset = (MySQLDataset) getDataset();
+      dataset.setName(name);
+      dataset.setQuery(query);
+
+      Desktop.loadOrRefreshFormDataset(dataset, new MySQLDatasetViewForm(dataset));
       desktop.refreshWorkspace();
     }
   }
@@ -74,7 +76,9 @@ public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
       String name = (String) ((AbstractStringField) getFieldById("name")).getValue();
       String query = (String) ((AbstractStringField) getFieldById("query")).getValue();
       MySQLDatasource datasource = (MySQLDatasource) ((AbstractSmartField<AbstractDatasource>) getFieldById("datasource")).getValue();
-      datasource.addDataset(new MySQLDataset(datasource, name, query));
+      MySQLDataset dataset = new MySQLDataset(datasource, name, query);
+      datasource.addDataset(dataset);
+      Desktop.loadOrRefreshFormDataset(dataset, new MySQLDatasetViewForm(dataset));
       desktop.refreshWorkspace();
     }
   }

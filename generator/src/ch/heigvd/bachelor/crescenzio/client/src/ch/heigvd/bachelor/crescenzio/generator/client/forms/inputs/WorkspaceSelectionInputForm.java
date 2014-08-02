@@ -3,9 +3,13 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
@@ -105,6 +109,15 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
       }
 
       @Override
+      protected String execValidateValue(String rawValue) throws ProcessingException {
+        File f = new File(rawValue);
+        if (!f.exists() && !f.isDirectory()) {
+          throw new VetoException("Invalid input", "Le dossier doit exister", 267, IStatus.ERROR);
+        }
+        return rawValue;
+      }
+
+      @Override
       protected boolean getConfiguredMandatory() {
         return true;
       }
@@ -158,6 +171,7 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
   }
 
   public class NewHandler extends AbstractFormHandler {
+
     @Override
     protected void execStore() throws ProcessingException {
       Desktop desktop = (Desktop) getDesktop();

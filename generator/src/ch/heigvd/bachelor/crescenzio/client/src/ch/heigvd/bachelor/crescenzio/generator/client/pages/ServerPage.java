@@ -10,6 +10,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
  * @author Fabio
@@ -23,12 +24,14 @@ public class ServerPage extends AbstractPage {
    * @param project
    */
   public ServerPage(Project project) {
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new ServerViewForm(project).startView();
+    Desktop.loadOrRefreshFormServer(project, new ServerViewForm(project));
     if (project.getServer() == null) {
       new ServerInputForm(project).startNew();
     }

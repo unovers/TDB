@@ -25,7 +25,7 @@ public abstract class AbstractDatasourceViewForm extends AbstractViewForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("DatasourceInfo");
+    return datasource.getProject().getName() + " - " + TEXTS.get("DatasourceInfo");
   }
 
   /**

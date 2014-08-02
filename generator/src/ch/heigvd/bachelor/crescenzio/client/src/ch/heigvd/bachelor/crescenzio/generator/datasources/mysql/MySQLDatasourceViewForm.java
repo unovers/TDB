@@ -11,6 +11,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasourceViewForm.MainBox.DatabaseHostField;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasourceViewForm.MainBox.DatabaseLoginField;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasourceViewForm.MainBox.DatabaseNameField;
@@ -322,6 +323,13 @@ public class MySQLDatasourceViewForm extends AbstractSQLDatasourceViewForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("DeleteDatasource");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        Desktop.removeDatasource(getDatasource());
+        getDatasource().getProject().removeDatasource(getDatasource());
+        ((Desktop) getDesktop()).refreshWorkspace();
       }
     }
   }

@@ -22,10 +22,10 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGenerator;
 
-public class PHPServer extends Server {
+public class PHPServer extends AbstractServer {
 
   public PHPServer(String host, String rootFolder) {
     super(host, rootFolder);
@@ -52,7 +52,7 @@ public class PHPServer extends Server {
         generator.createFiles(destination);
       }
       catch (Exception e) {
-        e.printStackTrace();
+        //TODO Log
         throw new ProcessingException(e.toString());
       }
     }

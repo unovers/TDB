@@ -66,6 +66,7 @@ public class DatasetsDetailsNodePage extends AbstractPageWithNodes {
           pageList.add(page);
         }
         catch (Exception e) {
+          //TODO Log
           throw new ProcessingException(e.toString());
         }
       }

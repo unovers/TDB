@@ -10,12 +10,15 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.IFormField;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.filechooserfield.AbstractFileChooserField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
@@ -65,6 +68,11 @@ public class OutputApplicationViewForm extends AbstractForm {
     return output;
   }
 
+  @Override
+  protected String getConfiguredTitle() {
+    return output.getProject().getName() + " - " + output.getName();
+  }
+
   /**
    * @param output
    *          the output to set
@@ -100,6 +108,11 @@ public class OutputApplicationViewForm extends AbstractForm {
    */
   public OutputsSectionBox getOutputsSectionBox() {
     return getFieldByClass(OutputsSectionBox.class);
+  }
+
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
   }
 
   @Override
@@ -190,6 +203,11 @@ public class OutputApplicationViewForm extends AbstractForm {
                 }
 
                 @Override
+                protected boolean getConfiguredMandatory() {
+                  return true;
+                }
+
+                @Override
                 public String getFieldId() {
                   return "application_" + field.getId();
                 }
@@ -200,6 +218,20 @@ public class OutputApplicationViewForm extends AbstractForm {
                 @Override
                 protected String getConfiguredLabel() {
                   return field.getName();
+                }
+
+                @Override
+                protected boolean getConfiguredMandatory() {
+                  return true;
+                }
+
+                @Override
+                protected String execValidateValue(String rawValue) throws ProcessingException {
+                  File f = new File(rawValue);
+                  if (!f.exists() && f.isDirectory()) {
+                    throw new VetoException("Invalid input", "fichier no existant", 267, IStatus.ERROR);
+                  }
+                  return rawValue;
                 }
 
                 @Override
@@ -248,6 +280,11 @@ public class OutputApplicationViewForm extends AbstractForm {
               @Override
               protected String getConfiguredLabel() {
                 return field.getName();
+              }
+
+              @Override
+              protected boolean getConfiguredMandatory() {
+                return true;
               }
 
               @Override
@@ -325,6 +362,11 @@ public class OutputApplicationViewForm extends AbstractForm {
                     }
 
                     @Override
+                    protected boolean getConfiguredMandatory() {
+                      return true;
+                    }
+
+                    @Override
                     public String getFieldId() {
                       // TODO Auto-generated method stub
                       return "item_id_" + item.getId();
@@ -336,6 +378,11 @@ public class OutputApplicationViewForm extends AbstractForm {
                     @Override
                     protected String getConfiguredLabel() {
                       return TEXTS.get("Name");
+                    }
+
+                    @Override
+                    protected boolean getConfiguredMandatory() {
+                      return true;
                     }
 
                     @Override
@@ -351,6 +398,20 @@ public class OutputApplicationViewForm extends AbstractForm {
                     @Override
                     protected String getConfiguredLabel() {
                       return resource.getName();
+                    }
+
+                    @Override
+                    protected boolean getConfiguredMandatory() {
+                      return true;
+                    }
+
+                    @Override
+                    protected String execValidateValue(String rawValue) throws ProcessingException {
+                      File f = new File(rawValue);
+                      if (!f.exists() && f.isDirectory()) {
+                        throw new VetoException("Invalid input", "fichier no existant", 267, IStatus.ERROR);
+                      }
+                      return rawValue;
                     }
 
                     @Override
@@ -407,103 +468,13 @@ public class OutputApplicationViewForm extends AbstractForm {
     }
 
     @Order(20.0)
-    public class SaveChangesButton extends AbstractButton {
+    public class SaveChangesButton extends AbstractOkButton {
 
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("SaveChanges");
       }
 
-      @SuppressWarnings("unchecked")
-      @Override
-      protected void execClickAction() throws ProcessingException {
-        String workspace = ((Desktop) getDesktop()).getWorkspace();
-        String project_path = workspace + File.separator + project.getName();
-        //application infos
-        for (Entry<Field, OutputField> entry : getOutput().getApplicationFields().entrySet()) {
-          Field field = entry.getKey();
-          OutputField outputField = entry.getValue();
-          if (outputField instanceof StringField) {
-            AbstractStringField f = (AbstractStringField) getFieldById("application_" + field.getId());
-            getOutput().getApplicationFields().get(field).setValue(f.getValue());
-          }
-          else if (outputField instanceof FileField) {
-            AbstractFileChooserField f = (AbstractFileChooserField) getFieldById("application_" + field.getId());
-            getOutput().getApplicationFields().get(field).setValue(f.getValue());
-
-            //S'assure que le répertoire soit correct
-            String old_value = (project_path + File.separator + output.getName() + File.separator + outputField.getValue()).replace("/", File.separator).replace("\\", File.separator);
-
-            String new_value = f.getValue();
-            String application_path = "resources" + File.separator + "application" + File.separator + field.getName();
-            new File(project_path + File.separator + output.getName() + File.separator + application_path).mkdirs();
-
-            if (!old_value.equals(new_value)) {
-              //Supprime l'ancienne valeur
-              File file = new File(old_value);
-              if (file.exists()) {
-                file.delete();
-              }
-              //Copie la nouvelle valeur
-              try {
-                Files.copy(new File(new_value).toPath(),
-                    new File(project_path + File.separator + output.getName() + File.separator + application_path + File.separator + new File(new_value).getName()).toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-              }
-              catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
-            }
-          }
-        }
-
-        for (Entry<Field, Field> entry : getOutput().getMappedFields().entrySet()) {
-
-          Field field = entry.getKey();
-          AbstractSmartField<Field> f = (AbstractSmartField<Field>) getFieldById("mapping_" + field.getId());
-          Field mappedField = f.getValue();
-          entry.setValue(mappedField);
-        }
-
-        //item infos
-        for (ItemType itemType : getOutput().getItemsTypes()) {
-          if (!itemType.getName().equals("Default")) {
-            AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
-            itemType.setName(name.getValue());
-          }
-          for (FileResource resource : itemType.getResources()) {
-            AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + itemType.getId());
-
-            //S'assure que le répertoire soit correct
-            String old_value = (project_path + File.separator + output.getName() + File.separator + resource.getValue()).replace("/", File.separator).replace("\\", File.separator);
-
-            String new_value = itemResourceFile.getValue();
-            String type_path = "resources" + File.separator + "types" + File.separator + itemType.getName();
-            new File(project_path + File.separator + output.getName() + File.separator + type_path).mkdirs();
-
-            if (!old_value.equals(new_value)) {
-
-              //Supprime l'ancienne valeur
-              File file = new File(old_value);
-              if (file.exists()) {
-                file.delete();
-              }
-              //Copie la nouvelle valeur
-              try {
-                Files.copy(new File(new_value).toPath(),
-                    new File(project_path + File.separator + output.getName() + File.separator + type_path + File.separator + new File(new_value).getName()).toPath(),
-                    StandardCopyOption.REPLACE_EXISTING);
-              }
-              catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
-            }
-            resource.setValue(type_path);
-          }
-        }
-      }
     }
 
     @Order(30.0)
@@ -512,6 +483,13 @@ public class OutputApplicationViewForm extends AbstractForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("DeleteOutput");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        Desktop.removeOutput(output);
+        ((Desktop) getDesktop()).refreshWorkspace();
+        project.removeOutput(output);
       }
     }
   }
@@ -569,6 +547,88 @@ public class OutputApplicationViewForm extends AbstractForm {
           itemResourceFile.setValue(old_value);
         }
       }
+    }
+
+    @Override
+    protected void execStore() throws ProcessingException {
+
+      String workspace = ((Desktop) getDesktop()).getWorkspace();
+      String project_path = workspace + File.separator + project.getName();
+      //application infos
+      for (Entry<Field, OutputField> entry : getOutput().getApplicationFields().entrySet()) {
+        Field field = entry.getKey();
+        OutputField outputField = entry.getValue();
+        if (outputField instanceof StringField) {
+          AbstractStringField f = (AbstractStringField) getFieldById("application_" + field.getId());
+          getOutput().getApplicationFields().get(field).setValue(f.getValue());
+        }
+        else if (outputField instanceof FileField) {
+          AbstractFileChooserField f = (AbstractFileChooserField) getFieldById("application_" + field.getId());
+
+          String path = project_path + File.separator + output.getName();
+          String folder = "resources" + File.separator + "application" + File.separator + field.getName();
+          new File(path + File.separator + folder).mkdirs();
+          if (!f.getValue().equals(outputField.getValue())) {
+            File new_file = new File(f.getValue());
+            try {
+              Files.copy(new File(f.getValue()).toPath(),
+                  new File(path + File.separator + folder + File.separator + new_file.getName()).toPath(),
+                  StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e) {
+              throw new ProcessingException(e.toString());
+            }
+            getOutput().getApplicationFields().get(field).setValue(folder + File.separator + new_file.getName());
+          }
+        }
+      }
+
+      for (Entry<Field, Field> entry : getOutput().getMappedFields().entrySet()) {
+
+        Field field = entry.getKey();
+        AbstractSmartField<Field> f = (AbstractSmartField<Field>) getFieldById("mapping_" + field.getId());
+        Field mappedField = f.getValue();
+        entry.setValue(mappedField);
+      }
+
+      //item infos
+      for (ItemType itemType : getOutput().getItemsTypes()) {
+        if (!itemType.getName().equals("Default")) {
+          AbstractStringField name = (AbstractStringField) getFieldById("item_id_" + itemType.getId());
+          itemType.setName(name.getValue());
+        }
+        for (FileResource resource : itemType.getResources()) {
+          AbstractFileChooserField itemResourceFile = (AbstractFileChooserField) getFieldById("itemResourceFile_" + resource.getId() + "_" + itemType.getId());
+
+          //S'assure que le répertoire soit correct
+          String old_value = (project_path + File.separator + output.getName() + File.separator + resource.getValue()).replace("/", File.separator).replace("\\", File.separator);
+
+          String new_value = itemResourceFile.getValue();
+          String type_path = "resources" + File.separator + "types" + File.separator + itemType.getName();
+          new File(project_path + File.separator + output.getName() + File.separator + type_path).mkdirs();
+
+          if (!old_value.equals(new_value)) {
+
+            //Supprime l'ancienne valeur
+            File file = new File(old_value);
+            if (file.exists()) {
+              file.delete();
+            }
+            //Copie la nouvelle valeur
+            try {
+              Files.copy(new File(new_value).toPath(),
+                  new File(project_path + File.separator + output.getName() + File.separator + type_path + File.separator + new File(new_value).getName()).toPath(),
+                  StandardCopyOption.REPLACE_EXISTING);
+            }
+            catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+          resource.setValue(type_path + File.separator + new File(new_value).getName());
+        }
+      }
+      Desktop.loadOrRefreshFormOutput(getOutput(), new OutputApplicationViewForm(project, getOutput()));
     }
   }
 }

@@ -11,6 +11,7 @@ import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasetViewForm.MainBox.DeleteDatasetButton;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasetViewForm.MainBox.NameField;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasetViewForm.MainBox.QueryField;
@@ -177,6 +178,13 @@ public class MySQLDatasetViewForm extends AbstractSQLDatasetViewForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("DeleteDataset");
+      }
+
+      @Override
+      protected void execClickAction() throws ProcessingException {
+        Desktop.removeDataset(getDataset());
+        getDataset().getDatasource().removeDataset(getDataset());
+        ((Desktop) getDesktop()).refreshWorkspace();
       }
     }
   }

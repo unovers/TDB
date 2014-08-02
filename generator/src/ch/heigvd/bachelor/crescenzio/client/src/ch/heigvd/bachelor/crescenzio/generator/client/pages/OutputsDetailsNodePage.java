@@ -34,8 +34,10 @@ public class OutputsDetailsNodePage extends AbstractPageWithNodes {
    * @param project
    */
   public OutputsDetailsNodePage(Project project) {
+    super(false);
     this.project = project;
     setInitialExpanded(true);
+    callInitializer();
   }
 
   @Override
@@ -56,13 +58,8 @@ public class OutputsDetailsNodePage extends AbstractPageWithNodes {
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (OutputApplication output : project.getOutputs()) {
-      try {
-        OutputApplicationPage page = new OutputApplicationPage(project, output);
-        pageList.add(page);
-      }
-      catch (Exception e) {
-        throw new ProcessingException(e.toString());
-      }
+      OutputApplicationPage page = new OutputApplicationPage(project, output);
+      pageList.add(page);
     }
   }
 }

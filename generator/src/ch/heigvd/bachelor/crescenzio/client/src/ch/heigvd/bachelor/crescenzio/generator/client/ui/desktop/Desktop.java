@@ -24,6 +24,12 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.scout.commons.CollectionUtility;
 import org.eclipse.scout.commons.annotations.Order;
@@ -42,7 +48,6 @@ import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
-import org.eclipse.scout.rt.client.ui.messagebox.MessageBox;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -62,14 +67,19 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelect
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSelectionInputForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.LogsViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.OutputApplicationViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop.EditMenu.EditProjectMenu;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines.StandardOutline;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasetViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
+import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
-import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
 import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
 
@@ -78,10 +88,17 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
   private StartForm startForm;
   private ProjectViewForm projectInfoForm;
-  private LogsViewForm logsForm;
   private DefaultOutlineTreeForm treeForm;
   private DefaultOutlineTableForm tableForm;
-  private HashMap<Project, ProjectViewForm> projectsInfoForms;
+
+  private static HashMap<Project, ProjectViewForm> projectViewForms;
+  private static HashMap<AbstractDataset, AbstractDatasetViewForm> datasetViewForms;
+  private static HashMap<AbstractDatasource, AbstractDatasourceViewForm> datasourceViewForms;
+  private static HashMap<OutputApplication, OutputApplicationViewForm> outputViewForms;
+  private static HashMap<Project, ServerViewForm> serverViewForms;
+  private static HashMap<Project, FieldsViewForm> fieldsViewForms;
+  private static HashMap<Project, CriteriasViewForm> criteriasViewForms;
+
   private String workspace;
 
   private static HashMap<String, DatasourceType> datasourceType;
@@ -91,9 +108,94 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   static {
     loadDatas();
+
+    projectViewForms = new HashMap<Project, ProjectViewForm>();
+    datasourceViewForms = new HashMap<AbstractDatasource, AbstractDatasourceViewForm>();
+    datasetViewForms = new HashMap<AbstractDataset, AbstractDatasetViewForm>();
+    fieldsViewForms = new HashMap<Project, FieldsViewForm>();
+    outputViewForms = new HashMap<OutputApplication, OutputApplicationViewForm>();
+    criteriasViewForms = new HashMap<Project, CriteriasViewForm>();
+    serverViewForms = new HashMap<Project, ServerViewForm>();
   }
 
-  private void loadProjectsInWorkspace() {
+  public Desktop() {
+  }
+
+  public static void loadOrRefreshFormProject(Project project, ProjectViewForm form) throws ProcessingException {
+    if (projectViewForms.get(project) != null && projectViewForms.get(project).isFormOpen()) {
+      projectViewForms.remove(project).doClose();
+    }
+    projectViewForms.put(project, form);
+    form.startView();
+  }
+
+  public static void removeDataset(AbstractDataset dataset) throws ProcessingException {
+    if (datasetViewForms.get(dataset) != null && datasetViewForms.get(dataset).isFormOpen()) {
+      datasetViewForms.remove(dataset).doClose();
+    }
+  }
+
+  public static void removeOutput(OutputApplication output) throws ProcessingException {
+    if (outputViewForms.get(output) != null && outputViewForms.get(output).isFormOpen()) {
+      outputViewForms.remove(output).doClose();
+    }
+  }
+
+  public static void removeDatasource(AbstractDatasource datasource) throws ProcessingException {
+    if (datasourceViewForms.get(datasource) != null && datasourceViewForms.get(datasource).isFormOpen()) {
+      datasourceViewForms.remove(datasource).doClose();
+    }
+  }
+
+  public static void loadOrRefreshFormDatasource(AbstractDatasource datasource, AbstractDatasourceViewForm form) throws ProcessingException {
+    if (datasourceViewForms.get(datasource) != null && datasourceViewForms.get(datasource).isFormOpen()) {
+      datasourceViewForms.remove(datasource).doClose();
+    }
+    datasourceViewForms.put(datasource, form);
+    form.startView();
+  }
+
+  public static void loadOrRefreshFormDataset(AbstractDataset dataset, AbstractDatasetViewForm form) throws ProcessingException {
+    if (datasetViewForms.get(dataset) != null && datasetViewForms.get(dataset).isFormOpen()) {
+      datasetViewForms.remove(dataset).doClose();
+    }
+    datasetViewForms.put(dataset, form);
+    form.startView();
+  }
+
+  public static void loadOrRefreshFormOutput(OutputApplication output, OutputApplicationViewForm form) throws ProcessingException {
+    if (outputViewForms.get(output) != null && outputViewForms.get(output).isFormOpen()) {
+      outputViewForms.remove(output).doClose();
+    }
+    outputViewForms.put(output, form);
+    form.startView();
+  }
+
+  public static void loadOrRefreshFormFields(Project project, FieldsViewForm form) throws ProcessingException {
+    if (fieldsViewForms.get(project) != null && fieldsViewForms.get(project).isFormOpen()) {
+      fieldsViewForms.remove(project).doClose();
+    }
+    fieldsViewForms.put(project, form);
+    form.startView();
+  }
+
+  public static void loadOrRefreshFormCriterias(Project project, CriteriasViewForm form) throws ProcessingException {
+    if (criteriasViewForms.get(project) != null && criteriasViewForms.get(project).isFormOpen()) {
+      criteriasViewForms.remove(project).doClose();
+    }
+    criteriasViewForms.put(project, form);
+    form.startView();
+  }
+
+  public static void loadOrRefreshFormServer(Project project, ServerViewForm form) throws ProcessingException {
+    if (serverViewForms.get(project) != null && serverViewForms.get(project).isFormOpen()) {
+      serverViewForms.remove(project).doClose();
+    }
+    serverViewForms.put(project, form);
+    form.startView();
+  }
+
+  private void loadProjectsInWorkspace() throws ProcessingException {
 
     String[] folderContent = new File(workspace).list();
     for (int i = 0; i < folderContent.length; i++) {
@@ -111,8 +213,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           }
         }
         catch (ParserConfigurationException | SAXException | IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          throw new ProcessingException(e.getMessage());
         }
       }
     }
@@ -148,14 +249,15 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           }
         }
         catch (Exception e) {
-          throw new ProcessingException("Could not load datasource type");
+          //TODO Log
+          throw new ProcessingException(e.getMessage());
         }
 
         //charge les types de serveurs
         try {
           factory = DocumentBuilderFactory.newInstance();
           DocumentBuilder builder = factory.newDocumentBuilder();
-          document = builder.parse(Server.class.getResourceAsStream("servers.xml"));
+          document = builder.parse(AbstractServer.class.getResourceAsStream("servers.xml"));
           Node nodeServers = document.getDocumentElement();
           for (int i = 0; i < nodeServers.getChildNodes().getLength(); i++) {
             Node nodeServer = nodeServers.getChildNodes().item(i);
@@ -172,7 +274,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           }
         }
         catch (Exception e) {
-          throw new ProcessingException("Could not load server types");
+          //TODO Log
+          throw new ProcessingException(e.getMessage());
         }
 
         //charge les types de sorties d'application
@@ -197,11 +300,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           }
         }
         catch (Exception e) {
-          throw new ProcessingException("Could not load outputs type");
+          //TODO Log
+          throw new ProcessingException(e.getMessage());
         }
       }
-      catch (ProcessingException e1) {
-        new MessageBox("Error loading", e1.getMessage(), "ok").startMessageBox();
+      catch (ProcessingException e) {
+        //TODO Log
+        System.err.println("Error loading config files - " + e.getMessage());
       }
       init = true;
     }
@@ -219,10 +324,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     return serverTypes;
   }
 
-  public Desktop() throws ProcessingException {
-    projectsInfoForms = new HashMap<Project, ProjectViewForm>();
-  }
-
   @Override
   protected List<Class<? extends IOutline>> getConfiguredOutlines() {
     List<Class<? extends IOutline>> outlines = new ArrayList<Class<? extends IOutline>>();
@@ -237,9 +338,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   @Override
   protected void execOpened() throws ProcessingException {
-    getMenu(EditProjectMenu.class).setEnabled(false);
-
-    AbstractInputForm form = new WorkspaceSelectionInputForm();
+    WorkspaceSelectionInputForm form = new WorkspaceSelectionInputForm();
     form.startNew();
     form.waitFor();
     if (form.isFormStored()) {
@@ -337,6 +436,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
                   form.startNew();
                 }
                 catch (Exception e) {
+                  //TODO Log
                   throw new ProcessingException(e.toString());
                 }
               }
@@ -422,14 +522,48 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         ClientSyncJob.getCurrentSession(ClientSession.class).stopSession();
       }
     }
-  }
 
-  @Order(60.0)
-  public class ToolsMenu extends AbstractMenu {
+    @Order(10.0)
+    public class SaveAllProjectsMenu extends AbstractExtensibleMenu {
 
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("ToolsMenu");
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("SaveAllProjects");
+      }
+
+      /* (non-Javadoc)
+       * @see org.eclipse.scout.rt.client.ui.action.AbstractAction#execAction()
+       */
+      @Override
+      protected void execAction() throws ProcessingException {
+        for (Project project : Project.getAll()) {
+
+          DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+          DocumentBuilder docBuilder;
+          try {
+            //Créer le dossier de l'application si il n'existe pas
+            String folderPath = workspace + File.separator + project.getName();
+            File folder = new File(folderPath);
+            folder.mkdirs();
+
+            docBuilder = docFactory.newDocumentBuilder();
+
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            Document document = docBuilder.newDocument();
+            document.appendChild(ProjectXMLLoader.createProjectElement(document, project));
+            DOMSource source = new DOMSource(document);
+
+            StreamResult result = new StreamResult(new File(folderPath + File.separator + "project.xml"));
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            transformer.transform(source, result);
+          }
+          catch (ParserConfigurationException | TransformerException e) {
+            throw new ProcessingException(e.getMessage());
+          }
+        }
+      }
     }
   }
 
@@ -476,34 +610,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(40.0)
-  public class EditMenu extends AbstractExtensibleMenu {
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("Edit");
-    }
-
-    @Override
-    protected void execAction() throws ProcessingException {
-    }
-
-    @Order(10.0)
-    public class EditProjectMenu extends AbstractExtensibleMenu {
-
-      @Override
-      protected String getConfiguredText() {
-        return "";
-      }
-
-      @Override
-      protected void execAction() throws ProcessingException {
-        ProjectInputForm form = new ProjectInputForm();
-        form.startModify();
-      }
-    }
-  }
-
   @Order(10.0)
   public class StandardOutlineViewButton extends AbstractOutlineViewButton {
 
@@ -523,12 +629,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   public void displayProjectInfo(Project project) throws ProcessingException {
-    if (projectsInfoForms.get(project) != null) {
-      projectsInfoForms.get(project).doClose();
-      projectsInfoForms.remove(project);
+    if (projectViewForms.get(project) != null) {
+      projectViewForms.get(project).doClose();
+      projectViewForms.remove(project);
     }
 
-    projectsInfoForms.put(project, new ProjectViewForm(project));
+    projectViewForms.put(project, new ProjectViewForm(project));
   }
 
   /**

@@ -43,7 +43,7 @@ public class MySQLDataset extends AbstractSQLDataset {
         }
         //datas
         while (result.next()) {
-          datas[result.getRow()] = new Object[rsmd.getColumnCount()];
+          datas[result.getRow() - 1] = new Object[rsmd.getColumnCount()];
           for (int i = 0; i < datas[0].length; i++) {
             datas[result.getRow() - 1][i] = result.getObject(i + 1);
           }

@@ -9,6 +9,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
  * @author Fabio
@@ -21,12 +22,14 @@ public class CriteriasPage extends AbstractPage {
    * @param project
    */
   public CriteriasPage(Project project) {
+    super(false);
     this.project = project;
+    callInitializer();
   }
 
   @Override
   protected void execPageActivated() throws ProcessingException {
-    new CriteriasViewForm(project).startView();
+    Desktop.loadOrRefreshFormCriterias(project, new CriteriasViewForm(project));
   }
 
   @Override

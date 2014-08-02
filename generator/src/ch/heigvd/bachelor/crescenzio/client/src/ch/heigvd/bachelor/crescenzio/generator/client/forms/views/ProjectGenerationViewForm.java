@@ -42,14 +42,15 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
     try {
       //Réalise toutes les vérifications
       if (project.getDatasources().size() == 0) {
-        throw new Exception();
+        throw new UnsupportedOperationException("il faut avoir au moins un datasource");
       }
 
       project.generateProject(((Desktop) getDesktop()).getWorkspace());
       generate = true;
     }
     catch (Exception e) {
-      e.printStackTrace();
+      //TODO Log
+      throw new ProcessingException(e.toString());
     }
     callInitializer();
   }
@@ -61,7 +62,7 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("ProjectInformations");
+    return project.getName() + " - " + TEXTS.get("ProjectInformations");
   }
 
   /**

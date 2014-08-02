@@ -31,9 +31,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputFo
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm.MainBox.RootFolderField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ServerInputForm.MainBox.ServerTypeSmartField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ServerTypeLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
-import ch.heigvd.bachelor.crescenzio.generator.server.Server;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.shared.ConfigureServerFormData;
 
 @FormData(value = ConfigureServerFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
@@ -197,7 +198,7 @@ public class ServerInputForm extends AbstractInputForm {
   public class ModifyHandler extends AbstractFormHandler {
     @Override
     protected void execLoad() throws ProcessingException {
-      Server server = project.getServer();
+      AbstractServer server = project.getServer();
       getRootFolderField().setValue(server.getRootFolder());
       getHostnameField().setValue(server.getHost());
       String serverType = project.getServer().getClass().getSimpleName();
@@ -213,11 +214,13 @@ public class ServerInputForm extends AbstractInputForm {
         Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});
-        Server server = (Server) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});
+        AbstractServer server = (AbstractServer) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});
         project.setServer(server);
+        Desktop.loadOrRefreshFormServer(project, new ServerViewForm(project));
         desktop.refreshWorkspace();
       }
       catch (Exception e) {
+        //TODO Log
         throw new ProcessingException(e.toString());
       }
 
@@ -234,8 +237,10 @@ public class ServerInputForm extends AbstractInputForm {
         Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});
-        Server server = (Server) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});
+        AbstractServer server = (AbstractServer) constructor.newInstance(new Object[]{getHostnameField().getValue(), getRootFolderField().getValue()});
         project.setServer(server);
+
+        Desktop.loadOrRefreshFormServer(project, new ServerViewForm(project));
         desktop.refreshWorkspace();
       }
       catch (Exception e) {

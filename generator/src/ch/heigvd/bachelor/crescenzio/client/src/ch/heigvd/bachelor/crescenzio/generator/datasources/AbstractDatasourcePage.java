@@ -13,7 +13,9 @@ public abstract class AbstractDatasourcePage extends AbstractPage {
   private AbstractDatasource datasource;
 
   public AbstractDatasourcePage(AbstractDatasource datasource) {
+    super(false);
     this.datasource = datasource;
+    callInitializer();
   }
 
   /**
@@ -27,7 +29,7 @@ public abstract class AbstractDatasourcePage extends AbstractPage {
    * @param datasource
    *          the datasource to set
    */
-  public void setdatasource(AbstractDatasource datasource) {
+  public void setDatasource(AbstractDatasource datasource) {
     this.datasource = datasource;
   }
 

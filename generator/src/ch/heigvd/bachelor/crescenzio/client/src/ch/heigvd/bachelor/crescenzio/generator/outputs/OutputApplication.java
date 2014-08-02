@@ -80,7 +80,7 @@ public class OutputApplication {
   }
 
   public void removeItemType(ItemType itemType) {
-    if (itemsTypes.contains(itemType)) itemsTypes.remove(itemType);
+    itemsTypes.remove(itemType);
   }
 
   public void setField(Field mappedField, Field field) {

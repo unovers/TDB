@@ -180,6 +180,7 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
 
       }
       catch (Exception e) {
+        //TODO Log
         throw new ProcessingException(e.toString());
       }
     }

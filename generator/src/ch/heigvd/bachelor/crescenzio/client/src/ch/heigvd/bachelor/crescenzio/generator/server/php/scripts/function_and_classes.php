@@ -75,12 +75,10 @@
 	}
 
 	class File extends Resource{
-		private $type;
 		private $date;
 		
-		public function __construct($name, $type, $date) { 
+		public function __construct($name, $date) { 
 			parent::__construct($name);
-			$this->type = $type;
 			$this->date = $date;
 		}
 		
@@ -88,9 +86,6 @@
 			return $this->resources;
 		}
 		
-		public function getType(){
-			return $this->type;
-		}
 		
 		public function getDate(){
 			return $this->date;
@@ -100,7 +95,6 @@
 			$output = '{';
 			$output .= '"resource_type":"file",';
 			$output .= '"name":"' . $this->getName() .'"';
-			$output .= ',"type":"' . $this->type .'"';
 			$output .= ',"date":"' . $this->date .'"';
 			$output .= '}';
 			return $output;
@@ -160,7 +154,7 @@
 					array_push($resources, new Folder($dir."/".$resource, $res));
 				}
 				else {
-					array_push($resources, new File($resource, 'type', 'date'));
+					array_push($resources, new File($resource, date ("F d Y H:i:s.", filemtime($resource)));
 				}
 			}
 		}

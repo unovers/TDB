@@ -4,11 +4,11 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 
-public abstract class Server {
+public abstract class AbstractServer {
   private String host;
   private String rootFolder;
 
-  protected Server(String host, String rootFolder) {
+  protected AbstractServer(String host, String rootFolder) {
     this.host = host;
     this.rootFolder = rootFolder;
   }

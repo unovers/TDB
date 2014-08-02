@@ -29,6 +29,7 @@ import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ConditionInputForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.CriteriaInputForm;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
@@ -49,7 +50,7 @@ public class CriteriasViewForm extends AbstractForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Criterias");
+    return project.getName() + " - " + TEXTS.get("Criterias");
   }
 
   @Override
@@ -160,6 +161,7 @@ public class CriteriasViewForm extends AbstractForm {
               @Override
               protected void execClickAction() throws ProcessingException {
                 project.removeCriteria(criteria);
+                Desktop.loadOrRefreshFormCriterias(project, new CriteriasViewForm(project));
               }
             });
           }

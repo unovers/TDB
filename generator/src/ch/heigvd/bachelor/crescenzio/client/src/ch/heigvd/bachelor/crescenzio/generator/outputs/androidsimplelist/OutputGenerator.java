@@ -34,8 +34,8 @@ public class OutputGenerator extends AbstractOutputGenerator {
   /**
    * @param output
    */
-  public OutputGenerator(OutputApplication output, String destinationPath) {
-    super(output, destinationPath);
+  public OutputGenerator(OutputApplication output) {
+    super(output);
   }
 
   private String getHeader() {
@@ -75,7 +75,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append(" public boolean onCreateOptionsMenu(Menu menu) {\n");
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
       Criteria criteria = getOutput().getProject().getCriterias().get(i);
-      output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM%i, Menu.NONE, \"%s\");\n", i, criteria.getTitle()));
+      output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM%d, Menu.NONE, \"%s\");\n", i, criteria.getTitle()));
     }
     output.append("       return super.onCreateOptionsMenu(menu);\n");
     output.append(" }\n\n");
@@ -93,7 +93,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
         if (j != criteria.getConditions().size() - 1) {
           conditions += ", ";
         }
-        output.append(String.format("       case MENU_ITEM%i:\n", i));
+        output.append(String.format("       case MENU_ITEM%d:\n", i));
         output.append(String.format("           dataManager.organizeResource(%s);\n", conditions));
         output.append("           break;\n");
       }
@@ -106,7 +106,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
 
   }
 
-  private void generateMainActivity(String destination) throws IOException {
+  private void generateMainActivity(File destination) throws IOException {
     StringBuffer output = new StringBuffer();
     output.append("/*" + getHeader() + "*/\n");
     output.append("\n\n");
@@ -118,7 +118,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
         getOutput().getProject().getServer().getHost() + "/" + getOutput().getProject().getServer().getRootFolder()));
 
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
-      output.append(String.format("  private static final MENU_ITEM%i = %i;\n", i, i));
+      output.append(String.format("  private static final MENU_ITEM%d = %d;\n", i, i));
     }
 
     output.append("  DataManager dataManager = new DataManager(WS_URL);");
@@ -215,11 +215,10 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append(");\n");
 
     BufferedWriter out = new BufferedWriter(
-        new FileWriter(destination + File.separator + "MainActivity..php"));
+        new FileWriter(destination.toPath() + File.separator + "MainActivity..php"));
     String outText = output.toString();
     out.write(outText);
     out.close();
-    System.out.println(output);
   }
 
   static String readFile(String path, Charset encoding)
@@ -228,18 +227,19 @@ public class OutputGenerator extends AbstractOutputGenerator {
     return new String(encoded, encoding);
   }
 
-  private void generateTypeFiles(String destination) throws IOException {
+  private void generateTypeFiles(File source, File destination) throws IOException {
     String packageFolder = getOutput().getProject().getPackageName().replace(".", File.separator);
-    String generatedFolder = destination + File.separator + "generatedApplication";
     String outText = "/*" + getHeader() + "*/\n";
-    outText += "\n\n";
+    outText += getOutput().getProject().getPackageName() + ";\n\n";
     //créer les dossiers nécessaires
-    new File(generatedFolder + "res" + File.separator + "layout").mkdirs();
+    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "res" + File.separator + "layout").mkdirs();
+    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src" + File.separator + packageFolder).mkdirs();
+    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src" + File.separator + packageFolder + File.separator + "row").mkdirs();
     for (ItemType itemType : getOutput().getItemsTypes()) {
 
       //Création du fichier java
       BufferedWriter out = new BufferedWriter(
-          new FileWriter(generatedFolder + File.separator + "src"
+          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
               + File.separator + packageFolder + File.separator + "row" + File.separator + itemType.getName() + "Row.java"));
       FileResource resource = null;
       //Recupération de la ressource voulue
@@ -253,13 +253,13 @@ public class OutputGenerator extends AbstractOutputGenerator {
         out.close();
         throw new IOException("Cette resource n'existe pas");
       }
-      outText += readFile(destination + File.separator + resource.getValue(), StandardCharsets.UTF_8);
+      outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
       out.write(outText);
       out.close();
 
       //Création du fichier xml
       out = new BufferedWriter(
-          new FileWriter(generatedFolder + File.separator + "src"
+          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
               + File.separator + "layout" + File.separator + itemType.getName() + "_row.xml"));
       outText = "/*" + getHeader() + "*/\n";
       outText += "\n\n";
@@ -277,16 +277,16 @@ public class OutputGenerator extends AbstractOutputGenerator {
         throw new IOException("Cette resource n'existe pas");
       }
 
-      outText += readFile(destination + File.separator + resource.getValue(), StandardCharsets.UTF_8);
+      outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
       out.write(outText);
       out.close();
 
       //Création du fichier java pour l'activité
       out = new BufferedWriter(
-          new FileWriter(generatedFolder + File.separator + "src"
+          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
               + File.separator + packageFolder + File.separator + itemType.getName() + "Activity.java"));
       outText = "/*" + getHeader() + "*/\n";
-      outText += "\n\n";
+      outText += getOutput().getProject().getPackageName() + ";\n\n";
       resource = null;
       //Recupération de la ressource voulue
       for (FileResource res : itemType.getResources()) {
@@ -299,14 +299,16 @@ public class OutputGenerator extends AbstractOutputGenerator {
         out.close();
         throw new IOException("Cette resource n'existe pas");
       }
-      outText += readFile(destination + File.separator + resource.getValue(), StandardCharsets.UTF_8);
+      outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
       out.write(outText);
       out.close();
 
       //Création du fichier xml pour l'activité
+      String resourceTypeLayoutPath = destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
+          + File.separator + "layout" + File.separator + itemType.getName();
+      new File(resourceTypeLayoutPath).mkdirs();
       out = new BufferedWriter(
-          new FileWriter(generatedFolder + File.separator + "src"
-              + File.separator + "layout" + File.separator + itemType.getName() + "_activity.xml"));
+          new FileWriter(resourceTypeLayoutPath + "_activity.xml"));
       outText = "/*" + getHeader() + "*/\n";
       outText += "\n\n";
       resource = null;
@@ -323,20 +325,20 @@ public class OutputGenerator extends AbstractOutputGenerator {
         throw new IOException("Cette resource n'existe pas");
       }
 
-      outText += readFile(destination + File.separator + resource.getValue(), StandardCharsets.UTF_8);
+      outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
       out.write(outText);
       out.close();
 
     }
   }
 
-  private void createManifest(String destination) throws IOException {
+  private void createManifest(File destination) throws IOException {
     StringBuffer output = new StringBuffer();
     output.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
     output.append("<!--" + getHeader() + "-->\n");
     output.append("\n\n");
     output.append("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\n");
-    output.append("    package=\"ch.heigvd.bachelor.crescenzio.androidapp\"\n");
+    output.append(String.format("    package=\"%s\"\n", getOutput().getProject().getPackageName()));
     output.append("    android:versionCode=\"1\"\n");
     output.append("    android:versionName=\"1.0\" >\n");
     output.append("    <uses-permission \n");
@@ -383,33 +385,31 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("</manifest>\n");
 
     BufferedWriter out = new BufferedWriter(
-        new FileWriter(destination + File.separator + "AndroidManifest.xml"));
+        new FileWriter(destination.toPath() + File.separator + "AndroidManifest.xml"));
     out.write(output.toString());
     out.close();
 
   }
 
-  private void copyFiles(String destination) throws IOException {
-    String baseFolder = destination + File.separator + getOutput().getName();
+  private void copyFiles(File src, File destination) throws IOException {
 
     //copie les fichiers pour l'application
     for (Entry<Field, OutputField> applicationField : getOutput().getApplicationFields().entrySet()) {
       Field field = applicationField.getKey();
       if (field.getName().equals("applicationIcon72")) {
         OutputField file = applicationField.getValue();
-        Files.copy(new File(baseFolder + File.separator + file.getValue()).toPath(),
-            new File(destination + File.separator + "res" + File.separator + "drawable-hdpi" + File.separator + "logo.png").toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(new File(src.toPath() + File.separator + getOutput().getName() + File.separator + file.getValue()).toPath(),
+            new File(destination.toPath() + File.separator + "res" + File.separator + "drawable-hdpi" + File.separator + "logo.png").toPath(), StandardCopyOption.REPLACE_EXISTING);
       }
     }
   }
 
   @Override
-  public void generate(String destination) throws IOException {
+  public void generate(File src, File destination) throws IOException {
     System.out.println("GENERATION DE ANDROIDSIMPLELIST");
     System.out.println();
-    String baseFolder = destination + File.separator + "generatedApplication" + File.separator + getOutput().getName();
-    String destinationSrc = baseFolder + File.separator + "src";
-    String destinationRes = baseFolder + File.separator + "res";
+    String destinationSrc = destination.toPath() + File.separator + getOutput().getName() + File.separator + "src";
+    String destinationRes = destination.toPath() + File.separator + getOutput().getName() + File.separator + "res";
     new File(destinationSrc).mkdirs();
     new File(destinationRes).mkdirs();
 
@@ -430,14 +430,14 @@ public class OutputGenerator extends AbstractOutputGenerator {
     os.close();
 
     File temp = Utils.createTempDirectory();
-    Utils.unZipIt(zipFile.getPath(), baseFolder);
+    Utils.unZipIt(zipFile.getPath(), destination.toPath().toString());
     temp.deleteOnExit();
-    //get the zipped file list entry
-    createManifest(baseFolder);
-    copyFiles(destination);
-//
-//    generateMainActivity(destination);
-//    copyFiles(destination);
-//    generateTypeFiles(destination);
+
+    //Ajoute les ressources
+    createManifest(destination);
+    copyFiles(src, destination);
+
+    generateMainActivity(destination);
+    generateTypeFiles(src, destination);
   }
 }

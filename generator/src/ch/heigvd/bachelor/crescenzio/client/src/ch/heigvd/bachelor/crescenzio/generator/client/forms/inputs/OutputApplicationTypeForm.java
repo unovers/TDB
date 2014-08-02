@@ -227,8 +227,8 @@ public class OutputApplicationTypeForm extends AbstractForm {
       new File(path + File.separator + "resources").mkdirs();
 
       try {
-        File zipFile = File.createTempFile("baseCode", ".zip");
-        InputStream is = AbstractOutputGenerator.class.getResourceAsStream(output.getName().toLowerCase() + File.separator + "baseCode.zip");
+        File zipFile = File.createTempFile("defaultResources", ".zip");
+        InputStream is = AbstractOutputGenerator.class.getResourceAsStream(output.getName().toLowerCase() + File.separator + "defaultResources.zip");
         OutputStream os = new FileOutputStream(zipFile);
         byte[] buffer = new byte[1024];
         int bytesRead;
@@ -243,8 +243,8 @@ public class OutputApplicationTypeForm extends AbstractForm {
 
         File temp = Utils.createTempDirectory();
         temp.deleteOnExit();
-        Files.copy(zipFile.toPath(), new File(temp + "baseCode.zip").toPath());
-        Utils.unZipIt(zipFile.getPath(), temp + File.separator + "baseCode");
+        Files.copy(zipFile.toPath(), new File(temp + "defaultResources.zip").toPath());
+        Utils.unZipIt(zipFile.getPath(), temp + File.separator + "defaultResources");
         for (ItemType itemType : output.getItemsTypes()) {
           String type_path = path + File.separator + "resources" + File.separator + "types" + File.separator + itemType.getName();
           new File(type_path).mkdirs();
@@ -252,7 +252,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
           for (FileResource resource : itemType.getResources()) {
             System.out.println();
             try {
-              String src = temp.getAbsolutePath() + File.separator + "baseCode" + File.separator + resource.getValue();
+              String src = temp.getAbsolutePath() + File.separator + "defaultResources" + File.separator + resource.getValue();
               String dest = type_path + File.separator + new File(resource.getValue()).getName();
               Files.copy(new File(src).toPath(), new File(dest).toPath(), StandardCopyOption.REPLACE_EXISTING);
               resource.setValue("resources" + File.separator + "types" + File.separator + itemType.getName() + File.separator + new File(resource.getValue()).getName());
@@ -272,7 +272,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
             try {
 
               String fileName = field.getValue().getValue();
-              String src = temp.getAbsolutePath() + File.separator + "baseCode" + File.separator + fileName;
+              String src = temp.getAbsolutePath() + File.separator + "defaultResources" + File.separator + fileName;
               String dest = applicationPath + File.separator + new File(fileName).getName();
               Files.copy(new File(src).toPath(), new File(dest).toPath(), StandardCopyOption.REPLACE_EXISTING);
               field.getValue().setValue("resources" + File.separator + "application" + File.separator + field.getKey().getName() + File.separator + new File(fileName).getName());
@@ -280,17 +280,17 @@ public class OutputApplicationTypeForm extends AbstractForm {
             }
             catch (IOException e) {
               // TODO Auto-generated catch block
-              e.printStackTrace();
+              throw new ProcessingException(e.getMessage());
             }
           }
         }
       }
       catch (IOException e) {
-        e.printStackTrace();
+        // TODO Auto-generated catch block
         throw new ProcessingException(e.getMessage());
       }
 
-      new OutputApplicationViewForm(project, new_output);
+      Desktop.loadOrRefreshFormOutput(new_output, new OutputApplicationViewForm(project, new_output));
       desktop.refreshWorkspace();
     }
   }

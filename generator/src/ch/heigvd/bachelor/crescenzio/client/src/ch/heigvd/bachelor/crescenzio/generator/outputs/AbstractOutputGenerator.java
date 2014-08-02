@@ -3,6 +3,7 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -24,28 +25,12 @@ public abstract class AbstractOutputGenerator {
     this.output = output;
   }
 
-  /**
-   * @return the destinationPath
-   */
-  public String getDestinationPath() {
-    return destinationPath;
-  }
-
-  /**
-   * @param destinationPath
-   *          the destinationPath to set
-   */
-  public void setDestinationPath(String destinationPath) {
-    this.destinationPath = destinationPath;
-  }
-
   private OutputApplication output;
   private String destinationPath;
 
-  public AbstractOutputGenerator(OutputApplication output, String destinationPath) {
+  public AbstractOutputGenerator(OutputApplication output) {
     this.output = output;
-    this.destinationPath = destinationPath;
   }
 
-  public abstract void generate(String destination) throws IOException;
+  public abstract void generate(File source, File destination) throws IOException;
 }
