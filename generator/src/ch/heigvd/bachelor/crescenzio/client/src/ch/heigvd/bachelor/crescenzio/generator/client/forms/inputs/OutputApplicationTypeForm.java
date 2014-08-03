@@ -36,7 +36,6 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.OutputApplicationTypeForm.MainBox.ProjectField;
@@ -88,13 +87,6 @@ public class OutputApplicationTypeForm extends AbstractForm {
    */
   public CancelButton getCancelButton() {
     return getFieldByClass(CancelButton.class);
-  }
-
-  /**
-   * @return the DatasourceTypeField
-   */
-  public DatasourceTypeField getDatasourceTypeField() {
-    return getFieldByClass(DatasourceTypeField.class);
   }
 
   /**

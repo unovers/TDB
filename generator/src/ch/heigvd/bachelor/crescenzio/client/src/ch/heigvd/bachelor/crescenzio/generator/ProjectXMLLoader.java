@@ -86,7 +86,7 @@ public class ProjectXMLLoader {
                   project.getDatasetByName(elementMapField.getAttribute("type"),
                       elementMapField.getAttribute("datasource"),
                       elementMapField.getAttribute("name")),
-                      value);
+                  value);
             }
           }
         }
@@ -115,7 +115,7 @@ public class ProjectXMLLoader {
       if (!((Element) nodeServer).getAttribute("type").equals("none")) {
         String serverType = ((Element) nodeServer).getAttribute("type");
         String pckage = Desktop.getServerTypes().get(serverType).getLocation();
-        String clss = pckage + "." + serverType + "Server";
+        String clss = pckage + "." + serverType;
         Class<?> serverClass = Class.forName(clss);
 
         String serverRoot = Utils.getDirectChild((Element) nodeServer, "root").getTextContent();

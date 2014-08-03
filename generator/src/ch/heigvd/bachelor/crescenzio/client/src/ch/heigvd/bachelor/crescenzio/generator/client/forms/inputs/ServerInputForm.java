@@ -53,6 +53,11 @@ public class ServerInputForm extends AbstractInputForm {
   }
 
   @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
+  }
+
+  @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("ConfigureServer");
   }
@@ -209,8 +214,9 @@ public class ServerInputForm extends AbstractInputForm {
     protected void execStore() throws ProcessingException {
       try {
         Desktop desktop = (Desktop) getDesktop();
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.server";
-        String clss = pckage + "." + getServerTypeSmartField().getValue();
+        String serverType = getServerTypeSmartField().getValue();
+        String pckage = Desktop.getServerTypes().get(serverType).getLocation();
+        String clss = pckage + "." + serverType;
         Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});
@@ -232,8 +238,10 @@ public class ServerInputForm extends AbstractInputForm {
     protected void execStore() throws ProcessingException {
       try {
         Desktop desktop = (Desktop) getDesktop();
-        String pckage = "ch.heigvd.bachelor.crescenzio.generator.server";
-        String clss = pckage + "." + getServerTypeSmartField().getValue();
+
+        String serverType = getServerTypeSmartField().getValue();
+        String pckage = Desktop.getServerTypes().get(serverType).getLocation();
+        String clss = pckage + "." + serverType;
         Class<?> datasourceClass = Class.forName(clss);
 
         java.lang.reflect.Constructor constructor = datasourceClass.getConstructor(new Class[]{String.class, String.class});

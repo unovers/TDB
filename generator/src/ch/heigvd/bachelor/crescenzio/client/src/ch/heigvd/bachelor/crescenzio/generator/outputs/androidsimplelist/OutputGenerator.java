@@ -83,7 +83,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("@Override\n");
     output.append(" public boolean onOptionsItemSelected(MenuItem item) {\n");
     output.append(" // Filter lists and ask for refresh\n");
-    output.append(" switch (item.getItemId()) {\n");
+    output.append("      switch (item.getItemId()) {\n");
 
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
       Criteria criteria = getOutput().getProject().getCriterias().get(i);
@@ -95,11 +95,11 @@ public class OutputGenerator extends AbstractOutputGenerator {
         }
         output.append(String.format("       case MENU_ITEM%d:\n", i));
         output.append(String.format("           dataManager.sortDatas(%s);\n", conditions));
+        output.append("           putDatasInList();\n");
         output.append("           break;\n");
       }
-
     }
-    output.append(" }\n");
+    output.append("         }\n");
     output.append("       return super.onOptionsItemSelected(item);\n");
     output.append(" }\n");
 
@@ -119,11 +119,14 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.Row;\n");
     output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.TitleRow;\n");
     output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.RowType;\n");
+    output.append("import android.widget.Toast;\n");
 
     output.append("import java.util.LinkedList;\n");
     output.append("import java.util.ArrayList;\n");
     output.append("import java.util.Map.Entry;\n");
     output.append("import java.util.List;\n");
+    output.append("import java.io.File;\n");
+    output.append("import android.content.Context;\n");
     output.append("import android.view.ViewGroup;\n");
     output.append("import android.view.LayoutInflater;\n");
 
@@ -143,12 +146,14 @@ public class OutputGenerator extends AbstractOutputGenerator {
       output.append(String.format("import %s.%sItemActivity;\n", getOutput().getProject().getPackageName(), itemType.getName()));
       output.append(String.format("import %s.row.%sItemRow;\n", getOutput().getProject().getPackageName(), itemType.getName()));
     }
-
+    String ws_url = getOutput().getProject().getServer().getHost() + "/" + getOutput().getProject().getServer().getRootFolder();
+    if (!ws_url.startsWith("http://")) ws_url = "http://" + ws_url;
     output.append("public class MainActivity extends Activity {\n");
-    output.append(String.format("  private final String WS_URL = \"%s\";\n",
-        getOutput().getProject().getServer().getHost() + "/" + getOutput().getProject().getServer().getRootFolder()));
-    output.append(String.format("  private final String ROOT_FOLDER = %s;\n", "android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + \"/xmls\""));
+    output.append(String.format("  private final String WS_URL = \"%s/%s\";\n", ws_url, "datas.php"));
+    output.append("   private String ROOT_FOLDER;\n");
     output.append(String.format("  private DataManager dataManager;\n"));
+    output.append(String.format("  private ListView listView;\n"));
+    output.append(String.format("  private LinkedList<Item> datas = new LinkedList<Item>();\n"));
 
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
       output.append(String.format("  private final int MENU_ITEM%d = %d;\n", i, i));
@@ -156,31 +161,46 @@ public class OutputGenerator extends AbstractOutputGenerator {
 
     output.append(generateMenu());
 
+    output.append("  private void putDatasInList(){\n");
+    output.append("   datas = new LinkedList<Item>();\n");
+    output.append("   // Ajoute les listes avec des titres\n");
+    output.append("   for (Entry<String, ArrayList<DataItem>> entry : dataManager.getDatas()\n");
+    output.append("     .entrySet()) {\n");
+    output.append("     datas.add(new TitleItem(entry.getKey()));\n");
+    output.append("     for (Item str : entry.getValue()) {\n");
+    output.append("       datas.add(str);\n");
+    output.append("     }\n");
+    output.append("   }\n");
+    output.append("  }\n\n");
+
     output.append("  @Override\n");
     output.append("  protected void onCreate(Bundle savedInstanceState) {\n\n");
     output.append("    super.onCreate(savedInstanceState);\n");
+    output.append("    File mydir = getDir(\"datas\", Context.MODE_PRIVATE);\n");
+    output.append("    ROOT_FOLDER = mydir.getAbsolutePath();\n");
+    output.append("    dataManager = new DataManager(WS_URL, ROOT_FOLDER);\n");
     output.append("    LinearLayout layout = new LinearLayout(this);\n");
 
-    output.append("    ListView listView = new ListView(this);\n");
+    output.append("    listView = new ListView(this);\n");
     output.append("    layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));\n");
 
-    output.append("    DataManager dataManager = new DataManager(WS_URL, ROOT_FOLDER);\n");
-    output.append("    dataManager.loadDatas();\n\n");
-    output.append("    final LinkedList<Item> datas = new LinkedList<Item>();\n");
+    output.append("    try{\n");
+    output.append("    // Create Inner Thread Class\n");
+    output.append("      Thread background = new Thread(new Runnable() {\n");
 
-    output.append("    //Ajoute les listes avec des titres\n");
-
-    output.append("    for(Entry<String, ArrayList<DataItem>>entry: dataManager.getDatas().entrySet()){\n");
-    output.append("      datas.add(new TitleItem(entry.getKey()));\n");
-    output.append("      for(Item str : entry.getValue()){\n");
-    output.append("         datas.add(str);\n");
-    output.append("      }\n");
+    output.append("          // After call for background.start this run method call\n");
+    output.append("          public void run() {\n");
+    output.append("             dataManager.loadDatas();\n");
+    output.append("           }\n");
+    output.append("    });\n");
+    output.append("      background.start();\n");
+    output.append("      background.join();\n");
+    output.append("    }catch (Exception e){\n");
+    output.append("       Toast.makeText(this, \"Couldnt load info\", Toast.LENGTH_LONG).show();\n");
+    output.append("       return;\n");
     output.append("    }\n");
 
-//    output.append("    final Item[] datas_array = new Item[datas.size()];\n");
-//    output.append("    for(int i = 0;i < datas.size();i++){\n");
-//    output.append("      datas_array[i] = datas.get(i);\n");
-//    output.append("     }\n");
+    output.append("    putDatasInList();\n\n");
 
     output.append("    listView.setAdapter(new RowAdapter(datas));\n");
     output.append("    listView.setOnItemClickListener(new OnItemClickListener() {\n");
@@ -258,7 +278,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("    public View getView(int position, View arg1, ViewGroup arg2) {\n");
     output.append("       return rows.get(position).getView(arg1);\n");
     output.append("    }\n");
-    output.append("}\n");
+    output.append("  }\n");
 
     output.append("}\n");
 
@@ -390,7 +410,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("            <category android:name=\"android.intent.category.LAUNCHER\" />\n");
     output.append("        </intent-filter>\n");
     output.append("        </activity>\n");
-    output.append(String.format("        <activity android:name=\"%s.DefaultItemActivity.java\" >\n", getOutput().getProject().getPackageName()));
+    output.append(String.format("        <activity android:name=\"%s.DefaultItemActivity\" >\n", getOutput().getProject().getPackageName()));
     output.append("        </activity>\n");
     for (ItemType itemType : getOutput().getItemsTypes()) {
       if (!itemType.getName().equals("Default")) {
@@ -435,9 +455,6 @@ public class OutputGenerator extends AbstractOutputGenerator {
 
   @Override
   public void generate(File src, File destination) throws IOException {
-    System.out.println("GENERATION DE ANDROIDSIMPLELIST");
-    System.out.println();
-
     //copie les fichier de bases de l'application
     //get the zip file content
     File zipFile = File.createTempFile("generated", ".zip");

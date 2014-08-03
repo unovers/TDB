@@ -28,7 +28,6 @@ import org.eclipse.scout.rt.shared.services.lookup.ILookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm.MainBox.CancelButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasetSelectProjectForm.MainBox.OkButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.DatasourceTypeForm.MainBox.DatasourceTypeField;
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ProjectLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
@@ -67,13 +66,6 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
    */
   public CancelButton getCancelButton() {
     return getFieldByClass(CancelButton.class);
-  }
-
-  /**
-   * @return the DatasourceTypeField
-   */
-  public DatasourceTypeField getDatasourceTypeField() {
-    return getFieldByClass(DatasourceTypeField.class);
   }
 
   /**
