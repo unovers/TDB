@@ -61,7 +61,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     header.append("OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n");
     header.append("THE SOFTWARE.\n");
     header.append("\n\n");
-    header.append("Developped for bachelor work by Crescenzio Fabio");
+    header.append("Developped for bachelor work by Crescenzio Fabio\n");
     header.append("Project : " + getOutput().getProject().getName() + "\n");
     header.append("Author : " + getOutput().getProject().getAuthor() + "\n");
     header.append("Organisation : " + getOutput().getProject().getOrganisation() + "\n");
@@ -94,13 +94,14 @@ public class OutputGenerator extends AbstractOutputGenerator {
           conditions += ", ";
         }
         output.append(String.format("       case MENU_ITEM%d:\n", i));
-        output.append(String.format("           dataManager.organizeResource(%s);\n", conditions));
+        output.append(String.format("           dataManager.sortDatas(%s);\n", conditions));
         output.append("           break;\n");
       }
-      output.append("       return super.onOptionsItemSelected(item);\n");
-      output.append(" }\n");
 
     }
+    output.append(" }\n");
+    output.append("       return super.onOptionsItemSelected(item);\n");
+    output.append(" }\n");
 
     return output;
 
@@ -111,24 +112,49 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("/*" + getHeader() + "*/\n");
     output.append("\n\n");
     output.append(String.format("package %s;\n\n", getOutput().getProject().getPackageName()));
-    output.append("import ;");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.DataManager;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.Item;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.DataItem;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.TitleItem;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.Row;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.TitleRow;\n");
+    output.append("import ch.heigvd.bachelor.crescenzio.androidsimplelist.row.RowType;\n");
 
-    output.append("public class MainActivity extends Activity {\n");
-    output.append(String.format("  private static final WS_URL = \"%s\";\n",
-        getOutput().getProject().getServer().getHost() + "/" + getOutput().getProject().getServer().getRootFolder()));
+    output.append("import java.util.LinkedList;\n");
+    output.append("import java.util.ArrayList;\n");
+    output.append("import java.util.Map.Entry;\n");
+    output.append("import java.util.List;\n");
+    output.append("import android.view.ViewGroup;\n");
+    output.append("import android.view.LayoutInflater;\n");
 
-    for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
-      output.append(String.format("  private static final MENU_ITEM%d = %d;\n", i, i));
+    output.append("import android.app.Activity;\n");
+    output.append("import android.content.Intent;\n");
+    output.append("import android.os.Bundle;\n");
+    output.append("import android.view.Menu;\n");
+    output.append("import android.view.MenuItem;\n");
+    output.append("import android.view.View;\n");
+    output.append("import android.widget.BaseAdapter;\n");
+    output.append("import android.view.ViewGroup.LayoutParams;\n");
+    output.append("import android.widget.AdapterView;\n");
+    output.append("import android.widget.AdapterView.OnItemClickListener;\n");
+    output.append("import android.widget.LinearLayout;\n");
+    output.append("import android.widget.ListView;\n");
+    for (ItemType itemType : getOutput().getItemsTypes()) {
+      output.append(String.format("import %s.%sItemActivity;\n", getOutput().getProject().getPackageName(), itemType.getName()));
+      output.append(String.format("import %s.row.%sItemRow;\n", getOutput().getProject().getPackageName(), itemType.getName()));
     }
 
-    output.append("  DataManager dataManager = new DataManager(WS_URL);");
+    output.append("public class MainActivity extends Activity {\n");
+    output.append(String.format("  private final String WS_URL = \"%s\";\n",
+        getOutput().getProject().getServer().getHost() + "/" + getOutput().getProject().getServer().getRootFolder()));
+    output.append(String.format("  private final String ROOT_FOLDER = %s;\n", "android.os.Environment.getExternalStorageDirectory().getAbsolutePath() + \"/xmls\""));
+    output.append(String.format("  private DataManager dataManager;\n"));
+
+    for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
+      output.append(String.format("  private final int MENU_ITEM%d = %d;\n", i, i));
+    }
 
     output.append(generateMenu());
-
-    output.append("  @Override\n");
-    output.append("  protected void onCreate(Bundle savedInstanceState) {\n\n");
-    output.append("    super.onCreate(savedInstanceState);\n");
-    output.append("    LinearLayout layout = new LinearLayout(this);\n");
 
     output.append("  @Override\n");
     output.append("  protected void onCreate(Bundle savedInstanceState) {\n\n");
@@ -138,25 +164,45 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("    ListView listView = new ListView(this);\n");
     output.append("    layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));\n");
 
-    output.append("    listView.setAdapter(new RowAdapter(this, datas_array));\n");
+    output.append("    DataManager dataManager = new DataManager(WS_URL, ROOT_FOLDER);\n");
+    output.append("    dataManager.loadDatas();\n\n");
+    output.append("    final LinkedList<Item> datas = new LinkedList<Item>();\n");
+
+    output.append("    //Ajoute les listes avec des titres\n");
+
+    output.append("    for(Entry<String, ArrayList<DataItem>>entry: dataManager.getDatas().entrySet()){\n");
+    output.append("      datas.add(new TitleItem(entry.getKey()));\n");
+    output.append("      for(Item str : entry.getValue()){\n");
+    output.append("         datas.add(str);\n");
+    output.append("      }\n");
+    output.append("    }\n");
+
+//    output.append("    final Item[] datas_array = new Item[datas.size()];\n");
+//    output.append("    for(int i = 0;i < datas.size();i++){\n");
+//    output.append("      datas_array[i] = datas.get(i);\n");
+//    output.append("     }\n");
+
+    output.append("    listView.setAdapter(new RowAdapter(datas));\n");
     output.append("    listView.setOnItemClickListener(new OnItemClickListener() {\n");
 
-    output.append("      @Override\n");
-    output.append("      public void onItemClick(AdapterView<?> parent, final View view,\n");
-    output.append("        int position, long id) {\n");
-    output.append("        Item item = (Item) datas_array[position];\n");
-    output.append("        if(item.getItemType().equals/(\"Default\"){\n");
-    output.append("          Intent myIntent = new Intent(MainActivity.this, DefaultItemDisplayActivity.class);\n");
-    output.append("          myIntent.putExtra(\"item\", item );\n");
-    output.append("          MainActivity.this.startActivity(myIntent);\n");
-    output.append("        }\n");
-    for (ItemType itemType : getOutput().getItemsTypes()) {
-      output.append(String.format("        else if(item.getItemType().equals(\"%s\"){\n", itemType.getName()));
-      output.append(String.format("          Intent myIntent = new Intent(MainActivity.this, %sItemDisplayActivity.class);\n", itemType.getName()));
+    output.append("      public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {\n");
+    output.append("        DataItem item = (DataItem) datas.get(arg2);\n");
+    for (int i = 0; i < getOutput().getItemsTypes().size(); i++) {
+      ItemType itemType = getOutput().getItemsTypes().get(i);
+      if (i != 0) {
+        output.append("        else);\n");
+      }
+      output.append(String.format("        if(item.getData(\"__item_type\").equals(\"%s\")){\n", itemType.getName()));
+      output.append(String.format("          Intent myIntent = new Intent(MainActivity.this, %sItemActivity.class);\n", itemType.getName()));
       output.append("          myIntent.putExtra(\"item\", item );\n");
       output.append("          MainActivity.this.startActivity(myIntent);\n");
       output.append("        }\n");
     }
+    output.append("        else{\n");
+    output.append("          Intent myIntent = new Intent(MainActivity.this, DefaultItemActivity.class);\n");
+    output.append("          myIntent.putExtra(\"item\", item );\n");
+    output.append("          MainActivity.this.startActivity(myIntent);\n");
+    output.append("        }\n");
     output.append("      }\n");
     output.append("    });\n");
 
@@ -171,23 +217,25 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("        rows = new ArrayList<Row>();//member variable\n");
 
     output.append("        for (Item item : items) {\n");
-    output.append("          //Test si c'est un titre ou un item");
-    output.append("          if(item instanceof TitleItem){ \n");
+    output.append("          //Test si c'est un titre ou un item\n");
+    output.append("          if(item instanceof TitleItem) \n");
     output.append("            rows.add(new TitleRow(LayoutInflater.from(MainActivity.this), item));\n");
+
+    //Ajoute chaque type d'item
     for (ItemType itemType : getOutput().getItemsTypes()) {
-      output.append(String.format("          else if (((DataItem) item).getItemType().equals(%s)) {\n", itemType.getName()));
-      output.append(String.format("             rows.add(new %sRow(LayoutInflater.from(MainActivity.this), item));\n", itemType.getName()));
+      output.append(String.format("          else if (((DataItem) item).getData(\"__item_type\").equals(\"%s\")) {\n", itemType.getName()));
+      output.append(String.format("             rows.add(new %sItemRow(LayoutInflater.from(MainActivity.this), (DataItem) item));\n", itemType.getName()));
       output.append("          }\n");
     }
     output.append("      else {//otherwise use a DescriptionRow\n");
-    output.append("            rows.add(new DefaultRow(LayoutInflater.from(MainActivity.this), item));\n");
+    output.append("            rows.add(new DefaultItemRow(LayoutInflater.from(MainActivity.this), (DataItem)  item));\n");
     output.append("          }\n");
     output.append("       }\n");
     output.append("    }\n");
 
     output.append("    @Override\n");
     output.append("    public int getViewTypeCount() {\n");
-    output.append("      return RowType.values().length;\n");
+    output.append("         return RowType.values().length;\n");
     output.append("    }\n");
 
     output.append("    @Override\n");
@@ -207,15 +255,18 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("      return position;\n");
     output.append("    }\n");
 
-    output.append("    public View getView(int position, View convertView, ViewGroup parent) {\n");
-    output.append("       return rows.get(position).getView(convertView);\n");
+    output.append("    public View getView(int position, View arg1, ViewGroup arg2) {\n");
+    output.append("       return rows.get(position).getView(arg1);\n");
     output.append("    }\n");
     output.append("}\n");
 
-    output.append(");\n");
+    output.append("}\n");
 
+    String packagePath = destination.toPath() + File.separator + "src" + File.separator + getOutput().getProject().getPackageName().replace(".", File.separator) + File.separator;
+    File packageFolder = new File(packagePath);
+    packageFolder.mkdirs();
     BufferedWriter out = new BufferedWriter(
-        new FileWriter(destination.toPath() + File.separator + "MainActivity..php"));
+        new FileWriter(packagePath + "MainActivity.java"));
     String outText = output.toString();
     out.write(outText);
     out.close();
@@ -230,21 +281,20 @@ public class OutputGenerator extends AbstractOutputGenerator {
   private void generateTypeFiles(File source, File destination) throws IOException {
     String packageFolder = getOutput().getProject().getPackageName().replace(".", File.separator);
     String outText = "/*" + getHeader() + "*/\n";
-    outText += getOutput().getProject().getPackageName() + ";\n\n";
-    //créer les dossiers nécessaires
-    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "res" + File.separator + "layout").mkdirs();
-    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src" + File.separator + packageFolder).mkdirs();
-    new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src" + File.separator + packageFolder + File.separator + "row").mkdirs();
+    outText += "package " + getOutput().getProject().getPackageName() + ".row;\n\n";
+    outText += "import " + getOutput().getProject().getPackageName() + ".R;\n\n";
     for (ItemType itemType : getOutput().getItemsTypes()) {
 
       //Création du fichier java
+      File resourceFile = new File(destination.toPath() + File.separator + "src"
+          + File.separator + packageFolder + File.separator + "row");
+      resourceFile.mkdirs();
       BufferedWriter out = new BufferedWriter(
-          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
-              + File.separator + packageFolder + File.separator + "row" + File.separator + itemType.getName() + "Row.java"));
+          new FileWriter(resourceFile + File.separator + itemType.getName() + "ItemRow.java"));
       FileResource resource = null;
       //Recupération de la ressource voulue
       for (FileResource res : itemType.getResources()) {
-        if (res.getName().equals("RowResFile")) {
+        if (res.getName().equals("RowSrcFile")) {
           resource = res;
           break;
         }
@@ -258,15 +308,18 @@ public class OutputGenerator extends AbstractOutputGenerator {
       out.close();
 
       //Création du fichier xml
+      resourceFile = new File(destination.toPath() + File.separator + "res"
+          + File.separator + "layout");
+      resourceFile.mkdirs();
       out = new BufferedWriter(
-          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
-              + File.separator + "layout" + File.separator + itemType.getName() + "_row.xml"));
-      outText = "/*" + getHeader() + "*/\n";
+          new FileWriter(resourceFile + File.separator + itemType.getName().toLowerCase() + "_row.xml"));
+      outText = "<!--" + getHeader() + "-->\n";
       outText += "\n\n";
       resource = null;
+
       //Recupération de la ressource voulue
       for (FileResource res : itemType.getResources()) {
-        if (res.getName().equals("RowSrcFile")) {
+        if (res.getName().equals("RowResFile")) {
           resource = res;
           break;
         }
@@ -282,11 +335,12 @@ public class OutputGenerator extends AbstractOutputGenerator {
       out.close();
 
       //Création du fichier java pour l'activité
-      out = new BufferedWriter(
-          new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
-              + File.separator + packageFolder + File.separator + itemType.getName() + "Activity.java"));
+      resourceFile = new File(destination.toPath() + File.separator + "src"
+          + File.separator + packageFolder);
+      resourceFile.mkdirs();
+      out = new BufferedWriter(new FileWriter(resourceFile + File.separator + itemType.getName() + "ItemActivity.java"));
       outText = "/*" + getHeader() + "*/\n";
-      outText += getOutput().getProject().getPackageName() + ";\n\n";
+      outText += "package " + getOutput().getProject().getPackageName() + ";\n\n";
       resource = null;
       //Recupération de la ressource voulue
       for (FileResource res : itemType.getResources()) {
@@ -299,36 +353,9 @@ public class OutputGenerator extends AbstractOutputGenerator {
         out.close();
         throw new IOException("Cette resource n'existe pas");
       }
-      outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
-      out.write(outText);
-      out.close();
-
-      //Création du fichier xml pour l'activité
-      String resourceTypeLayoutPath = destination.toPath() + File.separator + getOutput().getName() + File.separator + "src"
-          + File.separator + "layout" + File.separator + itemType.getName();
-      new File(resourceTypeLayoutPath).mkdirs();
-      out = new BufferedWriter(
-          new FileWriter(resourceTypeLayoutPath + "_activity.xml"));
-      outText = "/*" + getHeader() + "*/\n";
-      outText += "\n\n";
-      resource = null;
-      //Recupération de la ressource voulue
-      for (FileResource res : itemType.getResources()) {
-        if (res.getName().equals("ActivityResFile")) {
-          resource = res;
-          break;
-        }
-      }
-
-      if (resource == null) {
-        out.close();
-        throw new IOException("Cette resource n'existe pas");
-      }
-
       outText += readFile(source.toPath() + File.separator + getOutput().getName() + File.separator + resource.getValue(), StandardCharsets.UTF_8);
       out.write(outText);
       out.close();
-
     }
   }
 
@@ -346,6 +373,8 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("<uses-permission \n");
     output.append("   android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\n");
     output.append("<uses-permission android:name=\"android.permission.INTERNET\"/>\n");
+    output.append("<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"></uses-permission>\n");
+    output.append("<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"></uses-permission>\n");
     output.append("    <uses-sdk\n");
     output.append("        android:minSdkVersion=\"8\"\n");
     output.append("        android:targetSdkVersion=\"19\" />\n");
@@ -361,7 +390,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("            <category android:name=\"android.intent.category.LAUNCHER\" />\n");
     output.append("        </intent-filter>\n");
     output.append("        </activity>\n");
-    output.append(String.format("        <activity android:name=\"%s.DefaultActivity.java\" >\n", getOutput().getProject().getPackageName()));
+    output.append(String.format("        <activity android:name=\"%s.DefaultItemActivity.java\" >\n", getOutput().getProject().getPackageName()));
     output.append("        </activity>\n");
     for (ItemType itemType : getOutput().getItemsTypes()) {
       if (!itemType.getName().equals("Default")) {
@@ -376,7 +405,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
         if (resource == null) {
           throw new IOException("Cette resource n'existe pas");
         }
-        output.append(String.format("        <activity android:name=\"%s.%sActivity.java\" >\n", getOutput().getProject().getPackageName(), itemType.getName()));
+        output.append(String.format("        <activity android:name=\"%s.%sItemActivity.java\" >\n", getOutput().getProject().getPackageName(), itemType.getName()));
         output.append("        </activity>\n");
       }
     }
@@ -385,7 +414,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("</manifest>\n");
 
     BufferedWriter out = new BufferedWriter(
-        new FileWriter(destination.toPath() + File.separator + "AndroidManifest.xml"));
+        new FileWriter(destination.toPath() + File.separator + getOutput().getName() + File.separator + "AndroidManifest.xml"));
     out.write(output.toString());
     out.close();
 
@@ -399,7 +428,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
       if (field.getName().equals("applicationIcon72")) {
         OutputField file = applicationField.getValue();
         Files.copy(new File(src.toPath() + File.separator + getOutput().getName() + File.separator + file.getValue()).toPath(),
-            new File(destination.toPath() + File.separator + "res" + File.separator + "drawable-hdpi" + File.separator + "logo.png").toPath(), StandardCopyOption.REPLACE_EXISTING);
+            new File(destination.toPath() + File.separator + getOutput().getName() + File.separator + "res" + File.separator + "drawable-hdpi" + File.separator + "logo.png").toPath(), StandardCopyOption.REPLACE_EXISTING);
       }
     }
   }
@@ -408,15 +437,11 @@ public class OutputGenerator extends AbstractOutputGenerator {
   public void generate(File src, File destination) throws IOException {
     System.out.println("GENERATION DE ANDROIDSIMPLELIST");
     System.out.println();
-    String destinationSrc = destination.toPath() + File.separator + getOutput().getName() + File.separator + "src";
-    String destinationRes = destination.toPath() + File.separator + getOutput().getName() + File.separator + "res";
-    new File(destinationSrc).mkdirs();
-    new File(destinationRes).mkdirs();
 
     //copie les fichier de bases de l'application
     //get the zip file content
-    File zipFile = File.createTempFile("baseCode", ".zip");
-    InputStream is = AbstractOutputGenerator.class.getResourceAsStream(getOutput().getName().toLowerCase() + File.separator + "baseCode.zip");
+    File zipFile = File.createTempFile("generated", ".zip");
+    InputStream is = AbstractOutputGenerator.class.getResourceAsStream(getOutput().getName().toLowerCase() + File.separator + "generated.zip");
     OutputStream os = new FileOutputStream(zipFile);
     byte[] buffer = new byte[1024];
     int bytesRead;
@@ -430,14 +455,16 @@ public class OutputGenerator extends AbstractOutputGenerator {
     os.close();
 
     File temp = Utils.createTempDirectory();
-    Utils.unZipIt(zipFile.getPath(), destination.toPath().toString());
+    File generatedApplicationFolder = new File(destination.toPath() + File.separator + getOutput().getName());
+    generatedApplicationFolder.mkdirs();
+    Utils.unZipIt(zipFile.getPath(), generatedApplicationFolder.toPath().toString());
     temp.deleteOnExit();
 
     //Ajoute les ressources
     createManifest(destination);
     copyFiles(src, destination);
 
-    generateMainActivity(destination);
-    generateTypeFiles(src, destination);
+    generateMainActivity(generatedApplicationFolder);
+    generateTypeFiles(src, generatedApplicationFolder);
   }
 }

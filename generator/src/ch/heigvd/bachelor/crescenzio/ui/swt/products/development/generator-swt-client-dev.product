@@ -20,11 +20,20 @@
    <windowImages/>
 
    <splash
-      location="ch.heigvd.bachelor.crescenzio.generator.ui.swt" />
+      location="ch.heigvd.bachelor.crescenzio.generator.ui.swt"
+      startupProgressRect="5,275,445,15" />
    <launcher name="generator">
       <solaris/>
       <win useIco="false">
-         <bmp/>
+         <ico path="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/1407032925_48740.ico"/>
+         <bmp
+            winSmallHigh="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winSmallLow="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winMediumHigh="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winMediumLow="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winLargeHigh="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winLargeLow="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"
+            winExtraLargeHigh="/ch.heigvd.bachelor.crescenzio.generator.ui.swt/splash.bmp"/>
       </win>
    </launcher>
 

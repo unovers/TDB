@@ -40,7 +40,7 @@
 						<extension>xml</extension>
 					</extensions>
 					<description>Row resource file</description>
-					<value>res\layout\layout1.xml</value>
+					<value>res\layout\default_row.xml</value>
 				</resource>
 				<resource>
 					<name>RowSrcFile</name>
@@ -51,20 +51,12 @@
 					<value>src\row\DefaultRow.java</value>
 				</resource>
 				<resource>
-					<name>ActivityResFile</name>
-					<extensions>
-						<extension>xml</extension>
-					</extensions>
-					<description>Activity resource file</description>
-					<value>res\layout\layout1.xml</value>
-				</resource>
-				<resource>
 					<name>ActivitySrcFile</name>
 					<extensions>
 						<extension>java</extension>
 					</extensions>					
 					<description>Activity src file</description>
-					<value>src\DefaultActivity.java</value>
+					<value>src\DefaultItemActivity.java</value>
 				</resource>				
 			</resources>
 		</itemType>

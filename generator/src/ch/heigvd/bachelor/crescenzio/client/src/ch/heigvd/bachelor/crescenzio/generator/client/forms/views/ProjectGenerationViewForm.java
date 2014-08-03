@@ -7,19 +7,14 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCloseButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.labelfield.AbstractLabelField;
 import org.eclipse.scout.rt.shared.TEXTS;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputForm;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.AuthorField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.DeleteProjectButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.EditProjectButton;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.OrganisationField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.PackageNameField;
-import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.ProjectNameField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.GenerationStatusField;
+import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectGenerationViewForm.MainBox.OkButton;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 
@@ -56,8 +51,13 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
   }
 
   @Override
+  protected int getConfiguredDisplayHint() {
+    return DISPLAY_HINT_DIALOG;
+  }
+
+  @Override
   protected String getConfiguredDisplayViewId() {
-    return VIEW_ID_S;
+    return VIEW_ID_N;
   }
 
   @Override
@@ -66,24 +66,10 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
   }
 
   /**
-   * @return the AuthorField
+   * @return the GenerationStatusField
    */
-  public AuthorField getAuthorField() {
-    return getFieldByClass(AuthorField.class);
-  }
-
-  /**
-   * @return the DeleteProjectButton
-   */
-  public DeleteProjectButton getDeleteProjectButton() {
-    return getFieldByClass(DeleteProjectButton.class);
-  }
-
-  /**
-   * @return the EditProjectButton
-   */
-  public EditProjectButton getEditProjectButton() {
-    return getFieldByClass(EditProjectButton.class);
+  public GenerationStatusField getGenerationStatusField() {
+    return getFieldByClass(GenerationStatusField.class);
   }
 
   /**
@@ -94,24 +80,10 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
   }
 
   /**
-   * @return the OrganisationField
+   * @return the OkButton
    */
-  public OrganisationField getOrganisationField() {
-    return getFieldByClass(OrganisationField.class);
-  }
-
-  /**
-   * @return the PackageNameField
-   */
-  public PackageNameField getPackageNameField() {
-    return getFieldByClass(PackageNameField.class);
-  }
-
-  /**
-   * @return the ProjectNameField
-   */
-  public ProjectNameField getProjectNameField() {
-    return getFieldByClass(ProjectNameField.class);
+  public OkButton getOkButton() {
+    return getFieldByClass(OkButton.class);
   }
 
   @Order(10.0)
@@ -128,96 +100,20 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
     }
 
     @Order(10.0)
-    public class ProjectNameField extends AbstractLabelField {
+    public class GenerationStatusField extends AbstractLabelField {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("ProjectName");
-      }
-
-      @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
+        return TEXTS.get("GenerationStatus");
       }
     }
 
     @Order(20.0)
-    public class OrganisationField extends AbstractLabelField {
+    public class OkButton extends AbstractCloseButton {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("Organisation");
-      }
-
-      @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
-      }
-    }
-
-    @Order(30.0)
-    public class AuthorField extends AbstractLabelField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("Author");
-      }
-
-      @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
-      }
-
-    }
-
-    @Order(40.0)
-    public class PackageNameField extends AbstractLabelField {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("PackageName");
-      }
-
-      @Override
-      protected boolean getConfiguredMandatory() {
-        return true;
-      }
-    }
-
-    @Order(60.0)
-    public class GenerateProjectButton extends AbstractButton {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("GenerateProject");
-      }
-
-      @Override
-      protected void execClickAction() throws ProcessingException {
-        new ProjectGenerationViewForm(project).startView();
-      }
-    }
-
-    @Order(60.0)
-    public class EditProjectButton extends AbstractButton {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("EditProject");
-      }
-
-      @Override
-      protected void execClickAction() throws ProcessingException {
-        new ProjectInputForm(project).startModify();
-      }
-    }
-
-    @Order(70.0)
-    public class DeleteProjectButton extends AbstractButton {
-
-      @Override
-      protected String getConfiguredLabel() {
-        return TEXTS.get("DeleteProject");
+        return TEXTS.get("Ok");
       }
     }
   }
@@ -226,12 +122,10 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
 
     @Override
     protected void execLoad() throws ProcessingException {
-      if (project != null) {
-        getProjectNameField().setValue(project.getName());
-        getAuthorField().setValue(project.getAuthor());
-        getOrganisationField().setValue(project.getOrganisation());
-        getPackageNameField().setValue(project.getPackageName());
+      if (generate) {
+        getGenerationStatusField().setValue("OK");
       }
+      else getGenerationStatusField().setValue("ERROR");
     }
   }
 

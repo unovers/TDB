@@ -13,9 +13,11 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.scout.commons.annotations.ConfigOperation;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.commons.exception.VetoException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
@@ -51,6 +53,11 @@ public class ProjectInputForm extends AbstractForm {
     super(false);
     this.project = project;
     callInitializer();
+  }
+
+  @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
   }
 
   @Override
@@ -177,6 +184,17 @@ public class ProjectInputForm extends AbstractForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("PackageName");
+      }
+
+      @Override
+      protected String execValidateValue(String rawValue) throws ProcessingException {
+        if (!rawValue.matches("^([a-z_]{1}[a-z0-9_]*\\.[a-z_]{1}[a-z0-9_]*(\\.[a-z_]{1}[a-z0-9_]*)*)$")) throw new VetoException("Invalid input", "Le nom de package est incorrect", 267, IStatus.ERROR);
+        return super.execValidateValue(rawValue);
+      }
+
+      @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
       }
     }
 

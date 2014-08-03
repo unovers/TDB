@@ -154,7 +154,7 @@
 					array_push($resources, new Folder($dir."/".$resource, $res));
 				}
 				else {
-					array_push($resources, new File($resource, date ("F d Y H:i:s.", filemtime($resource)));
+					array_push($resources, new File($resource, date ("F d Y H:i:s", filemtime($dir . "/" . $resource))));
 				}
 			}
 		}
