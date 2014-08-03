@@ -73,9 +73,11 @@ public class OutputGenerator extends AbstractOutputGenerator {
     StringBuffer output = new StringBuffer();
     output.append("@Override\n");
     output.append(" public boolean onCreateOptionsMenu(Menu menu) {\n");
+    output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM0, Menu.NONE, \"%s\");\n", "Default datas"));
+    output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM1, Menu.NONE, \"%s\");\n", "Update datas"));
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
       Criteria criteria = getOutput().getProject().getCriterias().get(i);
-      output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM%d, Menu.NONE, \"%s\");\n", i, criteria.getTitle()));
+      output.append(String.format("   menu.add(Menu.NONE, MENU_ITEM%d, Menu.NONE, \"%s\");\n", i + 2, criteria.getTitle()));
     }
     output.append("       return super.onCreateOptionsMenu(menu);\n");
     output.append(" }\n\n");
@@ -85,6 +87,19 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append(" // Filter lists and ask for refresh\n");
     output.append("      switch (item.getItemId()) {\n");
 
+    output.append("       case MENU_ITEM0:\n");
+    output.append("           dataManager.defaultSort();\n");
+    output.append("           putDatasInList();\n");
+    output.append("           break;\n");
+    output.append("       case MENU_ITEM1:\n");
+    output.append("         try{\n");
+    output.append("                   dataManager.updateDatas();\n");
+    output.append("         }catch (Exception e){\n");
+    output.append("            Toast.makeText(this, \"Couldnt update info\", Toast.LENGTH_LONG).show();\n");
+    output.append("            return super.onOptionsItemSelected(item);\n");
+    output.append("          }\n");
+    output.append("           putDatasInList();\n");
+    output.append("           break;\n");
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
       Criteria criteria = getOutput().getProject().getCriterias().get(i);
       String conditions = "";
@@ -93,11 +108,11 @@ public class OutputGenerator extends AbstractOutputGenerator {
         if (j != criteria.getConditions().size() - 1) {
           conditions += ", ";
         }
-        output.append(String.format("       case MENU_ITEM%d:\n", i));
-        output.append(String.format("           dataManager.sortDatas(%s);\n", conditions));
-        output.append("           putDatasInList();\n");
-        output.append("           break;\n");
       }
+      output.append(String.format("       case MENU_ITEM%d:\n", i + 2));
+      output.append(String.format("           dataManager.sortDatas(%s);\n", conditions));
+      output.append("           putDatasInList();\n");
+      output.append("           break;\n");
     }
     output.append("         }\n");
     output.append("       return super.onOptionsItemSelected(item);\n");
@@ -151,12 +166,15 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("public class MainActivity extends Activity {\n");
     output.append(String.format("  private final String WS_URL = \"%s/%s\";\n", ws_url, "datas.php"));
     output.append("   private String ROOT_FOLDER;\n");
-    output.append(String.format("  private DataManager dataManager;\n"));
-    output.append(String.format("  private ListView listView;\n"));
-    output.append(String.format("  private LinkedList<Item> datas = new LinkedList<Item>();\n"));
+    output.append("  private DataManager dataManager;\n");
+    output.append("  private RowAdapter rowAdapter;\n");
+    output.append("  private ListView listView;\n");
+    output.append("  private LinkedList<Item> datas = new LinkedList<Item>();\n");
 
+    output.append("  private final int MENU_ITEM0 = 0;\n");//Ajoute menu pour données par défault
+    output.append("  private final int MENU_ITEM1 = 1;\n");//Ajoute menu pour mise a jour des données
     for (int i = 0; i < getOutput().getProject().getCriterias().size(); i++) {
-      output.append(String.format("  private final int MENU_ITEM%d = %d;\n", i, i));
+      output.append(String.format("  private final int MENU_ITEM%d = %d;\n", i + 2, i + 2));
     }
 
     output.append(generateMenu());
@@ -171,6 +189,9 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("       datas.add(str);\n");
     output.append("     }\n");
     output.append("   }\n");
+    output.append("   rowAdapter = new RowAdapter(datas);\n");
+    output.append("   listView.setAdapter(rowAdapter);\n");
+    output.append("   rowAdapter.notifyDataSetChanged();\n");
     output.append("  }\n\n");
 
     output.append("  @Override\n");
@@ -185,16 +206,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("    layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));\n");
 
     output.append("    try{\n");
-    output.append("    // Create Inner Thread Class\n");
-    output.append("      Thread background = new Thread(new Runnable() {\n");
-
-    output.append("          // After call for background.start this run method call\n");
-    output.append("          public void run() {\n");
     output.append("             dataManager.loadDatas();\n");
-    output.append("           }\n");
-    output.append("    });\n");
-    output.append("      background.start();\n");
-    output.append("      background.join();\n");
     output.append("    }catch (Exception e){\n");
     output.append("       Toast.makeText(this, \"Couldnt load info\", Toast.LENGTH_LONG).show();\n");
     output.append("       return;\n");
@@ -206,23 +218,26 @@ public class OutputGenerator extends AbstractOutputGenerator {
     output.append("    listView.setOnItemClickListener(new OnItemClickListener() {\n");
 
     output.append("      public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {\n");
-    output.append("        DataItem item = (DataItem) datas.get(arg2);\n");
+    output.append("        if(datas.get(arg2) instanceof DataItem){\n");
+
+    output.append("         DataItem item = (DataItem) datas.get(arg2);\n");
     for (int i = 0; i < getOutput().getItemsTypes().size(); i++) {
       ItemType itemType = getOutput().getItemsTypes().get(i);
       if (i != 0) {
-        output.append("        else);\n");
+        output.append("         else);\n");
       }
-      output.append(String.format("        if(item.getData(\"__item_type\").equals(\"%s\")){\n", itemType.getName()));
-      output.append(String.format("          Intent myIntent = new Intent(MainActivity.this, %sItemActivity.class);\n", itemType.getName()));
-      output.append("          myIntent.putExtra(\"item\", item );\n");
-      output.append("          MainActivity.this.startActivity(myIntent);\n");
-      output.append("        }\n");
+      output.append(String.format("         if(item.getData(\"__item_type\").equals(\"%s\")){\n", itemType.getName()));
+      output.append(String.format("           Intent myIntent = new Intent(MainActivity.this, %sItemActivity.class);\n", itemType.getName()));
+      output.append("           myIntent.putExtra(\"item\", item );\n");
+      output.append("            MainActivity.this.startActivity(myIntent);\n");
+      output.append("          }\n");
     }
-    output.append("        else{\n");
-    output.append("          Intent myIntent = new Intent(MainActivity.this, DefaultItemActivity.class);\n");
-    output.append("          myIntent.putExtra(\"item\", item );\n");
-    output.append("          MainActivity.this.startActivity(myIntent);\n");
-    output.append("        }\n");
+    output.append("         else{\n");
+    output.append("           Intent myIntent = new Intent(MainActivity.this, DefaultItemActivity.class);\n");
+    output.append("           myIntent.putExtra(\"item\", item );\n");
+    output.append("            MainActivity.this.startActivity(myIntent);\n");
+    output.append("          }\n");
+    output.append("       }\n");
     output.append("      }\n");
     output.append("    });\n");
 

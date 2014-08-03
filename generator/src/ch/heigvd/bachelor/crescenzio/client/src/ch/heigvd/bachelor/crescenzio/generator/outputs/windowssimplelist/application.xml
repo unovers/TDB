@@ -8,7 +8,7 @@
 			<extensions>
 				<extension>jpg</extension>
 			</extensions>			
-			<value>code\application\applicationIcon72\itemListView.xml</value>
+			<value>res\drawable-hdpi\logo.png</value>
 		</field>
 		<field type="string">
 			<name>applicationTitle</name>
@@ -35,21 +35,37 @@
 			<name>Default</name>
 			<resources>
 				<resource>
-					<name>itemListViewFile</name>
+					<name>RowXAMLFile</name>
 					<extensions>
-						<extension>xml</extension>
+						<extension>xaml</extension>
 					</extensions>
-					<description>list view</description>
-					<value>code/types/itemListView.xml</value>
+					<description>Row XAML file</description>
+					<value>res\layout\default_row.xaml</value>
 				</resource>
 				<resource>
-					<name>itemViewFile</name>
+					<name>RowCSFile</name>
 					<extensions>
-						<extension>xml</extension>
+						<extension>cs</extension>
 					</extensions>					
-					<description>itemView</description>
-					<value>code/types/itemView.xml</value>
+					<description>Row CS file</description>
+					<value>src\row\DefaultRow.cs</value>
 				</resource>
+				<resource>
+					<name>PageXAMLFile</name>
+					<extensions>
+						<extension>java</extension>
+					</extensions>					
+					<description>Page XAML file</description>
+					<value>src\Default.xaml</value>
+				</resource>				
+				<resource>
+					<name>PageCSFile</name>
+					<extensions>
+						<extension>java</extension>
+					</extensions>					
+					<description>Activity src file</description>
+					<value>src\Default.cs</value>
+				</resource>				
 			</resources>
 		</itemType>
 	</itemTypes>

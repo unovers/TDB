@@ -86,7 +86,7 @@ public class ProjectXMLLoader {
                   project.getDatasetByName(elementMapField.getAttribute("type"),
                       elementMapField.getAttribute("datasource"),
                       elementMapField.getAttribute("name")),
-                  value);
+                      value);
             }
           }
         }
@@ -165,7 +165,7 @@ public class ProjectXMLLoader {
         ((Element) nodeServer).setAttribute("type", "none");
       }
       else {
-        ((Element) nodeServer).setAttribute("type", project.getServer().getClass().getSimpleName().replace("Server", ""));
+        ((Element) nodeServer).setAttribute("type", project.getServer().getClass().getSimpleName());
         Node serverRoot = document.createElement("root");
         Node serverHost = document.createElement("host");
         serverRoot.setTextContent(project.getServer().getRootFolder());
