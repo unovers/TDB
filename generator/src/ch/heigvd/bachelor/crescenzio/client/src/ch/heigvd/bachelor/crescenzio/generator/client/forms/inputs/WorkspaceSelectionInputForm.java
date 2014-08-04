@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ProjectInputForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire pour sélectionner le workspace
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
@@ -23,7 +33,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.WorkspaceSele
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
- * @author Fabio
+ * Define a form for selecting the workspace
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class WorkspaceSelectionInputForm extends AbstractInputForm {
 

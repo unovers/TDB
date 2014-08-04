@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : OutputTypeLookupCall.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un lookupCall pour les types d'applications
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
@@ -26,7 +36,10 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
 
 /**
- * @author Fabio
+ * Define a lookupCall for the outputs
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class OutputTypeLookupCall extends LocalLookupCall<OutputApplication> {
   private static final long serialVersionUID = 1L;

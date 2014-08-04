@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : ServerType.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe représente une ressource de type serveur
  *
  * Historiques des modifications
  * -
@@ -14,7 +14,10 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
 /**
- * @author Fabio
+ * Define a server type resource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ServerType extends AbstractResourceType {
 

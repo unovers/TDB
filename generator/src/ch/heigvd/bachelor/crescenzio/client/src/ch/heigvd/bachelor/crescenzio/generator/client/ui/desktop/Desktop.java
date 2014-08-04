@@ -81,7 +81,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceVie
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.shared.Icons;
-import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
+import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 

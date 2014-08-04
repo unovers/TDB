@@ -1,7 +1,17 @@
 /**
+ * Nom du fichier         : Utils.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Ce fichier définit des fonctions communes pour certaines classes
+ *
+ * Historiques des modifications
+ * -
  *
  */
-package ch.heigvd.bachelor.crescenzio.generator.ults;
+package ch.heigvd.bachelor.crescenzio.generator.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -15,9 +25,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * @author Fabio
+ * Define common functions for some classes
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class Utils {
+  /**
+   * Create a temporary file
+   *
+   * @return
+   * @throws IOException
+   */
   public static File createTempDirectory()
       throws IOException
   {
@@ -38,6 +57,13 @@ public class Utils {
     return (temp);
   }
 
+  /**
+   * Return an element with a specified name from his parent
+   *
+   * @param parent
+   * @param name
+   * @return
+   */
   public static Element getDirectChild(Element parent, String name)
   {
     for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling())
@@ -56,6 +82,7 @@ public class Utils {
 
   /**
    * Unzip it
+   * FROM http://www.codejava.net/java-se/file-io/programmatically-extract-a-zip-file-using-java
    *
    * @param file
    *          input zip file
@@ -88,6 +115,13 @@ public class Utils {
     zipIn.close();
   }
 
+  /**
+   * Extract files in the zip
+   *
+   * @param zipIn
+   * @param filePath
+   * @throws IOException
+   */
   private static void extractFile(ZipInputStream zipIn, String filePath) throws IOException {
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
     byte[] bytesIn = new byte[BUFFER_SIZE];

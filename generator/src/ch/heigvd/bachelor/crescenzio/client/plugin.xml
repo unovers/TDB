@@ -6,7 +6,7 @@
          point="org.eclipse.scout.service.services">
       <service
             factory="org.eclipse.scout.rt.client.services.ClientServiceFactory"
-            class="ch.heigvd.bachelor.crescenzio.generator.client.services.StandardOulineService"
+            class="ch.heigvd.bachelor.crescenzio.generator.client.services.StandardOutlineService"
             session="ch.heigvd.bachelor.crescenzio.generator.client.ClientSession">
       </service>
    </extension>

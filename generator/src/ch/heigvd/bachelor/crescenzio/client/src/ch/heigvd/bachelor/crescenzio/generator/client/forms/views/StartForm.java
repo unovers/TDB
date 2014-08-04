@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : StartViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire affichant des informations de base si aucun projet n'existe dans le workspace
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -12,7 +22,10 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.StartForm.MainBox.InformationDepartField;
 
 /**
- * @author Fabio
+ * Define a form showing a informations if no project is present in the workspace
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class StartForm extends AbstractViewForm {
 

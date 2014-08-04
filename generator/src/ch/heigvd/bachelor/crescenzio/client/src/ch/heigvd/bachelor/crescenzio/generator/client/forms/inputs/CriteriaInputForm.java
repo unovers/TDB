@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : CriteriaInputForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Ce fichier définit un formulaire permettant l'ajout ou edition de critères
  *
  * Historiques des modifications
  * -
@@ -31,7 +31,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
- * @author Fabio
+ * Define a form for inserting and editing criterias
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class CriteriaInputForm extends AbstractInputForm {
 

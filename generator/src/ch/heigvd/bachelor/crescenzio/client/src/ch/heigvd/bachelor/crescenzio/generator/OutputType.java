@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : OutputType.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe définit un type de sortie d'application
  *
  * Historiques des modifications
  * -
@@ -14,7 +14,10 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
 /**
- * @author Fabio
+ * Define an output resource type
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class OutputType extends AbstractResourceType {
 

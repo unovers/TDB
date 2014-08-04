@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : FieldViewform.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire affichant la liste des champs d'un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -29,7 +39,10 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
- * @author Fabio
+ * Define an view for the fields in a project
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class FieldsViewForm extends AbstractViewForm {
 

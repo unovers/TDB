@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : ConditionInputForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Ce fichier permet la saisie de conditions dans le programme
  *
  * Historiques des modifications
  * -
@@ -34,7 +34,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
- * @author Fabio
+ * Define a form for inserting conditions in a criteria
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ConditionInputForm extends AbstractInputForm {
   private Criteria criteria;
@@ -56,6 +59,8 @@ public class ConditionInputForm extends AbstractInputForm {
   }
 
   /**
+   * The program doesnt allow to edit a condition, do nothing
+   *
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   @Override

@@ -3,9 +3,12 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.shared;
 
+import java.util.Map;
+
 import javax.annotation.Generated;
 
 import org.eclipse.scout.rt.shared.data.form.AbstractFormData;
+import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 
 /**
@@ -22,15 +25,87 @@ public class StartFormData extends AbstractFormData {
   public StartFormData() {
   }
 
-  public GenerationStatus getGenerationStatus() {
-    return getFieldByClass(GenerationStatus.class);
+  public Author getAuthor() {
+    return getFieldByClass(Author.class);
   }
 
-  public static class GenerationStatus extends AbstractValueFieldData<String> {
+  public Organisation getOrganisation() {
+    return getFieldByClass(Organisation.class);
+  }
+
+  public PackageName getPackageName() {
+    return getFieldByClass(PackageName.class);
+  }
+
+  public ProjectName getProjectName() {
+    return getFieldByClass(ProjectName.class);
+  }
+
+  public static class Author extends AbstractValueFieldData<String> {
 
     private static final long serialVersionUID = 1L;
 
-    public GenerationStatus() {
+    public Author() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MANDATORY, true);
+    }
+  }
+
+  public static class Organisation extends AbstractValueFieldData<String> {
+
+    private static final long serialVersionUID = 1L;
+
+    public Organisation() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MANDATORY, true);
+    }
+  }
+
+  public static class PackageName extends AbstractValueFieldData<String> {
+
+    private static final long serialVersionUID = 1L;
+
+    public PackageName() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MANDATORY, true);
+    }
+  }
+
+  public static class ProjectName extends AbstractValueFieldData<String> {
+
+    private static final long serialVersionUID = 1L;
+
+    public ProjectName() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MANDATORY, true);
     }
   }
 }

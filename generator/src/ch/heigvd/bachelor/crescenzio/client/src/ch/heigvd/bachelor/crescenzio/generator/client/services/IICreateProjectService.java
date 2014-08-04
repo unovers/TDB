@@ -1,5 +1,10 @@
 /**
- * 
+ * Nom du fichier         : IICreateProjectServer.java
+ * Commentaires           : Pré géneré par Eclipse Scout
+ *
+ * Historiques des modifications
+ * -
+ *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services;
 

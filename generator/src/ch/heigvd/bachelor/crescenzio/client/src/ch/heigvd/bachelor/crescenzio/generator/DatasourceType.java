@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : DatasourceType.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un type de source de données
  *
  * Historiques des modifications
  * -
@@ -14,9 +14,7 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
 /**
- * Définit un type de source de données
- * <P>
- * Définit le package, le nom et le nom affiché de sources de données
+ * Define a datasource type resource
  *
  * @author Fabio CRESCENZIO
  * @version 1.0

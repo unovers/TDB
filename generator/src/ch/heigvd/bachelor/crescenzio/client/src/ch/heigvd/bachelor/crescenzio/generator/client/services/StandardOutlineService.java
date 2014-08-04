@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : StandardOutlineService.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit le chargement de la liste des projets pour la navigation
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services;
@@ -11,13 +21,15 @@ import org.eclipse.scout.service.AbstractService;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 /**
- * @author Fabio
+ * Define how are loaded the projects for the navigation outline
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
-public class StandardOulineService extends AbstractService implements IStandardOulineService {
+public class StandardOutlineService extends AbstractService implements IStandardOutlineService {
 
   @Override
   public Object[][] getProjectsTableData(Integer id) throws ProcessingException {
-    //TODO [Fabio] business logic here.
     //Static datas
     LinkedList<Project> projects = Project.getAll();
 

@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : Project.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe réprésente un projet de géneration
  *
  * Historiques des modifications
  * -
@@ -29,8 +29,14 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 
+/**
+ * Define a project for application generation
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class Project {
-  private static LinkedList<Project> projects;
+  private static LinkedList<Project> projects; //La liste de tous les projets instanciés
 
   public static boolean destroy(Project project) {
     projects.remove(project);
@@ -38,7 +44,7 @@ public class Project {
   }
 
   /**
-   * @return
+   * @return all instancied projects
    */
   public static LinkedList<Project> getAll()
   {
@@ -48,23 +54,35 @@ public class Project {
     return projects;
   }
 
-  private String author;
-  private LinkedList<Criteria> criterias;
-  private LinkedList<AbstractDatasource> datasources;
-  private LinkedList<Field> fields;
-  private HashMap<AbstractDataset, HashMap<Field, String>> mapping = new HashMap<AbstractDataset, HashMap<Field, String>>();
-  private String name;
-  private String organisation;
+  private String author;//L'autheur du projet
+  private LinkedList<Criteria> criterias;//la liste des critères
+  private LinkedList<AbstractDatasource> datasources;//la liste des sources de données
+  private LinkedList<Field> fields;//la liste des champs déclarés
+  private HashMap<AbstractDataset, HashMap<Field, String>> mapping = new HashMap<AbstractDataset, HashMap<Field, String>>();//le mapping pour chaque set de données avec les champs
+  private String name;//le nom du projet
+  private String organisation;//l'organisation pour le projet
 
-  private LinkedList<OutputApplication> outputs;
+  private LinkedList<OutputApplication> outputs;//la liste des sorties
 
-  private String packageName;
+  private String packageName;//le nom du package a utiliser
 
-  private AbstractServer server;
+  private AbstractServer server;//le serveur déclaré pour le projet
 
+  /**
+   * @param name
+   *          the name
+   * @param packageName
+   *          the package name
+   * @param author
+   *          the author
+   * @param organisation
+   *          the organisation
+   */
   public Project(String name, String packageName, String author,
       String organisation) {
+    //Si c'est le premier projet créé, initialise la liste
     if (Project.projects == null) Project.projects = new LinkedList<Project>();
+
     this.name = name;
     this.packageName = packageName;
     this.author = author;
@@ -73,30 +91,42 @@ public class Project {
     this.datasources = new LinkedList<AbstractDatasource>();
     this.criterias = new LinkedList<Criteria>();
     this.fields = new LinkedList<Field>();
-    fields.add(new Field("__item_type"));
+    fields.add(new Field("__item_type"));//déclare un champs type par défaut
+
     projects.add(this);
   }
 
+  /**
+   * @param criteria
+   */
   public void addCriteria(Criteria criteria) {
     this.criterias.add(criteria);
   }
 
+  /**
+   * @param datasource
+   */
   public void addDatasource(AbstractDatasource datasource) {
     this.datasources.add(datasource);
   }
 
+  /**
+   * @param field
+   */
   public void addField(Field field) {
     this.fields.add(field);
   }
 
+  /**
+   * @param output
+   */
   public void addOutput(OutputApplication output) {
     this.outputs.add(output);
   }
 
-  public void saveFile(String location) {
-
-  }
-
+  /**
+   * @param output
+   */
   public void removeOutput(OutputApplication output) {
     outputs.remove(output);
     //supprime les dossiers dans le projet si il y en a
@@ -105,6 +135,12 @@ public class Project {
     if (appDirectory.exists()) appDirectory.delete();
   }
 
+  /**
+   * Generate the project in the workspace
+   *
+   * @param workspace
+   *          : the project location
+   */
   public void generateProject(String workspace) {
 
     String projectPath = workspace + File.separator + getName();
@@ -113,8 +149,8 @@ public class Project {
     try {
       //supprime tout ancien dossier
       if (generatedDirectory.exists()) generatedDirectory.delete();
-      //créer le dossier script :
 
+      //créer le dossier script :
       String serverPath = generatedDirectory.toPath() + File.separator + "serverScript";
       File serverDirectory = new File(serverPath);
       serverDirectory.mkdirs();
@@ -174,18 +210,30 @@ public class Project {
     }
   }
 
+  /**
+   * @return the author
+   */
   public String getAuthor() {
     return author;
   }
 
+  /**
+   * @return the criterias
+   */
   public LinkedList<Criteria> getCriterias() {
     return criterias;
   }
 
+  /**
+   * @return the datasources
+   */
   public LinkedList<AbstractDatasource> getDatasources() {
     return datasources;
   }
 
+  /**
+   * @return the fields
+   */
   public LinkedList<Field> getFields() {
     return fields;
   }
@@ -210,35 +258,60 @@ public class Project {
     }
   }
 
+  /**
+   * @return the name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * @return the organisation
+   */
   public String getOrganisation() {
     return organisation;
   }
 
+  /**
+   * @return the outputs
+   */
   public LinkedList<OutputApplication> getOutputs() {
     return outputs;
   }
 
+  /**
+   * @return the package name
+   */
   public String getPackageName() {
     return packageName;
   }
 
+  /**
+   * @return the server
+   */
   public AbstractServer getServer() {
     return server;
   }
 
+  /**
+   * @param field
+   *          the field to remove
+   */
   public void removeField(Field field) {
     this.fields.remove(field);
   }
 
+  /**
+   * @param author
+   *          the author to set
+   */
   public void setAuthor(String author) {
     this.author = author;
   }
 
   /**
+   * Set the mapping for a field on a dataset
+   *
    * @param field
    * @param dataset
    */
@@ -254,24 +327,41 @@ public class Project {
     }
   }
 
+  /**
+   * @param name
+   *          the name to set
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   * @param organisation
+   *          the organisation to set
+   */
   public void setOrganisation(String organisation) {
     this.organisation = organisation;
   }
 
+  /**
+   * @param packageName
+   *          the package name to set
+   */
   public void setPackageName(String packageName) {
     this.packageName = packageName;
   }
 
+  /**
+   * @param server
+   *          the server to set
+   */
   public void setServer(AbstractServer server) {
     this.server = server;
   }
 
   /**
    * @param criteria
+   *          the criteria to remove
    */
   public void removeCriteria(Criteria criteria) {
     this.criterias.remove(criteria);
@@ -279,8 +369,8 @@ public class Project {
   }
 
   /**
-   * @param textContent
-   * @return
+   * @param fieldName
+   * @return the field having the name fieldName
    */
   public Field getFieldByName(String fieldName) {
     for (Field f : fields) {
@@ -292,8 +382,13 @@ public class Project {
   }
 
   /**
-   * @param attribute
-   * @return
+   * @param type
+   *          the dataset type
+   * @param datasourceName
+   *          the datasource name
+   * @param datasetName
+   *          the dataset name
+   * @return the dataset having the name datasetName
    */
   public AbstractDataset getDatasetByName(String type, String datasourceName, String datasetName) {
     for (AbstractDatasource datasource : datasources) {
@@ -310,6 +405,7 @@ public class Project {
 
   /**
    * @param datasource
+   *          the datasource to remove
    */
   public void removeDatasource(AbstractDatasource datasource) {
     datasources.remove();

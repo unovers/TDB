@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : AbstractResourceType.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un type de ressource général pour l'application
  *
  * Historiques des modifications
  * -
@@ -14,17 +14,31 @@
 package ch.heigvd.bachelor.crescenzio.generator;
 
 /**
- * Définit un type de ressource général chargé au démarrage de l'application
- * <P>
- * Définit le package, le nom et le nom affiché de sources de données
+ * Define an abstract resource type for the application
  *
  * @author Fabio CRESCENZIO
  * @version 1.0
  */
 public abstract class AbstractResourceType {
-  private String location;
-  private String displayName;
-  private String name;
+  private String location; //le package où la ressource se trouve
+  private String displayName; // le nom a utiliser pour l'affichage
+  private String name; // le nom de la classe
+
+  /**
+   * Constructeur
+   *
+   * @param name
+   *          : the class name
+   * @param displayName
+   *          : the display name
+   * @param location
+   *          : the package location
+   */
+  protected AbstractResourceType(String name, String displayName, String location) {
+    this.location = location;
+    this.displayName = displayName;
+    this.name = name;
+  }
 
   /**
    * @return the location
@@ -35,7 +49,7 @@ public abstract class AbstractResourceType {
 
   /**
    * @param location
-   *          the location to set
+   *          the location
    */
   public void setLocation(String location) {
     this.location = location;
@@ -50,7 +64,7 @@ public abstract class AbstractResourceType {
 
   /**
    * @param displayName
-   *          the displayName to set
+   *          the displayName
    */
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
@@ -65,15 +79,10 @@ public abstract class AbstractResourceType {
 
   /**
    * @param name
-   *          the name to set
+   *          the name
    */
   public void setName(String name) {
     this.name = name;
   }
 
-  protected AbstractResourceType(String name, String displayName, String location) {
-    this.location = location;
-    this.displayName = displayName;
-    this.name = name;
-  }
 }

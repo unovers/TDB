@@ -1,6 +1,6 @@
 /**
  * Nom du fichier         : FieldInputForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
@@ -30,6 +30,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.FieldInputFor
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
+/**
+ * Define a form for inserting and editing fields
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class FieldInputForm extends AbstractInputForm {
 
   private Project project;

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : OutputApplicationViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire affichant la liste des critère d'un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -47,7 +57,10 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.StringField;
 
 /**
- * @author Fabio
+ * Define an view for an OutputApplication in a project, allowing to edit datas too
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class OutputApplicationViewForm extends AbstractForm {
 
@@ -191,6 +204,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
         @Override
         protected void injectFieldsInternal(List<IFormField> fieldList) {
+          //Ajoute tous les champs de type applicationField
           for (Entry<Field, OutputField> entry : getOutput().getApplicationFields().entrySet()) {
             Field field = entry.getKey();
             OutputField outputField = entry.getValue();
@@ -274,6 +288,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
         @Override
         protected void injectFieldsInternal(List<IFormField> fieldList) {
+          //Ajoute un formulaire pour mapper les champs
           for (Entry<Field, Field> entry : getOutput().getMappedFields().entrySet()) {
             Field field = entry.getKey();
             fieldList.add(new AbstractSmartField<Field>() {
@@ -344,6 +359,7 @@ public class OutputApplicationViewForm extends AbstractForm {
 
         @Override
         protected void injectFieldsInternal(List<IFormField> fieldList) {
+          //Ajoute les types d'élements
           for (ItemType item : getOutput().getItemsTypes()) {
 
             fieldList.add(new AbstractGroupBox() {
@@ -368,7 +384,6 @@ public class OutputApplicationViewForm extends AbstractForm {
 
                     @Override
                     public String getFieldId() {
-                      // TODO Auto-generated method stub
                       return "item_id_" + item.getId();
                     }
                   });
@@ -387,7 +402,6 @@ public class OutputApplicationViewForm extends AbstractForm {
 
                     @Override
                     public String getFieldId() {
-                      // TODO Auto-generated method stub
                       return "item_id_" + item.getId();
                     }
                   });
@@ -431,7 +445,6 @@ public class OutputApplicationViewForm extends AbstractForm {
 
                     @Override
                     public String getFieldId() {
-                      // TODO Auto-generated method stub
                       return "itemResourceFile_" + resource.getId() + "_" + item.getId();
                     }
                   });
@@ -586,6 +599,7 @@ public class OutputApplicationViewForm extends AbstractForm {
       for (Entry<Field, Field> entry : getOutput().getMappedFields().entrySet()) {
 
         Field field = entry.getKey();
+        @SuppressWarnings("unchecked")
         AbstractSmartField<Field> f = (AbstractSmartField<Field>) getFieldById("mapping_" + field.getId());
         Field mappedField = f.getValue();
         entry.setValue(mappedField);

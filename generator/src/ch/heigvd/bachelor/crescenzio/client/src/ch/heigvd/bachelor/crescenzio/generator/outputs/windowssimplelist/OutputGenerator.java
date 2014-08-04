@@ -21,7 +21,7 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
-import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
+import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
 /**
  * @author Fabio
@@ -481,7 +481,7 @@ public class OutputGenerator extends AbstractOutputGenerator {
     temp.deleteOnExit();
 
     //Ajoute les ressources
-    createManifest(destination);
+    createAssemblyInfo(destination);
     copyFiles(src, destination);
 
     generateMainActivity(generatedApplicationFolder);

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : OutputApplicationPage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour une sortie d'application
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -12,7 +22,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 /**
- * @author Fabio
+ * Define the navigation for an output
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class OutputApplicationPage extends AbstractPage {
 

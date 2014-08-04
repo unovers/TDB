@@ -5,7 +5,7 @@
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un formualaire pour entrer les informations pour un serveur
  *
  * Historiques des modifications
  * -
@@ -13,7 +13,6 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs;
 
-import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
@@ -35,9 +34,13 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.services.lookup.ServerTypeLookupCall;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
-import ch.heigvd.bachelor.crescenzio.generator.shared.ConfigureServerFormData;
 
-@FormData(value = ConfigureServerFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
+/**
+ * Define a form for inserting server datas
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class ServerInputForm extends AbstractInputForm {
 
   private Project project;

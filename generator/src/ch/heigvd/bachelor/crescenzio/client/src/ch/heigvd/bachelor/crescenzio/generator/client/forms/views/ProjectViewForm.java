@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ProjectViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire affichant les détails d'un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -37,7 +47,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.shared.StartFormData;
 
 /**
- * @author Fabio
+ * Define a form showing project informations
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 @FormData(value = StartFormData.class, sdkCommand = FormData.SdkCommand.CREATE)
 public class ProjectViewForm extends AbstractViewForm {

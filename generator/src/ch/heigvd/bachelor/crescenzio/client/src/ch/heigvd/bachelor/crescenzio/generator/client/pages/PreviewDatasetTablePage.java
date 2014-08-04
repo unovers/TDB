@@ -1,3 +1,17 @@
+/**
+ * Nom du fichier         : PreviewDatasetTablePage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit une page contenant un tableau permettant
+ *                          de prévisualiser le contenu d'un set de données
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
 
 import java.util.ArrayList;
@@ -13,6 +27,12 @@ import org.eclipse.scout.rt.shared.services.common.jdbc.SearchFilter;
 
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 
+/**
+ * Define a table in which we can preview a dataset content
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class PreviewDatasetTablePage extends AbstractPageWithTable<PreviewDatasetTablePage.Table> {
   private List<IColumn<?>> m_injectedColumns;
   private AbstractDataset dataset;

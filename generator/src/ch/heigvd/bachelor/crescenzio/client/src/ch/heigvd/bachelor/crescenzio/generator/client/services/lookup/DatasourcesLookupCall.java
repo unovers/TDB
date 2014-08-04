@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : DatasourcesLookupCall.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Ce fichier definit un lookupCall pour les sources de données présentes dans un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
@@ -15,7 +25,10 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
- * @author Fabio
+ * Define a lookupCall for the datasources in a project
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class DatasourcesLookupCall extends LocalLookupCall<AbstractDatasource> {
   private static final long serialVersionUID = 1L;

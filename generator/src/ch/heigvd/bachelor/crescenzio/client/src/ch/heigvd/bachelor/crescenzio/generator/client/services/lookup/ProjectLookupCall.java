@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ProjectLookupCall.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit le lookupCall pour la liste des projets
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
@@ -15,7 +25,10 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 /**
- * @author Fabio
+ * Define a lookupCall for the project list
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ProjectLookupCall extends LocalLookupCall<Project> {
 

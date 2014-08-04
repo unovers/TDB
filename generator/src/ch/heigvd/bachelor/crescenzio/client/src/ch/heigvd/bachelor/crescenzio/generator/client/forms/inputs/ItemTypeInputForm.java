@@ -1,11 +1,12 @@
 /**
- * Nom du fichier         : OutputApplicationTypeForm.java
- * Version                : 0.1
+ * Nom du fichier         : ItemTypeInputForm.java
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Ce ficher definit un formulaire pour l'ajout de nouveaux types
+ *                          de données dans une application
  *
  * Historiques des modifications
  * -
@@ -36,6 +37,12 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
+/**
+ * Define a form for inserting item types
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class ItemTypeInputForm extends AbstractInputForm {
 
   private OutputApplication output;
@@ -185,6 +192,9 @@ public class ItemTypeInputForm extends AbstractInputForm {
     }
   }
 
+  /**
+   * Edit of itemType is not allowed
+   */
   @Override
   public void startModify() throws ProcessingException {
   }

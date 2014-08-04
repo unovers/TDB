@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : StandardOutline.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit la navigation générale de l'application
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.outlines;
@@ -14,7 +24,10 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.pages.ProjectDetailsNodePage;
 
 /**
- * @author Fabio
+ * Define the navigation in the application
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class StandardOutline extends AbstractExtensibleOutline {
 

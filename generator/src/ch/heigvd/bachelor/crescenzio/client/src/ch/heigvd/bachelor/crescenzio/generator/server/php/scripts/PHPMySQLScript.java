@@ -1,3 +1,16 @@
+/**
+ * Nom du fichier         : PHPMySQLScript.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe défini la génération de scripts PHP avec une source de type MySQL
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.server.php.scripts;
 
 import java.io.File;
@@ -11,9 +24,16 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGenerator;
 
+/**
+ * Define how to generate scripts for a MySQL datasource with a PHP server
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class PHPMySQLScript extends ServerDatasourceScriptGenerator {
 
   /**
+   * @param project
    * @param datasource
    */
   public PHPMySQLScript(Project project, MySQLDatasource datasource) {

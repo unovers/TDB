@@ -1,11 +1,12 @@
 /**
  * Nom du fichier         : DatasetSelectProjectForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Ce fichier définit un formulaire permettant de sélectionner le projet
+ *                          pour lequel on va créer une nouve set de données
  *
  * Historiques des modifications
  * -
@@ -33,7 +34,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
 /**
- * @author Fabio
+ * Define a form for selecting the project for which we want to add a dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class DatasetSelectProjectForm extends AbstractInputForm {
 
@@ -151,7 +155,7 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
         String pckage = Desktop.getDatasourceTypes().get(type.replace("Dataset", "")).getLocation();
         String clssDatasource = pckage + "." + type.replace("Dataset", "") + "Datasource";
 
-        //Verifie si un datasource de ce type existe
+        //Vérifie si un datasource de ce type existe
         boolean datasourceTypeFound = false;
         for (AbstractDatasource datasource : project.getDatasources()) {
           if (Class.forName(clssDatasource).isInstance(datasource)) {
@@ -179,6 +183,9 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
   }
 
   @Override
+  /**
+   * No need to allow edit
+   */
   public void startModify() throws ProcessingException {
 
   }

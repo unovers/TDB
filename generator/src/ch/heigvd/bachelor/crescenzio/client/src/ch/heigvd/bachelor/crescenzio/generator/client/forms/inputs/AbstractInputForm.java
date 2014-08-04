@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : AbstractInputForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe définit un Form de type saisie
  *
  * Historiques des modifications
  * -
@@ -17,7 +17,10 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 
 /**
- * @author Fabio
+ * Define an abstract input form
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractInputForm extends AbstractForm {
 
@@ -29,11 +32,15 @@ public abstract class AbstractInputForm extends AbstractForm {
   }
 
   /**
+   * Starts a new form for editing datas
+   * 
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public abstract void startModify() throws ProcessingException;
 
   /**
+   * Starts a form for inserting datas
+   * 
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public abstract void startNew() throws ProcessingException;

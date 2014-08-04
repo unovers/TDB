@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ServerTypeLookupCall.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un lookupCall pour les types de server
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
@@ -16,7 +26,10 @@ import ch.heigvd.bachelor.crescenzio.generator.ServerType;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
- * @author Fabio
+ * Define a lookupCall for the server types
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ServerTypeLookupCall extends LocalLookupCall<String> {
 

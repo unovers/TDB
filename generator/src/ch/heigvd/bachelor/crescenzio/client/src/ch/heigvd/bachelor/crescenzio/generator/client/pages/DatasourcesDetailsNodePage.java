@@ -5,7 +5,7 @@
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit la navigation pour les sources de données
  *
  * Historiques des modifications
  * -
@@ -25,6 +25,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourcePage;
 
+/**
+ * Define how to navigate in datasources pages
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
 
   private Project project;
@@ -53,6 +59,7 @@ public class DatasourcesDetailsNodePage extends AbstractPageWithNodes {
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
     for (AbstractDatasource datasource : project.getDatasources()) {
       try {
+        //Charge la bonne classe
         String pckage = Desktop.getDatasourceTypes().get(datasource.getClass().getSimpleName().replace("Datasource", "")).getLocation();
         String clss = pckage + "." + datasource.getClass().getSimpleName() + "Page";
         Class<?> datasourceClass = Class.forName(clss);

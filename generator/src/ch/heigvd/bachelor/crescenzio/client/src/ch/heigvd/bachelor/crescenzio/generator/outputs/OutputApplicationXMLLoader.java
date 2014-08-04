@@ -9,7 +9,7 @@ import org.w3c.dom.Node;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
-import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
+import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
 public class OutputApplicationXMLLoader {
 

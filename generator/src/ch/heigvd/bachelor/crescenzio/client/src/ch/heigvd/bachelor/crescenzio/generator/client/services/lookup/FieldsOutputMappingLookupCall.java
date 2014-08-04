@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : FieldsOutputMappingLookupCall.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un lookupCall pour les champs dans un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
@@ -15,7 +25,10 @@ import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 /**
- * @author Fabio
+ * Define a lookupCall for the fields in a project
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class FieldsOutputMappingLookupCall extends LocalLookupCall<Field> {
   private static final long serialVersionUID = 1L;

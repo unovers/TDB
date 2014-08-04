@@ -1,3 +1,17 @@
+/**
+ * Nom du fichier         : ServerDatasourceScriptGenerator.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un générateur abstrait de scripts pour un type de serveur
+ *                          et un type de source de données
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.server;
 
 import java.io.IOException;
@@ -5,6 +19,12 @@ import java.io.IOException;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 
+/**
+ * Define how to generate scripts for an abstract server and an abstract datasource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public abstract class ServerDatasourceScriptGenerator {
   AbstractDatasource datasource;
   Project project;
@@ -51,7 +71,7 @@ public abstract class ServerDatasourceScriptGenerator {
   }
 
   /**
-   * créer les fichiers nécessaires dans le répertoire
+   * Create all the needed files for this type of server / datasource
    */
   public abstract void createFiles(String destination) throws IOException;
 

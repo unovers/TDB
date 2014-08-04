@@ -13,7 +13,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
- * @author Fabio
+ * Define the navigation for a server
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ServerPage extends AbstractPage {
 

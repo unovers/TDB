@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : CriteriasPage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour les critères dans un projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -12,7 +22,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.CriteriasViewF
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
- * @author Fabio
+ * Define how to navigate in criterias page
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class CriteriasPage extends AbstractPage {
 

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : FieldsPage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour les champs
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -12,7 +22,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.FieldsViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
 /**
- * @author Fabio
+ * Define the navigation for the fields
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class FieldsPage extends AbstractPage {
 

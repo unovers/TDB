@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : CriteriasViewForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un formulaire affichant la liste des critère d'un projet
  *
  * Historiques des modifications
  * -
@@ -33,7 +33,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 
 /**
- * @author Fabio
+ * Define an view for the criterias in a project
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class CriteriasViewForm extends AbstractForm {
 

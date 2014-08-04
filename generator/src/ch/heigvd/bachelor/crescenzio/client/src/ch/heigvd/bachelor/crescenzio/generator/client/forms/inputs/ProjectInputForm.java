@@ -1,11 +1,11 @@
 /**
- * Nom du fichier         : CriteriasViewForm.java
- * Version                : 0.1
+ * Nom du fichier         : ProjectInputForm.java
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Ce fichier définit un formulaire pour la création d'un nouveau projet
  *
  * Historiques des modifications
  * -
@@ -36,6 +36,12 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.ProjectInputF
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ProjectViewForm;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 
+/**
+ * Define a form for creating and editing a project
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class ProjectInputForm extends AbstractForm {
   private Project project;
 

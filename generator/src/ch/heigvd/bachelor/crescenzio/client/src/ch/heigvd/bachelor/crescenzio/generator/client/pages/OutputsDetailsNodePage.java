@@ -5,7 +5,7 @@
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit la navigation pour les sorties d'application
  *
  * Historiques des modifications
  * -
@@ -24,7 +24,10 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 
 /**
- * @author Fabio
+ * Define the navigation for outputs
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class OutputsDetailsNodePage extends AbstractPageWithNodes {
 

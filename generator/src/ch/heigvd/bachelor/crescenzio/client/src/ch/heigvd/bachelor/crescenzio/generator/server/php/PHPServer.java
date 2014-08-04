@@ -1,11 +1,11 @@
 /**
- * Nom du fichier         :
- * Version                : 0.1
+ * Nom du fichier         : PHPServer.java
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit comment sont génerés les scripts serveur PHP
  *
  * Historiques des modifications
  * -
@@ -25,6 +25,12 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
 import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGenerator;
 
+/**
+ * Define how to generate scripts for a PHP server
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class PHPServer extends AbstractServer {
 
   public PHPServer(String host, String rootFolder) {
@@ -41,6 +47,7 @@ public class PHPServer extends AbstractServer {
     output.append("try{\n");
     for (int i = 0; i < project.getDatasources().size(); ++i) {
       AbstractDatasource datasource = project.getDatasources().get(i);
+      //Pour chaque type de source de données, appelle le bon génerateur
       try {
         String pckage = "ch.heigvd.bachelor.crescenzio.generator.server.php.scripts";
         String classGenerator = "PHP" + datasource.getClass().getSimpleName().replace("Datasource", "");
@@ -53,7 +60,7 @@ public class PHPServer extends AbstractServer {
       }
       catch (Exception e) {
         //TODO Log
-        throw new ProcessingException(e.toString());
+        throw new ProcessingException("Impossible de trouver le génerateur " + "PHP" + datasource.getClass().getSimpleName() + "Script");
       }
     }
 

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ProjectDetailsNodePage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour une liste de projet
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.pages;
@@ -13,7 +23,10 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 
 /**
- * @author Fabio
+ * Define the navigation for the project list
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
@@ -50,6 +63,7 @@ public class ProjectDetailsNodePage extends AbstractPageWithNodes {
 
   @Override
   protected void execCreateChildPages(Collection<IPage> pageList) throws ProcessingException {
+    //Ajoute les sous pages d'un projet
     ProjectPage projectInfoPage = new ProjectPage(project);
     pageList.add(projectInfoPage);
 

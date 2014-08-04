@@ -1,11 +1,12 @@
 /**
  * Nom du fichier         : OutputApplicationTypeForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un formulaire pour sélectionner un projet et
+ *                          le type d'application qu'on souhaite lui ajouter
  *
  * Historiques des modifications
  * -
@@ -49,8 +50,14 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.ItemType;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
-import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
+import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
+/**
+ * Define a form for selecting a project and an output type
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class OutputApplicationTypeForm extends AbstractForm {
 
   /**

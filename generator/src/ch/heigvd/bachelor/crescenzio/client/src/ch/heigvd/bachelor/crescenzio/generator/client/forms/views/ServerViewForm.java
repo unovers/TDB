@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : ServerViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un formulaire affichant les détails d'un serveur
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.forms.views;
@@ -19,7 +29,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.ServerViewForm.MainBox.ServerTypeField;
 
 /**
- * @author Fabio
+ * Define a form showing server informations
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ServerViewForm extends AbstractViewForm {
 

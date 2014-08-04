@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : ProjectXMLLoader.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe permet de charger un projet depuis un fichier XML ou de le sauvegarder dans un fichier XML
  *
  * Historiques des modifications
  * -
@@ -29,9 +29,21 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasourceXML
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
-import ch.heigvd.bachelor.crescenzio.generator.ults.Utils;
+import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
+/**
+ * This class can load a project from a XML file or save it to a XML file
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class ProjectXMLLoader {
+  /**
+   * Load a project from a element
+   *
+   * @param element
+   *          the element containing the project
+   */
   public static void loadProject(Element element) {
     Project project;
 
@@ -141,6 +153,16 @@ public class ProjectXMLLoader {
     }
   }
 
+  /**
+   * Create an Element object for a given Project
+   *
+   * @param document
+   *          the document creating the XML file
+   * @param project
+   *          the project
+   * @return the project as an Element
+   * @throws ProcessingException
+   */
   public static Element createProjectElement(Document document, Project project) throws ProcessingException {
     try {
       Node nodeName = document.createElement("name");
@@ -243,8 +265,7 @@ public class ProjectXMLLoader {
     }
     catch (ClassNotFoundException | NoSuchMethodException | SecurityException |
         IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
-      e.printStackTrace();
+      throw new ProcessingException(e.getMessage());
     }
-    return null;
   }
 }
