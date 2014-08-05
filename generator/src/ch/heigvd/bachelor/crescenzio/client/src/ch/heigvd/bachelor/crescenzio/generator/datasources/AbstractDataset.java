@@ -1,14 +1,28 @@
+/**
+ * Nom du fichier         : AbstractDataset.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un set de données
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
-
-import java.util.LinkedList;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
-import ch.heigvd.bachelor.crescenzio.generator.Field;
-
+/**
+ * Define an abstract dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public abstract class AbstractDataset {
-  private String name;
-  private LinkedList<Field> fields;
+  private String name; //le nom
   private int id;
   private Object[][] datas;
   private Object[] headers;
@@ -24,7 +38,6 @@ public abstract class AbstractDataset {
     this.datasource = datasource;
     this.described = false;
     this.name = name;
-    this.fields = new LinkedList<Field>();
     this.id = counter++;
   }
 
@@ -58,47 +71,71 @@ public abstract class AbstractDataset {
     this.id = id;
   }
 
+  /**
+   * @return the name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * @return a grid of Objects containing the datasets datas
+   */
   public Object[][] getDatas() {
     return datas;
   }
 
+  /**
+   * @return an object array containing all headers
+   */
   public Object[] getHeaders() {
     return headers;
   }
 
+  /**
+   * @param datas
+   *          the datas to set
+   */
   public void setDatas(Object[][] datas) {
     this.datas = datas;
   }
 
+  /**
+   * @param headers
+   *          the headers to set
+   */
   public void setHeaders(Object[] headers) {
     this.headers = headers;
   }
 
+  /**
+   * Define how a dataset is previewed
+   *
+   * @throws ProcessingException
+   */
   public abstract void preview() throws ProcessingException;
 
+  /**
+   * @param name
+   *          the name to set
+   */
   public void setName(String name) {
     this.name = name;
   }
 
-  public void addField(Field field) {
-    this.fields.add(field);
-  }
-
-  public LinkedList<Field> getFields() {
-    return fields;
-  }
-
   /**
-   * @return
+   * @return a boolean saying if the dataset result has already been loaded
    */
   public boolean isDescribed() {
     return described;
   }
 
+  /**
+   * Set the descibed status of the dataset
+   *
+   * @param status
+   *          the new status
+   */
   public void setDescribed(boolean status) {
     described = status;
   }

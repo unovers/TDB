@@ -1,11 +1,11 @@
 /**
- * Nom du fichier         : AbstractSQLDatasetInputForm.java
- * Version                : 0.1
+ * Nom du fichier         : MySQLDatasetInputForm.java
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Cette classe définit un Form pour la saisie d'un set de données MySQL
  *
  * Historiques des modifications
  * -
@@ -24,7 +24,10 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.AbstractSQLDatasetInputForm;
 
 /**
- * @author Fabio
+ * Define a MYSQL dataset InputForm
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class MySQLDatasetInputForm extends AbstractSQLDatasetInputForm {
 

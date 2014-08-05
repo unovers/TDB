@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : MySQLatasetViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un ViewForm pour un set de données MySQL
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
@@ -19,7 +29,10 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.AbstractSQLDatase
 import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.SQLDatasetPreviewViewForm;
 
 /**
- * @author Fabio
+ * Define a ViewForm for a MySQL dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class MySQLDatasetViewForm extends AbstractSQLDatasetViewForm {
 

@@ -1,11 +1,11 @@
 /**
  * Nom du fichier         : MySQLDatasourceInputForm.java
- * Version                : 0.1
+ * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
  * Date dernière révision : 30.07.2014
  *
- * Commentaires           :
+ * Commentaires           : Définit un Inputform pour une source de données MySQL
  *
  * Historiques des modifications
  * -
@@ -24,7 +24,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.AbstractSQLDatasourceInputForm;
 
 /**
- * @author Fabio
+ * Define a InputForm for a MySQL datasource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class MySQLDatasourceInputForm extends AbstractSQLDatasourceInputForm {
 

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : AbstractDatasourceViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un ViewForm pour une source de données
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
@@ -9,7 +19,10 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AbstractViewForm;
 
 /**
- * @author Fabio
+ * Define an ViewForm for a dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractDatasourceViewForm extends AbstractViewForm {
 

@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : AbstractDatasetInputForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un Form pour la saisie d'un set de données
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
@@ -10,7 +20,10 @@ import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.AbstractInputForm;
 
 /**
- * @author Fabio
+ * Define an abstract dataset InputForm
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractDatasetInputForm extends AbstractInputForm {
 

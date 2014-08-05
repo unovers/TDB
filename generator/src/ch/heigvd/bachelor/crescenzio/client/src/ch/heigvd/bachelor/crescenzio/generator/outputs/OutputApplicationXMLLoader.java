@@ -1,3 +1,15 @@
+/**
+ * Nom du fichier         : OutputApplicationXMLLoader.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit comment est stoqué une application dans un fichier XML
+ *
+ * Historiques des modifications
+ * -
+ */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
 import java.util.LinkedList;
@@ -11,6 +23,12 @@ import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
+/**
+ * Define how is stored an output application in a XML file
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class OutputApplicationXMLLoader {
 
   public static OutputApplication loadOutput(Element element) {

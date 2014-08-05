@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : AbstractDatasourceInputForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un InputForm pour une source de données abstraite
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
@@ -9,7 +19,10 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.inputs.AbstractInputForm;
 
 /**
- * @author Fabio
+ * Define an InputForm for a datasource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractDatasourceInputForm extends AbstractInputForm {
   private AbstractDatasource datasource;

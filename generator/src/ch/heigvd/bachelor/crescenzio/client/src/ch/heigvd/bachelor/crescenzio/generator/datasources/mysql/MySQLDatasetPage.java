@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : MySQLDatasetPage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour un set de données MySQL
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
@@ -9,7 +19,10 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasetPage;
 
 /**
- * @author Fabio
+ * Define the navigation for a MySQLdataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class MySQLDatasetPage extends AbstractDatasetPage {
 

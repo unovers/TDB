@@ -1,10 +1,22 @@
 /**
+ * Nom du fichier         : FileResource.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
  *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit une ressource pour un type d'item
+ *
+ * Historiques des modifications
+ * -
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
 /**
- * @author Fabio
+ * Define a file resource for an item type
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class FileResource {
   private String name;

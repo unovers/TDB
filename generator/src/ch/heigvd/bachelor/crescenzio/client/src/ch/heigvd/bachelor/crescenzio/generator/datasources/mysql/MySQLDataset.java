@@ -1,3 +1,16 @@
+/**
+ * Nom du fichier         : MySQLDataset.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Cette classe définit un set de données MySQL
+ *
+ * Historiques des modifications
+ * -
+ *
+ */
 package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
 
 import java.sql.ResultSet;
@@ -8,6 +21,12 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.AbstractSQLDataset;
 
+/**
+ * Define a MySQL dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
+ */
 public class MySQLDataset extends AbstractSQLDataset {
 
   public MySQLDataset(MySQLDatasource datasource, String name, String query) {

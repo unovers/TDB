@@ -1,12 +1,24 @@
 /**
+ * Nom du fichier         : ItemType.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
  *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un type d'item pour une application
+ *
+ * Historiques des modifications
+ * -
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
 import java.util.LinkedList;
 
 /**
- * @author Fabio
+ * Define an item type for an output
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class ItemType {
   private String name;

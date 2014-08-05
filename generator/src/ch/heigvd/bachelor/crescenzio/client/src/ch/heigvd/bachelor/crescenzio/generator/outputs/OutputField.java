@@ -1,15 +1,27 @@
 /**
+ * Nom du fichier         : OutputField.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
  *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un champs abstrait pour une application
+ *
+ * Historiques des modifications
+ * -
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs;
 
 /**
- * @author Fabio
+ * Define a file field for the application
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class OutputField {
 
-  private String value;
-  private String description;
+  private String value;//la valeur
+  private String description; //une description éventuelle
 
   /**
    * @param name

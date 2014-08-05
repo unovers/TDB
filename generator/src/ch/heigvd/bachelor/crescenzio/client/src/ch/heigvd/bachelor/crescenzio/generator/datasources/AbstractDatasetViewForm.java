@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : AbstractDatasetViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un ViewForm pour un set de données
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
@@ -8,9 +18,13 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import ch.heigvd.bachelor.crescenzio.generator.client.forms.views.AbstractViewForm;
 
 /**
- * @author Fabio
+ * Define a ViewForm for a dataset
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractDatasetViewForm extends AbstractViewForm {
+  private AbstractDataset dataset;
 
   /**
    * @return the dataset
@@ -26,8 +40,6 @@ public abstract class AbstractDatasetViewForm extends AbstractViewForm {
   public void setDataset(AbstractDataset dataset) {
     this.dataset = dataset;
   }
-
-  private AbstractDataset dataset;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException

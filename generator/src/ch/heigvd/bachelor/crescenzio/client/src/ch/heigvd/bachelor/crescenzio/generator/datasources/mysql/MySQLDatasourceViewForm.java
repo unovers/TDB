@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : MySQLDatasourceViewForm.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit un ViewForm pour une source de données MySQL
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources.mysql;
@@ -25,7 +35,10 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.AbstractSQLDataso
 import ch.heigvd.bachelor.crescenzio.generator.datasources.sql.SQLDatabaseTableViewForm;
 
 /**
- * @author Fabio
+ * Define a ViewForm for a MySQL datasource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public class MySQLDatasourceViewForm extends AbstractSQLDatasourceViewForm {
   /**

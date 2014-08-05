@@ -1,4 +1,14 @@
 /**
+ * Nom du fichier         : AbstractDatasourcePage.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
+ *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Définit la navigation pour un set de données
+ *
+ * Historiques des modifications
+ * -
  *
  */
 package ch.heigvd.bachelor.crescenzio.generator.datasources;
@@ -6,7 +16,10 @@ package ch.heigvd.bachelor.crescenzio.generator.datasources;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.AbstractPage;
 
 /**
- * @author Fabio
+ * Define the navigation for a datasource
+ *
+ * @author Fabio CRESCENZIO
+ * @version 1.0
  */
 public abstract class AbstractDatasourcePage extends AbstractPage {
 
