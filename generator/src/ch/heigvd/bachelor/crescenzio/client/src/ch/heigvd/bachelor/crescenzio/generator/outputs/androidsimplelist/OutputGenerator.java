@@ -1,5 +1,14 @@
 /**
+ * Nom du fichier         : OutputGenerator.java
+ * Version                : 1.0
+ * Auteur                 : Crescenzio Fabio
  *
+ * Date dernière révision : 30.07.2014
+ *
+ * Commentaires           : Génère une application android avec le template androidsimplelist
+ *
+ * Historiques des modifications
+ * -
  */
 package ch.heigvd.bachelor.crescenzio.generator.outputs.androidsimplelist;
 
@@ -28,6 +37,8 @@ import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputField;
 import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
 /**
+ * Generate an Android application with the template androidsimplelist
+ * 
  * @author Fabio
  */
 public class OutputGenerator extends AbstractOutputGenerator {
