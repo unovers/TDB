@@ -51,7 +51,7 @@ public class OutputApplicationXMLLoader {
         String typeField = ((Element) nodeField).getAttribute("type");
         OutputField outputField = null;
         if (typeField.equals("string")) {
-          outputField = new StringField("");
+          outputField = new StringField(nodeFieldValue.getTextContent());
           outputField.setDescription(nodeFieldDescription.getTextContent());
         }
         else if (typeField.equals("file")) {

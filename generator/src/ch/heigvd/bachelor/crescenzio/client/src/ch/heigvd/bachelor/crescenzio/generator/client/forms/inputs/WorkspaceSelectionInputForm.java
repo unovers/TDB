@@ -68,6 +68,11 @@ public class WorkspaceSelectionInputForm extends AbstractInputForm {
   }
 
   @Override
+  protected boolean getConfiguredAskIfNeedSave() {
+    return false;
+  }
+
+  @Override
   protected String getConfiguredTitle() {
     return TEXTS.get("SelectionDeLespaceDeTravail");
   }

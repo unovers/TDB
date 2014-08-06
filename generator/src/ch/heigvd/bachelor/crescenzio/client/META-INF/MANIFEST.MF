@@ -22,11 +22,10 @@ Export-Package: ch.heigvd.bachelor.crescenzio.generator.client,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client;visibility:=reexport,
  org.eclipse.scout.rt.extension.client;visibility:=reexport,
- ch.heigvd.bachelor.crescenzio.generator.shared,
  org.eclipse.scout.svg.client,
- org.eclipse.scout.rt.shared
+ org.eclipse.scout.rt.shared,
+ ch.heigvd.bachelor.crescenzio.generator.shared
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.w3c.dom.svg;version="[1.1.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/mysql-connector-java-5.1.31-bin.jar,
  .

@@ -113,6 +113,12 @@ public class DatasetSelectProjectForm extends AbstractInputForm {
       }
 
       @Override
+      protected boolean getConfiguredMandatory() {
+        return true;
+
+      }
+
+      @Override
       public String getFieldId() {
         return "project";
       }

@@ -48,7 +48,7 @@
 						<extension>java</extension>
 					</extensions>					
 					<description>Row src file</description>
-					<value>src\row\DefaultRow.java</value>
+					<value>src\row\DefaultItemRow.java</value>
 				</resource>
 				<resource>
 					<name>ActivitySrcFile</name>

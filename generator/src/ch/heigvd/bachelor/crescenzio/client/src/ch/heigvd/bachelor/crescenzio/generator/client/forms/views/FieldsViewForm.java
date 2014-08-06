@@ -176,76 +176,51 @@ public class FieldsViewForm extends AbstractViewForm {
               @Override
               protected void injectFieldsInternal(List<IFormField> fieldList2) {
 
-                //Verifie si il y a au moins un set de données :
-                boolean projectHasDataset = false;
-                for (AbstractDatasource datasource : project.getDatasources()) {
-                  if (datasource.getDatasets().size() > 0) {
-                    projectHasDataset = true;
-                    break;
+                fieldList2.add(new AbstractLabelField() {
+
+                  @Override
+                  protected String getConfiguredLabel() {
+                    return TEXTS.get("Name");
                   }
 
-                }
+                  @Override
+                  public String getFieldId() {
+                    return field.getId();
+                  }
+                });
 
-                //Créer pour chaque champs les informations (nom - button edit - button delete"
-                if (!projectHasDataset) {
-                  fieldList2.add(new AbstractLabelField() {
-                    @Override
-                    protected String getConfiguredLabel() {
-                      return TEXTS.get("NoDatasetAvailable");
-                    }
-
-                    @Override
-                    protected int getConfiguredLabelWidthInPixel() {
-                      return 300;
-                    }
-                  });
-                }
-                else {
-                  fieldList2.add(new AbstractLabelField() {
+                if (!field.getName().equals("__item_type")) {
+                  fieldList2.add(new AbstractButton() {
 
                     @Override
                     protected String getConfiguredLabel() {
-                      return TEXTS.get("Name");
+                      return TEXTS.get("Edit");
                     }
 
                     @Override
-                    public String getFieldId() {
-                      return field.getId();
+                    protected void execClickAction() throws ProcessingException {
+                      FieldInputForm form = new FieldInputForm(project);
+                      form.setField(field);
+                      form.startModify();
+                    }
+
+                  });
+                  fieldList2.add(new AbstractButton() {
+
+                    @Override
+                    protected String getConfiguredLabel() {
+                      return TEXTS.get("Delete");
+                    }
+
+                    @Override
+                    protected void execClickAction() throws ProcessingException {
+                      project.removeField(field);
                     }
                   });
-
-                  if (!field.getName().equals("__item_type")) {
-                    fieldList2.add(new AbstractButton() {
-
-                      @Override
-                      protected String getConfiguredLabel() {
-                        return TEXTS.get("Edit");
-                      }
-
-                      @Override
-                      protected void execClickAction() throws ProcessingException {
-                        FieldInputForm form = new FieldInputForm(project);
-                        form.setField(field);
-                        form.startModify();
-                      }
-
-                    });
-                    fieldList2.add(new AbstractButton() {
-
-                      @Override
-                      protected String getConfiguredLabel() {
-                        return TEXTS.get("Delete");
-                      }
-
-                      @Override
-                      protected void execClickAction() throws ProcessingException {
-                        project.removeField(field);
-                      }
-                    });
-                  }
                 }
               }
-            });
+            }
+                );
           }
         }
 

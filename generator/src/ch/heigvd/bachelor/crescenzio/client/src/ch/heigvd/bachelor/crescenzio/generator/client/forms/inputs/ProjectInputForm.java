@@ -18,7 +18,6 @@ import org.eclipse.scout.commons.annotations.ConfigOperation;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.commons.exception.VetoException;
-import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
@@ -42,14 +41,15 @@ import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
  * @author Fabio CRESCENZIO
  * @version 1.0
  */
-public class ProjectInputForm extends AbstractForm {
+public class ProjectInputForm extends AbstractInputForm {
   private Project project;
 
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
   public ProjectInputForm() throws ProcessingException {
-    super();
+    super(false);
+    callInitializer();
   }
 
   /**
@@ -74,6 +74,7 @@ public class ProjectInputForm extends AbstractForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
+  @Override
   public void startModify() throws ProcessingException {
     startInternal(new ModifyHandler());
   }
@@ -81,6 +82,7 @@ public class ProjectInputForm extends AbstractForm {
   /**
    * @throws org.eclipse.scout.commons.exception.ProcessingException
    */
+  @Override
   public void startNew() throws ProcessingException {
     startInternal(new NewHandler());
   }

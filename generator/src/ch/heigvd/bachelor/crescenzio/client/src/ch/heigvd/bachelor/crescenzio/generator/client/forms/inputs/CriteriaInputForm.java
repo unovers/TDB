@@ -63,7 +63,7 @@ public class CriteriaInputForm extends AbstractInputForm {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("Field");
+    return TEXTS.get("AddCriteria");
   }
 
   /**
@@ -118,7 +118,7 @@ public class CriteriaInputForm extends AbstractInputForm {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("Field");
+        return TEXTS.get("Name");
       }
 
       @Override

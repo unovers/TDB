@@ -38,13 +38,13 @@ public class MySQLDataset extends AbstractSQLDataset {
     Object[][] datas;
     Object[] headers;
 
-    int rowsNr = 1;
-    MySQLDatasource datasource = (MySQLDatasource) getDatasource();
-    datasource.connect();
-    if (datasource.connect()) {
-      ResultSet result = datasource.queryDatas(getQuery());
-      ResultSetMetaData rsmd;
-      try {
+    try {
+      int rowsNr = 1;
+      MySQLDatasource datasource = (MySQLDatasource) getDatasource();
+      datasource.connect();
+      if (datasource.connect()) {
+        ResultSet result = datasource.queryDatas(getQuery());
+        ResultSetMetaData rsmd;
         rsmd = result.getMetaData();
 
         if (result.last()) {
@@ -69,15 +69,15 @@ public class MySQLDataset extends AbstractSQLDataset {
         }
 
         datasource.disconnect();
+        setHeaders(headers);
+        setDatas(datas);
+        setDescribed(true);
       }
-      catch (SQLException e1) {
-        throw new ProcessingException("PREVIEW_QUERY_ERROR");
-      }
-      setHeaders(headers);
-      setDatas(datas);
-      setDescribed(true);
+      else throw new ProcessingException("PREVIEW_QUERY_ERROR");
     }
-    else setDescribed(false);
+    catch (SQLException e1) {
+      throw new ProcessingException("PREVIEW_QUERY_ERROR");
+    }
 
   }
 }

@@ -11,13 +11,12 @@ Export-Package: ch.heigvd.bachelor.crescenzio.generator.ui.swt;uses:="org.eclips
  ch.heigvd.bachelor.crescenzio.generator.ui.swt.editor,
  ch.heigvd.bachelor.crescenzio.generator.ui.swt.perspective,
  ch.heigvd.bachelor.crescenzio.generator.ui.swt.views
-Require-Bundle: ch.heigvd.bachelor.crescenzio.generator.client;visibility:=reexport,
- ch.heigvd.bachelor.crescenzio.generator.shared,
- org.eclipse.scout.rt.ui.swt,
+Require-Bundle: org.eclipse.scout.rt.ui.swt,
  org.eclipse.scout.net,
  org.eclipse.equinox.app,
  org.eclipse.core.runtime,
  org.eclipse.ui,
- org.eclipse.ui.views
+ org.eclipse.ui.views,
+ ch.heigvd.bachelor.crescenzio.generator.client;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

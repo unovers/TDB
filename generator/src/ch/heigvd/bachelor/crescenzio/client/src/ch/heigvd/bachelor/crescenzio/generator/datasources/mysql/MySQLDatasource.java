@@ -92,7 +92,6 @@ public class MySQLDatasource extends AbstractSQLDatasource {
 
   @Override
   public ResultSet queryDatas(String query) {
-    System.out.println(query);
     try {
       statement = connexion.createStatement();
       return statement.executeQuery(query);

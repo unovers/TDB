@@ -168,7 +168,7 @@ public class ServerViewForm extends AbstractViewForm {
 
       @Override
       protected String getConfiguredLabel() {
-        return TEXTS.get("EditServerInfo");
+        return TEXTS.get("Edit");
       }
 
       @Override

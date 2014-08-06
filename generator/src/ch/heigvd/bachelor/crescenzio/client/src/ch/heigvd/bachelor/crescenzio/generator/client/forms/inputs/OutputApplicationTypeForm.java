@@ -231,12 +231,10 @@ public class OutputApplicationTypeForm extends AbstractForm {
         OutputStream os = new FileOutputStream(zipFile);
         byte[] buffer = new byte[1024];
         int bytesRead;
-        //read from is to buffer
         while ((bytesRead = is.read(buffer)) != -1) {
           os.write(buffer, 0, bytesRead);
         }
         is.close();
-        //flush OutputStream to write any buffered data to file
         os.flush();
         os.close();
 
@@ -249,7 +247,6 @@ public class OutputApplicationTypeForm extends AbstractForm {
           new File(type_path).mkdirs();
 
           for (FileResource resource : itemType.getResources()) {
-            System.out.println();
             try {
               String src = temp.getAbsolutePath() + File.separator + "defaultResources" + File.separator + resource.getValue();
               String dest = type_path + File.separator + new File(resource.getValue()).getName();
@@ -257,8 +254,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
               resource.setValue("resources" + File.separator + "types" + File.separator + itemType.getName() + File.separator + new File(resource.getValue()).getName());
             }
             catch (IOException e) {
-              // TODO Auto-generated catch block
-              e.printStackTrace();
+              throw new ProcessingException(e.getMessage());
             }
           }
         }

@@ -45,7 +45,6 @@ import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
-import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTableForm;
 import org.eclipse.scout.rt.client.ui.form.outline.DefaultOutlineTreeForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
@@ -85,12 +84,12 @@ import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
-  private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
-  private StartForm startForm;
-  private ProjectViewForm projectInfoForm;
+  private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class); //Logger
+  private StartForm startForm; // formulaire de lancement
   private DefaultOutlineTreeForm treeForm;
   private DefaultOutlineTableForm tableForm;
 
+  // réference sur les fenêtres actives
   private static HashMap<Project, ProjectViewForm> projectViewForms;
   private static HashMap<AbstractDataset, AbstractDatasetViewForm> datasetViewForms;
   private static HashMap<AbstractDatasource, AbstractDatasourceViewForm> datasourceViewForms;
@@ -99,13 +98,14 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static HashMap<Project, FieldsViewForm> fieldsViewForms;
   private static HashMap<Project, CriteriasViewForm> criteriasViewForms;
 
-  private String workspace;
+  private String workspace; //esèace de travail
 
   private static HashMap<String, DatasourceType> datasourceType;
   private static HashMap<String, OutputType> outputType;
   private static HashMap<String, ServerType> serverTypes;
   private static boolean init = false;
 
+  //Charge les données par défaut
   static {
     loadDatas();
 
@@ -121,6 +121,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   public Desktop() {
   }
 
+  /**
+   * Close opened forms for resource and open new one
+   *
+   * @param project
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormProject(Project project, ProjectViewForm form) throws ProcessingException {
     if (projectViewForms.get(project) != null && projectViewForms.get(project).isFormOpen()) {
       projectViewForms.remove(project).doClose();
@@ -129,24 +136,49 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource
+   *
+   * @param dataset
+   * @throws ProcessingException
+   */
   public static void removeDataset(AbstractDataset dataset) throws ProcessingException {
     if (datasetViewForms.get(dataset) != null && datasetViewForms.get(dataset).isFormOpen()) {
       datasetViewForms.remove(dataset).doClose();
     }
   }
 
+  /**
+   * Close opened forms for resource
+   *
+   * @param output
+   * @throws ProcessingException
+   */
   public static void removeOutput(OutputApplication output) throws ProcessingException {
     if (outputViewForms.get(output) != null && outputViewForms.get(output).isFormOpen()) {
       outputViewForms.remove(output).doClose();
     }
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param datasource
+   * @throws ProcessingException
+   */
   public static void removeDatasource(AbstractDatasource datasource) throws ProcessingException {
     if (datasourceViewForms.get(datasource) != null && datasourceViewForms.get(datasource).isFormOpen()) {
       datasourceViewForms.remove(datasource).doClose();
     }
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param datasource
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormDatasource(AbstractDatasource datasource, AbstractDatasourceViewForm form) throws ProcessingException {
     if (datasourceViewForms.get(datasource) != null && datasourceViewForms.get(datasource).isFormOpen()) {
       datasourceViewForms.remove(datasource).doClose();
@@ -155,6 +187,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param dataset
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormDataset(AbstractDataset dataset, AbstractDatasetViewForm form) throws ProcessingException {
     if (datasetViewForms.get(dataset) != null && datasetViewForms.get(dataset).isFormOpen()) {
       datasetViewForms.remove(dataset).doClose();
@@ -163,6 +202,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param output
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormOutput(OutputApplication output, OutputApplicationViewForm form) throws ProcessingException {
     if (outputViewForms.get(output) != null && outputViewForms.get(output).isFormOpen()) {
       outputViewForms.remove(output).doClose();
@@ -171,6 +217,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param project
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormFields(Project project, FieldsViewForm form) throws ProcessingException {
     if (fieldsViewForms.get(project) != null && fieldsViewForms.get(project).isFormOpen()) {
       fieldsViewForms.remove(project).doClose();
@@ -179,6 +232,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param project
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormCriterias(Project project, CriteriasViewForm form) throws ProcessingException {
     if (criteriasViewForms.get(project) != null && criteriasViewForms.get(project).isFormOpen()) {
       criteriasViewForms.remove(project).doClose();
@@ -187,6 +247,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Close opened forms for resource and start new one
+   *
+   * @param project
+   * @param form
+   * @throws ProcessingException
+   */
   public static void loadOrRefreshFormServer(Project project, ServerViewForm form) throws ProcessingException {
     if (serverViewForms.get(project) != null && serverViewForms.get(project).isFormOpen()) {
       serverViewForms.remove(project).doClose();
@@ -195,6 +262,11 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     form.startView();
   }
 
+  /**
+   * Load projects in the workspace
+   *
+   * @throws ProcessingException
+   */
   private void loadProjectsInWorkspace() throws ProcessingException {
 
     String[] folderContent = new File(workspace).list();
@@ -219,6 +291,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
+  /**
+   * load default application datas
+   */
   private static void loadDatas() {
     if (!init) {
       try {
@@ -312,14 +387,23 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
+  /**
+   * @return the datasource types supported
+   */
   public static HashMap<String, DatasourceType> getDatasourceTypes() {
     return datasourceType;
   }
 
+  /**
+   * @return the output types supported
+   */
   public static HashMap<String, OutputType> getOutputTypes() {
     return outputType;
   }
 
+  /**
+   * @return the server types supported
+   */
   public static HashMap<String, ServerType> getServerTypes() {
     return serverTypes;
   }
@@ -410,7 +494,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
-
+          // Ajoute les menus pour les sources de données
           for (Entry<String, DatasourceType> entry : datasourceType.entrySet()) {
             String datasource = entry.getValue().getName() + "Datasource";
             nodeList.add(new AbstractExtensibleMenu() {
@@ -465,6 +549,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
         @Override
         protected void injectActionNodesInternal(List<IMenu> nodeList) {
+          //Ajoute les menus pour les sets de données
           for (Entry<String, DatasourceType> entry : datasourceType.entrySet()) {
             String dataset = entry.getValue().getName() + "Dataset";
             nodeList.add(new AbstractExtensibleMenu() {
@@ -531,11 +616,9 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         return TEXTS.get("SaveAllProjects");
       }
 
-      /* (non-Javadoc)
-       * @see org.eclipse.scout.rt.client.ui.action.AbstractAction#execAction()
-       */
       @Override
       protected void execAction() throws ProcessingException {
+        //Permet de sauvegarder tous les projets à la fois
         for (Project project : Project.getAll()) {
 
           DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -563,30 +646,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
             throw new ProcessingException(e.getMessage());
           }
         }
-      }
-    }
-  }
-
-  @Order(100.0)
-  public class HelpMenu extends AbstractMenu {
-
-    @Override
-    protected String getConfiguredText() {
-      return TEXTS.get("HelpMenu");
-    }
-
-    @Order(10.0)
-    public class AboutMenu extends AbstractMenu {
-
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("AboutMenu");
-      }
-
-      @Override
-      public void execAction() throws ProcessingException {
-        ScoutInfoForm form = new ScoutInfoForm();
-        form.startModify();
       }
     }
   }

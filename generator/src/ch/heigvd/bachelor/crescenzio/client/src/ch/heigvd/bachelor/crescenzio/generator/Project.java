@@ -165,7 +165,6 @@ public class Project {
       try {
         String pckage = Desktop.getOutputTypes().get(output.getName()).getLocation();
         String clss = pckage + "." + "OutputGenerator";
-        System.out.println(pckage);
         Class<?> outputGenerator;
         outputGenerator = Class.forName(clss);
         java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class});
