@@ -53,10 +53,10 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
     try {
       //Réalise toutes les vérifications
       if (project.getServer() == null) {
-        throw new UnsupportedOperationException("Le serveur doit être configuré");
+        throw new ProcessingException("Le serveur doit être configuré");
       }
       if (project.getDatasources().size() == 0) {
-        throw new UnsupportedOperationException("Il faut avoir au moins un datasource");
+        throw new ProcessingException("Il faut avoir au moins un datasource");
       }
       else {
         boolean datasetFound = false;
@@ -67,7 +67,7 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
           }
         }
         if (!datasetFound) {
-          throw new UnsupportedOperationException("Il faut avoir au moins un dataset");
+          throw new ProcessingException("Il faut avoir au moins un dataset");
         }
 
       }
@@ -80,7 +80,8 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
       project.generateProject(((Desktop) getDesktop()).getWorkspace());
       generate = true;
     }
-    catch (Exception e) {
+    catch (ProcessingException e) {
+      e.printStackTrace();
       message = e.getMessage();
     }
     callInitializer();

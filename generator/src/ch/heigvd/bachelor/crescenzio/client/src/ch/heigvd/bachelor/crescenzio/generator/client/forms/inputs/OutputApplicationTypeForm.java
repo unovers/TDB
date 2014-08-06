@@ -227,7 +227,8 @@ public class OutputApplicationTypeForm extends AbstractForm {
 
       try {
         File zipFile = File.createTempFile("defaultResources", ".zip");
-        InputStream is = AbstractOutputGenerator.class.getResourceAsStream(output.getName().toLowerCase() + File.separator + "defaultResources.zip");
+        InputStream is = AbstractOutputGenerator.class.getResourceAsStream("/" + Desktop.getOutputTypes().
+            get(output.getName()).getLocation().replace(".", "/") + "/defaultResources.zip");
         OutputStream os = new FileOutputStream(zipFile);
         byte[] buffer = new byte[1024];
         int bytesRead;
@@ -240,7 +241,7 @@ public class OutputApplicationTypeForm extends AbstractForm {
 
         File temp = Utils.createTempDirectory();
         temp.deleteOnExit();
-        Files.copy(zipFile.toPath(), new File(temp + "defaultResources.zip").toPath());
+        Files.copy(zipFile.toPath(), new File(temp + File.separator + "defaultResources.zip").toPath());
         Utils.unZipIt(zipFile.getPath(), temp + File.separator + "defaultResources");
         for (ItemType itemType : output.getItemsTypes()) {
           String type_path = path + File.separator + "resources" + File.separator + "types" + File.separator + itemType.getName();

@@ -13,7 +13,6 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.client.services.lookup;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +31,7 @@ import org.xml.sax.SAXException;
 
 import ch.heigvd.bachelor.crescenzio.generator.OutputType;
 import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
+import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplication;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.OutputApplicationXMLLoader;
 
@@ -57,7 +57,8 @@ public class OutputTypeLookupCall extends LocalLookupCall<OutputApplication> {
       try {
         dBuilder = dbFactory.newDocumentBuilder();
 
-        Document doc = dBuilder.parse(OutputApplication.class.getResourceAsStream(outputType.toLowerCase() + File.separator + "application.xml"));
+        Document doc = dBuilder.parse(AbstractOutputGenerator.class.getResourceAsStream("/" + Desktop.getOutputTypes().
+            get(outputType).getLocation().toLowerCase().replace(".", "/") + "/application.xml"));
         doc.getDocumentElement().normalize();
         OutputApplication output = OutputApplicationXMLLoader.loadOutput(doc.getDocumentElement());
 

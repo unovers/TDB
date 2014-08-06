@@ -18,6 +18,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map.Entry;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
+import ch.heigvd.bachelor.crescenzio.generator.client.ui.desktop.Desktop;
 import ch.heigvd.bachelor.crescenzio.generator.criterias.Criteria;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.AbstractOutputGenerator;
 import ch.heigvd.bachelor.crescenzio.generator.outputs.FileResource;
@@ -473,7 +474,10 @@ public class OutputGenerator extends AbstractOutputGenerator {
     //copie les fichier de bases de l'application
     //get the zip file content
     File zipFile = File.createTempFile("generated", ".zip");
-    InputStream is = AbstractOutputGenerator.class.getResourceAsStream(getOutput().getName().toLowerCase() + File.separator + "generated.zip");
+    System.out.println("/" + Desktop.getOutputTypes().
+        get(getOutput().getName()).getLocation().toLowerCase().replace(".", "/"));
+    InputStream is = AbstractOutputGenerator.class.getResourceAsStream("/" + Desktop.getOutputTypes().
+        get(getOutput().getName()).getLocation().toLowerCase().replace(".", "/") + "/generated.zip");
     OutputStream os = new FileOutputStream(zipFile);
     byte[] buffer = new byte[1024];
     int bytesRead;
