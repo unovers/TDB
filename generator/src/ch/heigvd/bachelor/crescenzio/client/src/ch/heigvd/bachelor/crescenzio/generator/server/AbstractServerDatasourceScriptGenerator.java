@@ -1,5 +1,5 @@
 /**
- * Nom du fichier         : ServerDatasourceScriptGenerator.java
+ * Nom du fichier         : AbstractServerDatasourceScriptGenerator.java
  * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
@@ -25,7 +25,7 @@ import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
  * @author Fabio CRESCENZIO
  * @version 1.0
  */
-public abstract class ServerDatasourceScriptGenerator {
+public abstract class AbstractServerDatasourceScriptGenerator {
   AbstractDatasource datasource;
   Project project;
 
@@ -49,7 +49,7 @@ public abstract class ServerDatasourceScriptGenerator {
   /**
    * @param datasource
    */
-  public ServerDatasourceScriptGenerator(Project project, AbstractDatasource datasource) {
+  public AbstractServerDatasourceScriptGenerator(Project project, AbstractDatasource datasource) {
     super();
     this.project = project;
     this.datasource = datasource;

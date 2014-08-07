@@ -13,16 +13,14 @@
  */
 package ch.heigvd.bachelor.crescenzio.generator.server.php.scripts;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 
 import ch.heigvd.bachelor.crescenzio.generator.Field;
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDataset;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.mysql.MySQLDatasource;
-import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGenerator;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServerDatasourceScriptGenerator;
 
 /**
  * Define how to generate scripts for a MySQL datasource with a PHP server
@@ -30,7 +28,7 @@ import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGene
  * @author Fabio CRESCENZIO
  * @version 1.0
  */
-public class PHPMySQLScript extends ServerDatasourceScriptGenerator {
+public class PHPMySQLScript extends AbstractServerDatasourceScriptGenerator {
 
   /**
    * @param project
@@ -67,11 +65,5 @@ public class PHPMySQLScript extends ServerDatasourceScriptGenerator {
 
   @Override
   public void createFiles(String destination) throws IOException {
-    File destinationFile = new File(destination + File.separator + "function_and_classes.php");
-    if (destinationFile.exists()) {
-      destinationFile.delete();
-    }
-    Files.copy(PHPMySQLScript.class.getResourceAsStream("function_and_classes.php"), destinationFile.toPath());
-
   }
 }

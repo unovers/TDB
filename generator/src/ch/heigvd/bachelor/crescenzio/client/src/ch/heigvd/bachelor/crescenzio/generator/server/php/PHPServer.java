@@ -17,13 +17,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.eclipse.scout.commons.exception.ProcessingException;
 
 import ch.heigvd.bachelor.crescenzio.generator.Project;
 import ch.heigvd.bachelor.crescenzio.generator.datasources.AbstractDatasource;
 import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServer;
-import ch.heigvd.bachelor.crescenzio.generator.server.ServerDatasourceScriptGenerator;
+import ch.heigvd.bachelor.crescenzio.generator.server.AbstractServerDatasourceScriptGenerator;
 
 /**
  * Define how to generate scripts for a PHP server
@@ -35,6 +36,14 @@ public class PHPServer extends AbstractServer {
 
   public PHPServer(String host, String rootFolder) {
     super(host, rootFolder);
+  }
+
+  private void copyFiles(String destination) throws IOException {
+    File destinationFile = new File(destination + File.separator + "function_and_classes.php");
+    if (destinationFile.exists()) {
+      destinationFile.delete();
+    }
+    Files.copy(PHPServer.class.getResourceAsStream("function_and_classes.php"), destinationFile.toPath());
   }
 
   @Override
@@ -54,7 +63,7 @@ public class PHPServer extends AbstractServer {
         String clss = pckage + "." + classGenerator + "Script";
         Class<?> generatorClass = Class.forName(clss);
         java.lang.reflect.Constructor constructor = generatorClass.getConstructor(new Class[]{Project.class, datasource.getClass()});
-        ServerDatasourceScriptGenerator generator = (ServerDatasourceScriptGenerator) constructor.newInstance(new Object[]{project, datasource});
+        AbstractServerDatasourceScriptGenerator generator = (AbstractServerDatasourceScriptGenerator) constructor.newInstance(new Object[]{project, datasource});
         output.append(generator.generate());
         generator.createFiles(destination);
       }
@@ -92,10 +101,12 @@ public class PHPServer extends AbstractServer {
       String outText = output.toString();
       out.write(outText);
       out.close();
+      copyFiles(destination);
     }
     catch (IOException e)
     {
-      e.printStackTrace();
+      throw new ProcessingException("impossible de créer le fichier datas.php");
     }
+
   }
 }
