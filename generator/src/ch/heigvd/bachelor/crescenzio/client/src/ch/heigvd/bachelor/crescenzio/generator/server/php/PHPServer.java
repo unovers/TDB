@@ -73,7 +73,11 @@ public class PHPServer extends AbstractServer {
       }
     }
 
-    output.append("  $resources = listResources('resources');\n");
+    output.append("  if(file_exists ('resources')){\n");
+    output.append("      $resources = listResources('resources');\n");
+    output.append("  }else{\n");
+    output.append("      $resources = array();\n");
+    output.append("  }\n");
     output.append("  echo \'{';\n");
     output.append("  echo '\"status\":\"datas\",';\n");
     output.append("  echo '\"items\":[';\n");

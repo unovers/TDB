@@ -73,7 +73,7 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
       }
       for (OutputApplication output : project.getOutputs()) {
         for (Entry<Field, Field> field : output.getMappedFields().entrySet()) {
-          if (field.getValue() == null) throw new UnsupportedOperationException("l'output " + output.getName() + " n'est pas configuré");
+          if (field.getValue() == null) throw new ProcessingException("l'output " + output.getName() + " n'est pas configuré");
         }
       }
 
@@ -81,7 +81,6 @@ public class ProjectGenerationViewForm extends AbstractViewForm {
       generate = true;
     }
     catch (ProcessingException e) {
-      e.printStackTrace();
       message = e.getMessage();
     }
     callInitializer();

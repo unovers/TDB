@@ -91,15 +91,14 @@ public class MySQLDatasource extends AbstractSQLDatasource {
   }
 
   @Override
-  public ResultSet queryDatas(String query) {
+  public ResultSet queryDatas(String query) throws ProcessingException {
     try {
       statement = connexion.createStatement();
       return statement.executeQuery(query);
     }
     catch (SQLException e) {
-      System.out.println(e);
+      throw new ProcessingException(e.toString());
     }
-    return null;
   }
 
   @Override

@@ -164,7 +164,7 @@ public class Project {
     for (OutputApplication output : getOutputs()) {
       try {
         String pckage = Desktop.getOutputTypes().get(output.getName()).getLocation();
-        String clss = pckage + "." + "OutputGenerator";
+        String clss = pckage + "." + "OutputApplicationGenerator";
         Class<?> outputGenerator;
         outputGenerator = Class.forName(clss);
         java.lang.reflect.Constructor constructor = outputGenerator.getConstructor(new Class[]{OutputApplication.class});

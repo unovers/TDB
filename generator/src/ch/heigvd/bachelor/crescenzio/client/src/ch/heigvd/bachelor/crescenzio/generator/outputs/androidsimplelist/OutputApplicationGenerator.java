@@ -1,5 +1,5 @@
 /**
- * Nom du fichier         : OutputGenerator.java
+ * Nom du fichier         : OutputApplicationGenerator.java
  * Version                : 1.0
  * Auteur                 : Crescenzio Fabio
  *
@@ -41,12 +41,12 @@ import ch.heigvd.bachelor.crescenzio.generator.utils.Utils;
  * 
  * @author Fabio
  */
-public class OutputGenerator extends AbstractOutputGenerator {
+public class OutputApplicationGenerator extends AbstractOutputGenerator {
 
   /**
    * @param output
    */
-  public OutputGenerator(OutputApplication output) {
+  public OutputApplicationGenerator(OutputApplication output) {
     super(output);
   }
 

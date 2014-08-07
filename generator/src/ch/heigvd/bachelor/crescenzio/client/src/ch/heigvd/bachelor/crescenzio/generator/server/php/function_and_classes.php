@@ -126,7 +126,7 @@
 		preg_match_all('/%(.*?)%/s', $str, $matches);
 		$new_str = $str;
 		foreach($matches[0] as $key => $res){
-			$new_str = str_replace($res, $row($matches[1][$key]), $new_str);
+			$new_str = str_replace($res, $row[$matches[1][$key]], $new_str);
 		}
 		return $new_str;
 	}
